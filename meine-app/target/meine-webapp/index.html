@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StudyPlanner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Variante B: relativ (empfohlen) -->
+    <link rel="stylesheet" href="/meine-webapp/static/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        🎓 <span>StudyPlanner</span>
+      </div>
+      <nav class="nav">
+        <a class="nav-link" href="/meine-webapp/" id="nav-home">Home</a>
+        <a class="nav-link" href="/meine-webapp/dashboard" id="nav-dashboard">
+          Dashboard
+        </a>
+        <a class="nav-link" href="/meine-webapp/modules" id="nav-modules">
+          Module
+        </a>
+        <a class="nav-link" href="/meine-webapp/tasks" id="nav-tasks">
+          Aufgaben
+        </a>
+        <a class="nav-link" href="/meine-webapp/sessions" id="nav-sessions">
+          Lernsessions
+        </a>
+        <a class="nav-link" href="/meine-webapp/login" id="nav-login">
+          Login
+        </a>
+        <a class="nav-link" href="/meine-webapp/register" id="nav-register">
+          Registrieren
+        </a>
+        <a
+          class="nav-link logout"
+          href="/meine-webapp/logout"
+          id="nav-logout"
+          style="display: none"
+        >
+          Logout
+        </a>
+      </nav>
+    </header>
+
+    <!-- Home / Landing -->
+    <section id="home" class="view active">
+      <div class="hero">
+        <h1>Willkommen beim StudyPlanner</h1>
+        <p>
+          Plane deine Module, Aufgaben und Lernsessions an einem Ort
+          – einfache Übersicht für dein Studium.
+        </p>
+        <div class="hero-actions">
+          <a href="/meine-webapp/register" class="btn primary">Jetzt starten</a>
+          <a href="/meine-webapp/login" class="btn secondary">Login</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Login -->
+    <section id="login" class="view">
+      <h2>Anmelden</h2>
+      <form id="login-form" class="form">
+        <label for="login-email">E-Mail</label>
+        <input type="email" id="login-email" required />
+
+        <label for="login-password">Passwort</label>
+        <input type="password" id="login-password" required />
+
+        <button type="submit" class="btn primary">Login</button>
+      </form>
+      <p>
+        Noch kein Konto?
+        <a href="/meine-webapp/register">Jetzt registrieren</a>
+      </p>
+    </section>
+
+    <!-- Registrierung -->
+    <section id="register" class="view">
+      <h2>Registrierung</h2>
+      <form id="register-form" class="form">
+        <label for="reg-email">E-Mail</label>
+        <input type="email" id="reg-email" required />
+
+        <label for="reg-password">Passwort</label>
+        <input type="password" id="reg-password" required />
+
+        <label for="reg-password-confirm">Passwort bestätigen</label>
+        <input type="password" id="reg-password-confirm" required />
+
+        <button type="submit" class="btn primary">Registrieren</button>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="view">
+      <h2>Dashboard</h2>
+      <div id="dashboard-stats" class="dashboard-grid">
+        <div class="card">
+          <h3>Offene Aufgaben</h3>
+          <p id="stat-open-tasks">–</p>
+        </div>
+        <div class="card">
+          <h3>Nächste Prüfung</h3>
+          <p id="stat-next-exam">–</p>
+        </div>
+        <div class="card">
+          <h3>Lernzeit (diese Woche)</h3>
+          <p id="stat-study-time">–</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module -->
+    <section id="modules" class="view">
+      <h2>Module</h2>
+      <form id="module-form" class="form inline-form">
+        <input
+          type="text"
+          id="module-name"
+          placeholder="Modulname (z.B. Datenbanken 2)"
+          required
+        />
+        <input
+          type="text"
+          id="module-semester"
+          placeholder="Semester (z.B. 3)"
+        />
+        <button type="submit" class="btn primary">Modul hinzufügen</button>
+      </form>
+
+      <div id="module-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <!-- Aufgaben -->
+    <section id="tasks" class="view">
+      <h2>Aufgaben</h2>
+      <form id="task-form" class="form">
+        <label for="task-title">Titel</label>
+        <input type="text" id="task-title" required />
+
+        <label for="task-module">Modul</label>
+        <select id="task-module"></select>
+
+        <label for="task-deadline">Deadline</label>
+        <input type="date" id="task-deadline" />
+
+        <label for="task-priority">Priorität</label>
+        <select id="task-priority">
+          <option value="LOW">Niedrig</option>
+          <option value="MEDIUM" selected>Mittel</option>
+          <option value="HIGH">Hoch</option>
+        </select>
+
+        <button type="submit" class="btn primary">Aufgabe anlegen</button>
+      </form>
+
+      <div id="task-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <!-- Lernsessions -->
+    <section id="sessions" class="view">
+      <h2>Lernsessions</h2>
+      <form id="session-form" class="form">
+        <label for="session-module">Modul</label>
+        <select id="session-module"></select>
+
+        <label for="session-date">Datum</label>
+        <input type="date" id="session-date" />
+
+        <label for="session-duration">Dauer (Minuten)</label>
+        <input type="number" id="session-duration" min="5" step="5" />
+
+        <label for="session-note">Notiz</label>
+        <textarea id="session-note" rows="2"></textarea>
+
+        <button type="submit" class="btn primary">Session speichern</button>
+      </form>
+
+      <div id="session-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>&copy; 2025 StudyPlanner – gebaut von Hossein 🙂</p>
+    </footer>
+
+    <script type="module" src="/meine-webapp/static/main.js"></script>
+  </body>
+</html>

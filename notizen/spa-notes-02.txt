@@ -1,0 +1,1095 @@
+Perfekt, du hast mit dem Impf-Single-Page-Projekt schon eine super Vorlage – wir bauen jetzt eine kleinere, saubere StudyPlanner-SPA mit ähnlicher Struktur, aber in Vanilla JS (ohne React).
+
+Ich zeige dir:
+
+1. **Verzeichnisstruktur für das Frontend**
+2. **`index.html` mit den Views (Home, Login, Dashboard, Module, Aufgaben, Sessions)**
+3. **`endpoints.js` – alle API-Endpunkte an einer Stelle**
+4. **`api.js` – generische `fetchJson`-Funktion + ein paar API-Wrapper**
+5. **`main.js` – Routing + View-Wechsel**
+6. **Beispiele für Views & Komponenten** (modular wie bei deinen React-Files)
+
+> 🔧 **Wichtig:** Das Backend muss noch nicht existieren. Die SPA kann schon geroutet werden, und die API-Calls sind vorbereitet. Wenn kein Backend läuft, bekommst du natürlich Fehler in der Konsole – das ist ok für den Anfang.
+
+---
+
+## 1. Verzeichnisstruktur
+
+Unter deinem Maven-Projekt:
+
+```text
+meine-app/
+└── src
+    └── main
+        └── webapp
+            ├── index.html
+            ├── style.css
+            └── static
+                ├── main.js
+                ├── api.js
+                ├── endpoints.js
+                ├── views
+                │   ├── homeView.js
+                │   ├── loginView.js
+                │   ├── registerView.js
+                │   ├── dashboardView.js
+                │   ├── modulesView.js
+                │   ├── tasksView.js
+                │   └── sessionsView.js
+                └── components
+                    ├── ModuleList.js
+                    ├── TaskList.js
+                    └── SessionList.js
+```
+
+---
+
+## 2. `index.html` – Grundgerüst der SPA
+
+Leg diese Datei unter `src/main/webapp/index.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StudyPlanner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- ContextPath: /meine-webapp -->
+    <link rel="stylesheet" href="/meine-webapp/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        🎓 <span>StudyPlanner</span>
+      </div>
+      <nav class="nav">
+        <a class="nav-link" href="/meine-webapp/" id="nav-home">Home</a>
+        <a class="nav-link" href="/meine-webapp/dashboard" id="nav-dashboard">
+          Dashboard
+        </a>
+        <a class="nav-link" href="/meine-webapp/modules" id="nav-modules">
+          Module
+        </a>
+        <a class="nav-link" href="/meine-webapp/tasks" id="nav-tasks">
+          Aufgaben
+        </a>
+        <a class="nav-link" href="/meine-webapp/sessions" id="nav-sessions">
+          Lernsessions
+        </a>
+        <a class="nav-link" href="/meine-webapp/login" id="nav-login">
+          Login
+        </a>
+        <a class="nav-link" href="/meine-webapp/register" id="nav-register">
+          Registrieren
+        </a>
+        <a
+          class="nav-link logout"
+          href="/meine-webapp/logout"
+          id="nav-logout"
+          style="display: none"
+        >
+          Logout
+        </a>
+      </nav>
+    </header>
+
+    <!-- Home / Landing -->
+    <section id="home" class="view active">
+      <div class="hero">
+        <h1>Willkommen beim StudyPlanner</h1>
+        <p>
+          Plane deine Module, Aufgaben und Lernsessions an einem Ort
+          – einfache Übersicht für dein Studium.
+        </p>
+        <div class="hero-actions">
+          <a href="/meine-webapp/register" class="btn primary">Jetzt starten</a>
+          <a href="/meine-webapp/login" class="btn secondary">Login</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Login -->
+    <section id="login" class="view">
+      <h2>Anmelden</h2>
+      <form id="login-form" class="form">
+        <label for="login-email">E-Mail</label>
+        <input type="email" id="login-email" required />
+
+        <label for="login-password">Passwort</label>
+        <input type="password" id="login-password" required />
+
+        <button type="submit" class="btn primary">Login</button>
+      </form>
+      <p>
+        Noch kein Konto?
+        <a href="/meine-webapp/register">Jetzt registrieren</a>
+      </p>
+    </section>
+
+    <!-- Registrierung -->
+    <section id="register" class="view">
+      <h2>Registrierung</h2>
+      <form id="register-form" class="form">
+        <label for="reg-email">E-Mail</label>
+        <input type="email" id="reg-email" required />
+
+        <label for="reg-password">Passwort</label>
+        <input type="password" id="reg-password" required />
+
+        <label for="reg-password-confirm">Passwort bestätigen</label>
+        <input type="password" id="reg-password-confirm" required />
+
+        <button type="submit" class="btn primary">Registrieren</button>
+      </form>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="view">
+      <h2>Dashboard</h2>
+      <div id="dashboard-stats" class="dashboard-grid">
+        <div class="card">
+          <h3>Offene Aufgaben</h3>
+          <p id="stat-open-tasks">–</p>
+        </div>
+        <div class="card">
+          <h3>Nächste Prüfung</h3>
+          <p id="stat-next-exam">–</p>
+        </div>
+        <div class="card">
+          <h3>Lernzeit (diese Woche)</h3>
+          <p id="stat-study-time">–</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module -->
+    <section id="modules" class="view">
+      <h2>Module</h2>
+      <form id="module-form" class="form inline-form">
+        <input
+          type="text"
+          id="module-name"
+          placeholder="Modulname (z.B. Datenbanken 2)"
+          required
+        />
+        <input
+          type="text"
+          id="module-semester"
+          placeholder="Semester (z.B. 3)"
+        />
+        <button type="submit" class="btn primary">Modul hinzufügen</button>
+      </form>
+
+      <div id="module-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <!-- Aufgaben -->
+    <section id="tasks" class="view">
+      <h2>Aufgaben</h2>
+      <form id="task-form" class="form">
+        <label for="task-title">Titel</label>
+        <input type="text" id="task-title" required />
+
+        <label for="task-module">Modul</label>
+        <select id="task-module"></select>
+
+        <label for="task-deadline">Deadline</label>
+        <input type="date" id="task-deadline" />
+
+        <label for="task-priority">Priorität</label>
+        <select id="task-priority">
+          <option value="LOW">Niedrig</option>
+          <option value="MEDIUM" selected>Mittel</option>
+          <option value="HIGH">Hoch</option>
+        </select>
+
+        <button type="submit" class="btn primary">Aufgabe anlegen</button>
+      </form>
+
+      <div id="task-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <!-- Lernsessions -->
+    <section id="sessions" class="view">
+      <h2>Lernsessions</h2>
+      <form id="session-form" class="form">
+        <label for="session-module">Modul</label>
+        <select id="session-module"></select>
+
+        <label for="session-date">Datum</label>
+        <input type="date" id="session-date" />
+
+        <label for="session-duration">Dauer (Minuten)</label>
+        <input type="number" id="session-duration" min="5" step="5" />
+
+        <label for="session-note">Notiz</label>
+        <textarea id="session-note" rows="2"></textarea>
+
+        <button type="submit" class="btn primary">Session speichern</button>
+      </form>
+
+      <div id="session-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>&copy; 2025 StudyPlanner – gebaut von Hossein 🙂</p>
+    </footer>
+
+    <script type="module" src="/meine-webapp/static/main.js"></script>
+  </body>
+</html>
+```
+
+> Du kannst `style.css` erstmal sehr simpel halten (nur Basics), das ist unabhängig von der SPA-Logik.
+
+---
+
+## 3. `endpoints.js` – zentrale Endpunkt-Definition
+
+`src/main/webapp/static/endpoints.js`:
+
+```js
+// Alle API-Endpunkte zentral gesammelt – ähnlich wie Endpoints.ts im Tierheim-Frontend.
+
+const BASE_API_PATH = ""; // relativ zu /meine-webapp/api
+
+// Auth
+export const LOGIN_ENDPOINT = BASE_API_PATH + "auth/login";
+export const REGISTER_ENDPOINT = BASE_API_PATH + "auth/register";
+export const SESSION_ENDPOINT = BASE_API_PATH + "auth/session";
+
+// Dashboard
+export const DASHBOARD_STATS_ENDPOINT = BASE_API_PATH + "dashboard/stats";
+
+// Module
+export const MODULES_ENDPOINT = BASE_API_PATH + "modules";
+
+// Aufgaben
+export const TASKS_ENDPOINT = BASE_API_PATH + "tasks";
+
+// Lernsessions
+export const SESSIONS_ENDPOINT = BASE_API_PATH + "sessions";
+```
+
+Diese Strings sind **nur Pfade** (ohne `/api/`); zusammengebaut wird das in `api.js` über `getApiUrl(...)`.
+
+---
+
+## 4. `api.js` – fetch-Wrapper & API-Funktionen
+
+`src/main/webapp/static/api.js`:
+
+```js
+import {
+  LOGIN_ENDPOINT,
+  REGISTER_ENDPOINT,
+  SESSION_ENDPOINT,
+  DASHBOARD_STATS_ENDPOINT,
+  MODULES_ENDPOINT,
+  TASKS_ENDPOINT,
+  SESSIONS_ENDPOINT,
+} from "./endpoints.js";
+
+function getRoutingUtils() {
+  if (!window.routingUtils) {
+    console.error(
+      "routingUtils nicht verfügbar – stelle sicher, dass main.js zuerst geladen wird."
+    );
+    const CONTEXTPATH = "/meine-webapp/";
+    return {
+      CONTEXTPATH,
+      getRouteFromPath: (path) =>
+        path.replace(CONTEXTPATH, "").replace(/^\//, "") || "home",
+      getFullPath: (route) =>
+        CONTEXTPATH + (route ? route.replace(/^\//, "") : ""),
+      getApiUrl: (endpoint) =>
+        CONTEXTPATH +
+        "api/" +
+        (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint),
+    };
+  }
+  return window.routingUtils;
+}
+
+export async function fetchJson(endpoint, method = "GET", body) {
+  const { getApiUrl } = getRoutingUtils();
+  const url = getApiUrl(endpoint);
+
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    credentials: "include", // für Session-Cookies
+  };
+
+  if (body !== undefined) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    let errorText = response.statusText;
+    try {
+      const errJson = await response.json();
+      errorText = errJson.message || JSON.stringify(errJson);
+    } catch (_) {
+      // ignore
+    }
+    throw new Error(`HTTP ${response.status}: ${errorText}`);
+  }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  return await response.json();
+}
+
+// ---------- Auth ----------
+
+export async function loginUser(email, password) {
+  return await fetchJson(LOGIN_ENDPOINT, "POST", { email, password });
+}
+
+export async function registerUser(email, password) {
+  return await fetchJson(REGISTER_ENDPOINT, "POST", { email, password });
+}
+
+export async function fetchSession() {
+  try {
+    return await fetchJson(SESSION_ENDPOINT, "GET");
+  } catch (_) {
+    return { loggedIn: false };
+  }
+}
+
+// ---------- Dashboard ----------
+
+export async function fetchDashboardStats() {
+  return await fetchJson(DASHBOARD_STATS_ENDPOINT, "GET");
+}
+
+// ---------- Module ----------
+
+export async function fetchModules() {
+  return await fetchJson(MODULES_ENDPOINT, "GET");
+}
+
+export async function createModule(moduleData) {
+  return await fetchJson(MODULES_ENDPOINT, "POST", moduleData);
+}
+
+// ---------- Aufgaben ----------
+
+export async function fetchTasks() {
+  return await fetchJson(TASKS_ENDPOINT, "GET");
+}
+
+export async function createTask(taskData) {
+  return await fetchJson(TASKS_ENDPOINT, "POST", taskData);
+}
+
+// ---------- Lernsessions ----------
+
+export async function fetchSessions() {
+  return await fetchJson(SESSIONS_ENDPOINT, "GET");
+}
+
+export async function createSession(sessionData) {
+  return await fetchJson(SESSIONS_ENDPOINT, "POST", sessionData);
+}
+```
+
+> Später kannst du hier weitere Funktionen ergänzen: `updateTaskStatus`, `deleteModule`, usw.
+
+---
+
+## 5. `main.js` – Routing & View-Initialisierung
+
+`src/main/webapp/static/main.js`:
+
+```js
+import { fetchSession } from "./api.js";
+import { initHomeView } from "./views/homeView.js";
+import { initLoginView } from "./views/loginView.js";
+import { initRegisterView } from "./views/registerView.js";
+import { initDashboardView } from "./views/dashboardView.js";
+import { initModulesView } from "./views/modulesView.js";
+import { initTasksView } from "./views/tasksView.js";
+import { initSessionsView } from "./views/sessionsView.js";
+
+const CONTEXTPATH = "/meine-webapp/";
+
+function getRouteFromPath(pathname) {
+  let path = pathname;
+  if (path.startsWith(CONTEXTPATH)) {
+    path = path.substring(CONTEXTPATH.length);
+  }
+  path = path.replace(/^\//, "");
+  if (path === "" || path === "index.html") {
+    return "home";
+  }
+  return path;
+}
+
+function getFullPath(route) {
+  if (!route || route === "home") {
+    return CONTEXTPATH;
+  }
+  return CONTEXTPATH + route.replace(/^\//, "");
+}
+
+function getApiUrl(endpoint) {
+  const [path, queryString] = endpoint.split("?");
+  const normalized = path.startsWith("/") ? path.substring(1) : path;
+  const baseUrl = CONTEXTPATH + "api/" + normalized;
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
+}
+
+// Für andere Module (api.js) global verfügbar machen:
+window.routingUtils = {
+  CONTEXTPATH,
+  getRouteFromPath,
+  getFullPath,
+  getApiUrl,
+};
+
+// einfache Navigation global, damit Views sie nutzen können
+function navigateTo(route) {
+  const fullPath = getFullPath(route);
+  history.pushState({ view: route }, "", fullPath);
+  showView(route);
+}
+window.navigateTo = navigateTo;
+
+// View-Initialisierer
+const viewInitializers = {
+  home: initHomeView,
+  login: initLoginView,
+  register: initRegisterView,
+  dashboard: initDashboardView,
+  modules: initModulesView,
+  tasks: initTasksView,
+  sessions: initSessionsView,
+};
+
+const initializedViews = new Set();
+
+function showView(viewId) {
+  const views = document.querySelectorAll(".view");
+  views.forEach((v) => v.classList.remove("active"));
+
+  const active = document.getElementById(viewId);
+  if (active) {
+    active.classList.add("active");
+  } else {
+    console.warn("Unbekannte View:", viewId);
+  }
+
+  const init = viewInitializers[viewId];
+  if (init && !initializedViews.has(viewId)) {
+    init();
+    initializedViews.add(viewId);
+  }
+
+  updateNavbar(viewId);
+}
+
+async function updateNavbar(currentView) {
+  const session = await fetchSession();
+  const loggedIn = !!session.loggedIn;
+
+  const loginLink = document.getElementById("nav-login");
+  const registerLink = document.getElementById("nav-register");
+  const logoutLink = document.getElementById("nav-logout");
+
+  if (loggedIn) {
+    if (loginLink) loginLink.style.display = "none";
+    if (registerLink) registerLink.style.display = "none";
+    if (logoutLink) logoutLink.style.display = "inline-block";
+  } else {
+    if (loginLink) loginLink.style.display = "inline-block";
+    if (registerLink) registerLink.style.display = "inline-block";
+    if (logoutLink) logoutLink.style.display = "none";
+  }
+
+  // aktive Nav-Links markieren
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.classList.remove("active");
+    const href = link.getAttribute("href");
+    if (!href) return;
+
+    const url = new URL(href, window.location.origin);
+    const route = getRouteFromPath(url.pathname);
+    if (route === currentView || (currentView === "home" && route === "home")) {
+      link.classList.add("active");
+    }
+  });
+}
+
+function setupNavigation() {
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      if (!href || href === "#") return;
+
+      // Logout-Link direkt ans Backend schicken (später)
+      if (link.id === "nav-logout") {
+        e.preventDefault();
+        // TODO: Logout-API einbauen
+        alert("Logout-Endpoint noch nicht implementiert.");
+        return;
+      }
+
+      e.preventDefault();
+      const url = new URL(href, window.location.origin);
+      const route = getRouteFromPath(url.pathname);
+      navigateTo(route);
+    });
+  });
+
+  window.addEventListener("popstate", (e) => {
+    const view = e.state?.view || getRouteFromPath(window.location.pathname);
+    showView(view);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupNavigation();
+
+  const initialRoute = getRouteFromPath(window.location.pathname);
+  showView(initialRoute);
+});
+```
+
+---
+
+## 6. Views & Komponenten (Beispiele)
+
+### 6.1 `views/homeView.js`
+
+```js
+// src/main/webapp/static/views/homeView.js
+
+export function initHomeView() {
+  // Falls du später spezielle Logik im Home brauchst
+  console.log("Home-View initialisiert");
+}
+```
+
+### 6.2 `views/loginView.js`
+
+```js
+// src/main/webapp/static/views/loginView.js
+import { loginUser } from "../api.js";
+
+let initialized = false;
+
+export function initLoginView() {
+  if (initialized) return;
+  initialized = true;
+
+  const form = document.getElementById("login-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+
+    if (!email || !password) {
+      alert("Bitte E-Mail und Passwort eingeben.");
+      return;
+    }
+
+    try {
+      const result = await loginUser(email, password);
+      if (result.success) {
+        alert("Login erfolgreich.");
+        window.navigateTo("dashboard");
+      } else {
+        alert("Login fehlgeschlagen: " + (result.message || "Unbekannt"));
+      }
+    } catch (err) {
+      console.error("Login-Fehler:", err);
+      alert("Login-Fehler (Backend evtl. noch nicht implementiert).");
+    }
+  });
+}
+```
+
+### 6.3 `views/registerView.js`
+
+```js
+// src/main/webapp/static/views/registerView.js
+import { registerUser } from "../api.js";
+
+let initialized = false;
+
+export function initRegisterView() {
+  if (initialized) return;
+  initialized = true;
+
+  const form = document.getElementById("register-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("reg-email").value.trim();
+    const pw = document.getElementById("reg-password").value;
+    const pw2 = document.getElementById("reg-password-confirm").value;
+
+    if (!email || !pw || !pw2) {
+      alert("Bitte alle Felder ausfüllen.");
+      return;
+    }
+    if (pw !== pw2) {
+      alert("Passwörter stimmen nicht überein.");
+      return;
+    }
+
+    try {
+      const result = await registerUser(email, pw);
+      if (result.success) {
+        alert("Registrierung erfolgreich. Bitte einloggen.");
+        window.navigateTo("login");
+      } else {
+        alert("Registrierung fehlgeschlagen: " + (result.message || "Unbekannt"));
+      }
+    } catch (err) {
+      console.error("Registrierungsfehler:", err);
+      alert(
+        "Registrierung fehlgeschlagen (Backend evtl. noch nicht implementiert)."
+      );
+    }
+  });
+}
+```
+
+### 6.4 `views/dashboardView.js`
+
+```js
+// src/main/webapp/static/views/dashboardView.js
+import { fetchDashboardStats } from "../api.js";
+
+let initialized = false;
+
+export function initDashboardView() {
+  if (initialized) return;
+  initialized = true;
+
+  loadStats();
+}
+
+async function loadStats() {
+  const openTasksEl = document.getElementById("stat-open-tasks");
+  const nextExamEl = document.getElementById("stat-next-exam");
+  const studyTimeEl = document.getElementById("stat-study-time");
+
+  try {
+    const stats = await fetchDashboardStats();
+    if (openTasksEl) openTasksEl.textContent = stats.openTasks ?? "0";
+    if (nextExamEl) nextExamEl.textContent = stats.nextExam ?? "–";
+    if (studyTimeEl) studyTimeEl.textContent = stats.studyMinutesThisWeek
+      ? stats.studyMinutesThisWeek + " Min"
+      : "0 Min";
+  } catch (err) {
+    console.error("Fehler beim Laden der Dashboard-Stats:", err);
+    if (openTasksEl) openTasksEl.textContent = "–";
+    if (nextExamEl) nextExamEl.textContent = "–";
+    if (studyTimeEl) studyTimeEl.textContent = "–";
+  }
+}
+```
+
+### 6.5 Komponenten – `components/ModuleList.js`
+
+```js
+// src/main/webapp/static/components/ModuleList.js
+
+export function renderModuleList(container, modules) {
+  if (!container) return;
+
+  if (!modules || modules.length === 0) {
+    container.innerHTML = "<p>Keine Module vorhanden.</p>";
+    return;
+  }
+
+  const html = [
+    "<table class='table'>",
+    "<thead><tr><th>Name</th><th>Semester</th></tr></thead>",
+    "<tbody>",
+    ...modules.map(
+      (m) =>
+        `<tr>
+          <td>${escapeHtml(m.name)}</td>
+          <td>${m.semester ?? ""}</td>
+        </tr>`
+    ),
+    "</tbody>",
+    "</table>",
+  ].join("");
+
+  container.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+```
+
+### 6.6 `views/modulesView.js`
+
+```js
+// src/main/webapp/static/views/modulesView.js
+import { fetchModules, createModule } from "../api.js";
+import { renderModuleList } from "../components/ModuleList.js";
+
+let initialized = false;
+
+export function initModulesView() {
+  if (initialized) return;
+  initialized = true;
+
+  const form = document.getElementById("module-form");
+  const listContainer = document.getElementById("module-list");
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nameInput = document.getElementById("module-name");
+      const semInput = document.getElementById("module-semester");
+
+      const name = nameInput.value.trim();
+      const semester = semInput.value.trim();
+
+      if (!name) {
+        alert("Bitte Modulnamen eingeben.");
+        return;
+      }
+
+      try {
+        await createModule({ name, semester });
+        nameInput.value = "";
+        semInput.value = "";
+        await loadModules(listContainer);
+      } catch (err) {
+        console.error("Fehler beim Anlegen des Moduls:", err);
+        alert(
+          "Modul konnte nicht angelegt werden (Backend evtl. noch nicht implementiert)."
+        );
+      }
+    });
+  }
+
+  loadModules(listContainer);
+}
+
+async function loadModules(container) {
+  if (!container) return;
+  container.innerHTML = "<p>Lade Module...</p>";
+  try {
+    const modules = await fetchModules();
+    renderModuleList(container, modules);
+  } catch (err) {
+    console.error("Fehler beim Laden der Module:", err);
+    container.innerHTML =
+      "<p class='error'>Module konnten nicht geladen werden.</p>";
+  }
+}
+```
+
+### 6.7 `components/TaskList.js` & `views/tasksView.js` (verkürzt)
+
+`components/TaskList.js`:
+
+```js
+// src/main/webapp/static/components/TaskList.js
+
+export function renderTaskList(container, tasks) {
+  if (!container) return;
+
+  if (!tasks || tasks.length === 0) {
+    container.innerHTML = "<p>Keine Aufgaben vorhanden.</p>";
+    return;
+  }
+
+  const html = [
+    "<table class='table'>",
+    "<thead><tr><th>Titel</th><th>Modul</th><th>Deadline</th><th>Priorität</th><th>Status</th></tr></thead>",
+    "<tbody>",
+    ...tasks.map(
+      (t) =>
+        `<tr>
+          <td>${escapeHtml(t.title)}</td>
+          <td>${escapeHtml(t.moduleName || "")}</td>
+          <td>${t.deadline || ""}</td>
+          <td>${t.priority || ""}</td>
+          <td>${t.status || "OPEN"}</td>
+        </tr>`
+    ),
+    "</tbody>",
+    "</table>",
+  ].join("");
+
+  container.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+```
+
+`views/tasksView.js`:
+
+```js
+// src/main/webapp/static/views/tasksView.js
+import { fetchModules, fetchTasks, createTask } from "../api.js";
+import { renderTaskList } from "../components/TaskList.js";
+
+let initialized = false;
+
+export function initTasksView() {
+  if (initialized) return;
+  initialized = true;
+
+  const form = document.getElementById("task-form");
+  const listContainer = document.getElementById("task-list");
+  const moduleSelect = document.getElementById("task-module");
+
+  initModuleSelect(moduleSelect);
+  loadTasks(listContainer);
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById("task-title").value.trim();
+      const moduleId = moduleSelect.value || null;
+      const deadline = document.getElementById("task-deadline").value || null;
+      const priority = document.getElementById("task-priority").value || "MEDIUM";
+
+      if (!title) {
+        alert("Bitte einen Titel eingeben.");
+        return;
+      }
+
+      try {
+        await createTask({ title, moduleId, deadline, priority });
+        form.reset();
+        await initModuleSelect(moduleSelect);
+        await loadTasks(listContainer);
+      } catch (err) {
+        console.error("Fehler beim Anlegen der Aufgabe:", err);
+        alert(
+          "Aufgabe konnte nicht erstellt werden (Backend evtl. noch nicht implementiert)."
+        );
+      }
+    });
+  }
+}
+
+async function initModuleSelect(select) {
+  if (!select) return;
+
+  select.innerHTML = "<option value=''>– Modul wählen –</option>";
+  try {
+    const modules = await fetchModules();
+    modules.forEach((m) => {
+      const opt = document.createElement("option");
+      opt.value = m.id;
+      opt.textContent = m.name;
+      select.appendChild(opt);
+    });
+  } catch (err) {
+    console.error("Fehler beim Laden der Module für Aufgaben:", err);
+  }
+}
+
+async function loadTasks(container) {
+  if (!container) return;
+  container.innerHTML = "<p>Lade Aufgaben...</p>";
+  try {
+    const tasks = await fetchTasks();
+    renderTaskList(container, tasks);
+  } catch (err) {
+    console.error("Fehler beim Laden der Aufgaben:", err);
+    container.innerHTML =
+      "<p class='error'>Aufgaben konnten nicht geladen werden.</p>";
+  }
+}
+```
+
+### 6.8 `components/SessionList.js` & `views/sessionsView.js` (sehr ähnlich)
+
+Die Sessions kannst du analog zu Tasks implementieren:
+
+* `SessionList.js`: Tabelle mit Modul, Datum, Dauer, Notiz.
+* `sessionsView.js`: lädt Module in `#session-module`, postet neue Session via `createSession`, lädt Liste via `fetchSessions`.
+
+---
+
+Wenn du möchtest, können wir als nächsten Schritt:
+
+* das konkrete **CSS** anpassen (z. B. Karten, Tabellen, Buttons wie im Impf-Projekt),
+* oder das **Backend-API-Design** (Servlets, Pfade, DTOs) passend zu diesen Endpunkten entwerfen.
+
+
+Das ist das gewesen, was du geschickt hast. Ich habe hierzu die folgenden Fragen:
+
+Es gibt zwei Arten von Benutzern:
+- Student (hat bestimmte Funktionalitäten/Rechte zur Verfügung)
+- Admin (hat mehr Funktionalitäten/Rechte zur Verfügung)
+=> sollte überlegt werden, wer welche Rechte hat.
+
+Es sollte ja dementsprechend auch so eine Art Admin-View oder 
+so geben oder? Also falls bei Login der Benutzer nicht Student,
+sondern Admin ist, sollte Admin-View eingeschaltet werden oder
+so oder?
+
+Innerhalb von api.js hattest du geschrieben:
+
+import {
+  LOGIN_ENDPOINT,
+  REGISTER_ENDPOINT,
+  SESSION_ENDPOINT,
+  DASHBOARD_STATS_ENDPOINT,
+  MODULES_ENDPOINT,
+  TASKS_ENDPOINT,
+  SESSIONS_ENDPOINT,
+} from "./endpoints.js";
+
+function getRoutingUtils() {
+  if (!window.routingUtils) {
+    console.error(
+      "routingUtils nicht verfügbar – stelle sicher, dass main.js zuerst geladen wird."
+    );
+    const CONTEXTPATH = "/meine-webapp/";
+    return {
+      CONTEXTPATH,
+      getRouteFromPath: (path) =>
+        path.replace(CONTEXTPATH, "").replace(/^\//, "") || "home",
+      getFullPath: (route) =>
+        CONTEXTPATH + (route ? route.replace(/^\//, "") : ""),
+      getApiUrl: (endpoint) =>
+        CONTEXTPATH +
+        "api/" +
+        (endpoint.startsWith("/") ? endpoint.substring(1) : endpoint),
+    };
+  }
+  return window.routingUtils;
+}
+
+export async function fetchJson(endpoint, method = "GET", body) {
+  const { getApiUrl } = getRoutingUtils();
+  const url = getApiUrl(endpoint);
+
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    credentials: "include", // für Session-Cookies
+  };
+
+  if (body !== undefined) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    let errorText = response.statusText;
+    try {
+      const errJson = await response.json();
+      errorText = errJson.message || JSON.stringify(errJson);
+    } catch (_) {
+      // ignore
+    }
+    throw new Error(`HTTP ${response.status}: ${errorText}`);
+  }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  return await response.json();
+}
+
+// ---------- Auth ----------
+
+export async function loginUser(email, password) {
+  return await fetchJson(LOGIN_ENDPOINT, "POST", { email, password });
+}
+
+export async function registerUser(email, password) {
+  return await fetchJson(REGISTER_ENDPOINT, "POST", { email, password });
+}
+
+export async function fetchSession() {
+  try {
+    return await fetchJson(SESSION_ENDPOINT, "GET");
+  } catch (_) {
+    return { loggedIn: false };
+  }
+}
+
+// ---------- Dashboard ----------
+
+export async function fetchDashboardStats() {
+  return await fetchJson(DASHBOARD_STATS_ENDPOINT, "GET");
+}
+
+// ---------- Module ----------
+
+export async function fetchModules() {
+  return await fetchJson(MODULES_ENDPOINT, "GET");
+}
+
+export async function createModule(moduleData) {
+  return await fetchJson(MODULES_ENDPOINT, "POST", moduleData);
+}
+
+// ---------- Aufgaben ----------
+
+export async function fetchTasks() {
+  return await fetchJson(TASKS_ENDPOINT, "GET");
+}
+
+export async function createTask(taskData) {
+  return await fetchJson(TASKS_ENDPOINT, "POST", taskData);
+}
+
+// ---------- Lernsessions ----------
+
+export async function fetchSessions() {
+  return await fetchJson(SESSIONS_ENDPOINT, "GET");
+}
+
+export async function createSession(sessionData) {
+  return await fetchJson(SESSIONS_ENDPOINT, "POST", sessionData);
+}
+
+
+Es sollte jedoch nicht Fetch-API verwendet werden, sondern Ajax.
+
+Bleibt die Datenstruktur hierbei dann immer noch JSON?
+
+Ist es deiner Meinung nach möglich main.js etwas weiter aufzuteilen? Oder ist das gut so? Das sieht bisschen viel aus darin oder?

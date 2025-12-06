@@ -1,0 +1,3598 @@
+Ich will mit einer SPA beginnen:
+
+Der Frontend sollte komponentenbasiert sein.
+
+Im Frontend sollten die Komponenten in mehrere Verzeichnisse aufgeteilt worden sein. Ein Beispiel dafür wäre das React-Frontend aus einem Tierheim-Projekt:
+
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app$ tree
+.
+├── _auth
+│   └── Authentication.ts
+├── _components
+│   ├── ContentContainer.tsx
+│   ├── CustomDatePicker2.tsx
+│   ├── CustomDropDownField2.tsx
+│   ├── Header
+│   │   └── header.tsx
+│   ├── TabNavigation
+│   │   ├── NavigationTab.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── TabNavigation.tsx
+│   ├── TabView
+│   │   ├── AnimalContent.tsx
+│   │   ├── MobileLogoutButton.tsx
+│   │   ├── PetsTabs.tsx
+│   │   └── TabButton.tsx
+│   ├── animalFile
+│   │   ├── AnimalFileCard.tsx
+│   │   ├── AnimalFileCardSkeleton.tsx
+│   │   ├── AnimalImage.tsx
+│   │   └── imageCache.ts
+│   ├── appointment
+│   │   ├── AppointmentDeleteModal.tsx
+│   │   ├── AppointmentDetailModal.tsx
+│   │   ├── AppointmentHistoryContent.tsx
+│   │   ├── AppointmentHistoryModal.tsx
+│   │   ├── AppointmentPetRow.tsx
+│   │   ├── appointmentCard.tsx
+│   │   ├── appointmentCardHeader.tsx
+│   │   ├── appointmentCategoryContainer.tsx
+│   │   ├── appointmentCategoryHeader.tsx
+│   │   ├── appointmentDateBar.tsx
+│   │   ├── appointmentDateCard.tsx
+│   │   ├── confimButton.tsx
+│   │   └── mockAppointments.ts
+│   ├── archive
+│   │   ├── PetArchivedDetails.tsx
+│   │   ├── PetArchivedDetailsSkeleton.tsx
+│   │   ├── PetArchivedModal.tsx
+│   │   └── PetArchivedTabs.tsx
+│   ├── authentications
+│   │   └── AuthenticationWrapper.tsx
+│   ├── buttons
+│   │   └── LoadingButton.tsx
+│   ├── circleIconButton.tsx
+│   ├── context
+│   │   └── contextFile.tsx
+│   ├── customButton.tsx
+│   ├── customComboField.tsx
+│   ├── customDatePicker.tsx
+│   ├── customDropdownField.tsx
+│   ├── customInputFields.tsx
+│   ├── customSwitch.tsx
+│   ├── error
+│   │   ├── CopySnackbar.tsx
+│   │   ├── CustomErrorComponent.tsx
+│   │   └── ErrorBoundary.tsx
+│   ├── footerBox.tsx
+│   ├── house
+│   │   ├── CustomHouseSkeleton.tsx
+│   │   ├── HouseHeaderSkeleton.tsx
+│   │   ├── customHouse.tsx
+│   │   ├── houseHeader.tsx
+│   │   ├── houseOverview.tsx
+│   │   └── types.ts
+│   ├── modals
+│   │   ├── @mui
+│   │   │   └── x-date-pickers
+│   │   ├── ModalLayout.tsx
+│   │   ├── petModals.tsx
+│   │   ├── petModalsBasicInformation.tsx
+│   │   ├── petModalsBottomActionBar.tsx
+│   │   ├── petModalsCareInformation.tsx
+│   │   ├── petModalsFinderInformation.tsx
+│   │   └── petModalsMapper.ts
+│   └── room
+│       ├── DragAndDrop.tsx
+│       ├── DragContext.tsx
+│       ├── DragIntentContext.tsx
+│       ├── DropZone.tsx
+│       ├── EdgeSwipeDuringDrag.tsx
+│       ├── GlobalDragLayer.tsx
+│       ├── RoomOverviewSkeleton.tsx
+│       ├── RoomPetHeader.tsx
+│       ├── RoomPetHeaderSkeleton.tsx
+│       ├── UnitConfirmationDialogButton.tsx
+│       ├── UnitDropdownField.tsx
+│       ├── roomHeader.tsx
+│       ├── roomModals.tsx
+│       ├── roomOverview.tsx
+│       ├── roomPetDetails.tsx
+│       ├── roomPetPlaceholder.tsx
+│       ├── roomPetSkeleton.tsx
+│       ├── unitConfimationDialog 2.tsx
+│       └── unitConfimationDialog.tsx
+├── _constants
+│   ├── Alerts.tsx
+│   ├── Error.tsx
+│   ├── Pages.ts
+│   ├── Tabs.tsx
+│   ├── pets
+│   │   ├── petLocations.ts
+│   │   ├── petSectionID.ts
+│   │   ├── pets.ts
+│   │   ├── unitsBySection 2.ts
+│   │   └── unitsBySection.ts
+│   └── texts
+│       └── Texts.ts
+├── _queries
+│   ├── BlobFetcher.ts
+│   ├── Endpoints.ts
+│   ├── JsonFetcher.ts
+│   ├── QueryClientWrapper.tsx
+│   ├── RedirectManager.ts
+│   ├── appointments
+│   │   ├── CheckAppointment.ts
+│   │   ├── CreateAppointment.ts
+│   │   ├── DeleteAppointment.ts
+│   │   ├── GetAppointmentCategories.ts
+│   │   ├── GetAppointmentTypes.ts
+│   │   ├── GetAppointments.ts
+│   │   └── UpdateAppointment.ts
+│   ├── auth
+│   │   ├── Confirm.ts
+│   │   ├── Login.ts
+│   │   ├── Logout.ts
+│   │   ├── Ping.ts
+│   │   └── RefreshToken.ts
+│   ├── messages
+│   │   └── MessageQueries.ts
+│   ├── metadata
+│   │   ├── breeds.ts
+│   │   ├── colors.ts
+│   │   ├── finders.ts
+│   │   ├── foods.ts
+│   │   ├── medications.ts
+│   │   ├── placementStatus.ts
+│   │   ├── species.ts
+│   │   └── units.ts
+│   ├── pets
+│   │   ├── GetOverview.ts
+│   │   ├── GetOverviewLocations.ts
+│   │   ├── GetOverviewSectionID.ts
+│   │   └── GetPetDetails.ts
+│   └── units
+│       ├── GetUnitsBySection.ts
+│       └── UpdatePetUnit.ts
+├── _styles
+│   └── appTheme.ts
+├── _util
+│   ├── FormatGermanDate.ts
+│   ├── compressImage.ts
+│   ├── net-utils.ts
+│   ├── searchbarUtils.tsx
+│   ├── transformutils.ts
+│   ├── useScreenSize.tsx
+│   └── useUIConfig.tsx
+├── dashboard
+│   ├── SearchQueryContext.ts
+│   ├── animals
+│   │   ├── AnimalsSection.tsx
+│   │   └── page.tsx
+│   ├── appointments
+│   │   └── page.tsx
+│   ├── layout.tsx
+│   ├── occupancy
+│   │   ├── OccupanySection.tsx
+│   │   └── page.tsx
+│   └── page.tsx
+├── layout.tsx
+├── login
+│   ├── loginCardComponent.tsx
+│   └── page.tsx
+├── not-found.tsx
+└── page.tsx
+
+34 directories, 142 files
+
+Es soll für das Projekt SturyPlaner auch irgendwie mehrere Komponenten geben (das Projekt StudyPlaner ist jedoch viel kleiner)
+
+- es gibt main.js
+- es gibt admin.js oder so
+- es gibt endpoints.js in der alle endpunkte, also pfade gespeichert sind:
+-> /pfad/termine
+-> /pfad/module
+-> ... also halt nur die Endpunkte als Variablen. Siehe als Beispiel die Datei Endpoints.ts aus dem Tierheim-Projekt:
+
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ cat Endpoints.ts
+const BASE_API_URL =
+  process.env.NEXT_PUBLIC_ENV === "local"
+    ? "http://localhost:8080/tierheim/api"
+    : "api";
+const BASE_PRIVATE_URL = BASE_API_URL + "/private";
+const BASE_PUBLIC_URL = BASE_API_URL + "/public";
+
+const BASE_FILES_URL =
+  process.env.NEXT_PUBLIC_ENV === "local"
+    ? "https://dev.duconhub.de/tierheim/files"
+    : "files";
+
+export function isPublicUrl(url: string) {
+  return url.startsWith(BASE_PUBLIC_URL);
+}
+
+// PING
+export const PING_ENDPOINT = BASE_PRIVATE_URL + "/ping";
+
+// PETS
+export const GET_PETS_ENDPOINT = BASE_PRIVATE_URL + "/pet";
+export const GET_PET_SPECIES_ENDPOINT = BASE_PRIVATE_URL + "/pet/species";
+export const GET_PET_COLORS_ENDPOINT = BASE_PRIVATE_URL + "/pet/colors";
+export const GET_PET_BREEDS_ENDPOINT = BASE_PRIVATE_URL + "/pet/breeds";
+export const GET_PET_UNITS_ENDPOINT = BASE_PRIVATE_URL + "/pet/units";
+export const GET_PET_OVERVIEW_ENDPOINT = BASE_PRIVATE_URL + "/pet/overview";
+
+export const GET_APPOINTMENTS_OVERVIEW_ENDPOINT =
+  BASE_PRIVATE_URL + "/appointments/overview";
+export const GET_APPOINTMENT_TYPES_ENDPOINT =
+  BASE_PRIVATE_URL + "/appointments/types";
+export const GET_APPOINTMENT_CATEGORIES_ENDPOINT =
+  BASE_PRIVATE_URL + "/appointments/categories";
+export const CHECK_APPOINTMENT_ENDPOINT =
+  BASE_PRIVATE_URL + "/appointments/{id}/check";
+export const CREATE_APPOINTMENT_ENDPOINT = BASE_PRIVATE_URL + "/appointments";
+export const UPDATE_APPOINTMENT_ENDPOINT =
+  BASE_PRIVATE_URL + "/appointments/{id}";
+export const DELETE_APPOINTMENT_ENDPOINT =
+  BASE_PRIVATE_URL + "/appointments/{id}";
+
+export const GET_LOCATIONS_OVERVIEW_ENDPOINT =
+  BASE_PRIVATE_URL + "/occupancy/locations";
+export const GET_PETS_DETAIL_ENDPOINT = BASE_PRIVATE_URL + "/pet";
+export const GET_SECTION_DETAILS_ENDPOINT = `${BASE_PRIVATE_URL}/occupancy/sections`;
+export const CREATE_PET_ENDPOINT = BASE_PRIVATE_URL + "/pet/create";
+export const UPDATE_PET_ENDPOINT = BASE_PRIVATE_URL + "/pet/{id}";
+export const UPDATE_PET_IMAGE_ENDPOINT =
+  BASE_PRIVATE_URL + "/pet/{id}/update/image/{imageId}";
+export const UPDATE_PET_UNIT_ENDPOINT =
+  BASE_PRIVATE_URL + "/pet/{petId}/updateUnit";
+export const GET_PET_FINDERS_ENDPOINT = BASE_PRIVATE_URL + "/pet/finders";
+export const GET_PET_MEDICATIONS_ENDPOINT =
+  BASE_PRIVATE_URL + "/pet/medications";
+export const GET_PET_FOODS_ENDPOINT = BASE_PRIVATE_URL + "/pet/foods";
+export const GET_PLACEMENT_STATUS_ENDPOINT =
+  BASE_PRIVATE_URL + "/pet/placement-status";
+
+// UNITS
+export const GET_UNITS_BY_SECTION_ENDPOINT = BASE_PRIVATE_URL + "/getUnits";
+
+// USER
+export const LOGIN_ENDPOINT = BASE_PUBLIC_URL + "/login";
+export const CONFIRM_ENDPOINT = BASE_PUBLIC_URL + "/confirm";
+export const LOGOUT_ENDPOINT = BASE_PUBLIC_URL + "/logout";
+export const REFRESH_TOKEN_ENDPOINT = BASE_PUBLIC_URL + "/refresh_token";
+
+// MESSAGES
+export const POST_MESSAGE = BASE_PRIVATE_URL + "/message";
+export const GET_ALL_MESSAGES = BASE_PRIVATE_URL + "/messages";
+
+// FILES
+export const PUT_FILE_ENDPOINT = BASE_FILES_URL + "/upload";
+export const GET_FILE_ENDPOINT = BASE_FILES_URL;
+
+
+- dann gibt es eine jeweils für jeden endpunkt, fetch-dateien, also für zum Beispiel
+
+
+Also die Endpunkte werden dann verwendet hier:
+
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app$ cd _queries/
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ ls
+BlobFetcher.ts  QueryClientWrapper.tsx  auth      pets
+Endpoints.ts    RedirectManager.ts      messages  units
+JsonFetcher.ts  appointments            metadata
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ tree
+.
+├── BlobFetcher.ts
+├── Endpoints.ts
+├── JsonFetcher.ts
+├── QueryClientWrapper.tsx
+├── RedirectManager.ts
+├── appointments
+│   ├── CheckAppointment.ts
+│   ├── CreateAppointment.ts
+│   ├── DeleteAppointment.ts
+│   ├── GetAppointmentCategories.ts
+│   ├── GetAppointmentTypes.ts
+│   ├── GetAppointments.ts
+│   └── UpdateAppointment.ts
+├── auth
+│   ├── Confirm.ts
+│   ├── Login.ts
+│   ├── Logout.ts
+│   ├── Ping.ts
+│   └── RefreshToken.ts
+├── messages
+│   └── MessageQueries.ts
+├── metadata
+│   ├── breeds.ts
+│   ├── colors.ts
+│   ├── finders.ts
+│   ├── foods.ts
+│   ├── medications.ts
+│   ├── placementStatus.ts
+│   ├── species.ts
+│   └── units.ts
+├── pets
+│   ├── GetOverview.ts
+│   ├── GetOverviewLocations.ts
+│   ├── GetOverviewSectionID.ts
+│   └── GetPetDetails.ts
+└── units
+    ├── GetUnitsBySection.ts
+    └── UpdatePetUnit.ts
+
+6 directories, 32 files
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ ls
+BlobFetcher.ts  QueryClientWrapper.tsx  auth      pets
+Endpoints.ts    RedirectManager.ts      messages  units
+JsonFetcher.ts  appointments            metadata
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ cd a
+-bash: cd: a: No such file or directory
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ cd appointments/
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ ls
+CheckAppointment.ts   GetAppointmentCategories.ts  UpdateAppointment.ts
+CreateAppointment.ts  GetAppointmentTypes.ts
+DeleteAppointment.ts  GetAppointments.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ cat CheckAppointment.ts
+import { CHECK_APPOINTMENT_ENDPOINT } from "../Endpoints";
+import fetchJson from "../JsonFetcher";
+
+export async function CheckAppointment(
+  id: number,
+  checked: boolean,
+): Promise<boolean> {
+  await fetchJson<void>(
+    CHECK_APPOINTMENT_ENDPOINT.replaceAll("{id}", id.toString()),
+    "PATCH",
+    {
+      checked: !checked,
+    },
+  );
+
+  return true;
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ ls
+CheckAppointment.ts   GetAppointmentCategories.ts  UpdateAppointment.ts
+CreateAppointment.ts  GetAppointmentTypes.ts
+DeleteAppointment.ts  GetAppointments.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ cat CreateAppointment.ts
+import dayjs from "dayjs";
+import { CREATE_APPOINTMENT_ENDPOINT } from "../Endpoints";
+import fetchJson from "../JsonFetcher";
+import { Appointment, AppointmentDTO } from "./GetAppointments";
+
+type CreateAppointmentDTO = Omit<AppointmentDTO, "id" | "checked">;
+
+export async function CreateAppointment(
+  appointment: Omit<Appointment, "id">,
+): Promise<boolean> {
+  const dto: CreateAppointmentDTO = {
+    appointmentType: appointment.type,
+    appointmentCategory: appointment.category,
+    appointmentDate: dayjs(appointment.date).format("YYYY-MM-DD"),
+    appointmentTime: appointment.time,
+    appointmentDescription: appointment.description,
+    referencedPet: appointment.referencedPet,
+  };
+
+  await fetchJson<void>(CREATE_APPOINTMENT_ENDPOINT, "POST", dto);
+
+  return true;
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ ls
+CheckAppointment.ts   GetAppointmentCategories.ts  UpdateAppointment.ts
+CreateAppointment.ts  GetAppointmentTypes.ts
+DeleteAppointment.ts  GetAppointments.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ cat DeleteAppointment.ts
+import { DELETE_APPOINTMENT_ENDPOINT } from "../Endpoints";
+import fetchJson from "../JsonFetcher";
+import { Appointment } from "./GetAppointments";
+
+export async function deleteAppointment(
+  appointment: Appointment,
+): Promise<boolean> {
+  await fetchJson<void>(
+    DELETE_APPOINTMENT_ENDPOINT.replaceAll("{id}", appointment.id.toString()),
+    "DELETE",
+  );
+
+  return true;
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ ls
+CheckAppointment.ts   GetAppointmentCategories.ts  UpdateAppointment.ts
+CreateAppointment.ts  GetAppointmentTypes.ts
+DeleteAppointment.ts  GetAppointments.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ cat GetAppointmentCategories.ts
+import { GET_APPOINTMENT_CATEGORIES_ENDPOINT } from "../Endpoints";
+import fetchJson from "../JsonFetcher";
+import { AppointmentType } from "./GetAppointmentTypes";
+
+export const APPOINTMENT_CATEGORY_QUERY_KEY = "appointments-categories";
+
+export interface AppointmentCategory extends AppointmentType {}
+
+export async function fetchAppointmentCategories(): Promise<AppointmentCategory[]> {
+  const data = await fetchJson<AppointmentCategory[]>(
+    GET_APPOINTMENT_CATEGORIES_ENDPOINT,
+    "GET",
+  );
+
+  return data;
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/appointments$ cd ..
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ ls
+BlobFetcher.ts  QueryClientWrapper.tsx  auth      pets
+Endpoints.ts    RedirectManager.ts      messages  units
+JsonFetcher.ts  appointments            metadata
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries$ cd pets/
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ ls
+GetOverview.ts           GetOverviewSectionID.ts
+GetOverviewLocations.ts  GetPetDetails.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ cat GetOverview
+cat: GetOverview: No such file or directory
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ cat GetOverview.ts
+// queries/pets/GetOverview.ts
+import fetchJson from "@/queries/JsonFetcher";
+import { GET_PET_OVERVIEW_ENDPOINT } from "@/queries/Endpoints";
+import { CategorizedPetOverview, PetData } from "@/constants/pets/pets";
+
+interface RawPetOverview {
+  categorizedPets: Record<string, PetData[]>;
+}
+
+export async function fetchPetOverview(opts?: {
+  archived?: boolean;
+}): Promise<CategorizedPetOverview> {
+  const archived = opts?.archived ?? false;
+  const url = `${GET_PET_OVERVIEW_ENDPOINT}?archived=${archived}`;
+
+  const raw = await fetchJson<RawPetOverview>(url, "GET");
+  const categorizedPets = Object.entries(raw.categorizedPets).map(
+    ([category, pets]) => ({ category, pets: pets as PetData[] }),
+  );
+  return { categorizedPets };
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ ls
+GetOverview.ts           GetOverviewSectionID.ts
+GetOverviewLocations.ts  GetPetDetails.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ cat GetOverviewLocations.ts
+import fetchJson from "@/queries/JsonFetcher";
+import { GET_LOCATIONS_OVERVIEW_ENDPOINT } from "@/queries/Endpoints";
+import { CategorizedLocationsOverview } from "@/constants/pets/petLocations";
+
+interface RawLocationsOverview {
+  categorizedPets: CategorizedLocationsOverview;
+}
+
+export async function fetchLocationsOverview(): Promise<{
+  categorizedLocations: CategorizedLocationsOverview;
+}> {
+  const raw = await Promise.race([
+    fetchJson<RawLocationsOverview>(GET_LOCATIONS_OVERVIEW_ENDPOINT, "GET"),
+  ]);
+  return { categorizedLocations: raw.categorizedPets };
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ ls
+GetOverview.ts           GetOverviewSectionID.ts
+GetOverviewLocations.ts  GetPetDetails.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ cat GetOverviewSectionID.ts
+import fetchJson from "@/queries/JsonFetcher";
+import { GET_SECTION_DETAILS_ENDPOINT } from "@/queries/Endpoints";
+import { SectionDetail } from "@/constants/pets/petSectionID";
+
+export async function fetchSectionDetail(id: number): Promise<SectionDetail> {
+  const url = `${GET_SECTION_DETAILS_ENDPOINT}/${id}`;
+  return await fetchJson(url, "GET");
+}
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ ls
+GetOverview.ts           GetOverviewSectionID.ts
+GetOverviewLocations.ts  GetPetDetails.ts
+hossein3041@HosseinAkbari:~/project/tierheim-projekt/TIERHEIM/tierheim-frontend/app/_queries/pets$ cat GetPetDetails.ts
+import fetchJson from "@/queries/JsonFetcher";
+import { GET_PETS_DETAIL_ENDPOINT } from "@/queries/Endpoints";
+import { PetDetail } from "@/constants/pets/pets";
+
+export async function fetchPetDetail(id: number): Promise<PetDetail> {
+  const url = `${GET_PETS_DETAIL_ENDPOINT}/${id}`;
+  return await fetchJson(url, "GET");
+}
+
+
+
+Wie sollte bei dem Projekt StudyPlaner das Frontend geschrieben werden? Es sollte ja ohne React entwickelt werden, nur mit HTML, CSS, JavaScript. Hierzu sollte es eine Single Page Application geschrieben werden.
+
+Ein Beispiel dafür zeigt ein anderes Projekt, in der eine Single Page Application entwickelt worden ist. Hiernach sollten wir uns orientieren:
+
+index.html
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Impfterminregistrierung</title>
+    <base href="/docker-swe3-2024-14-java/" />
+    <link rel="stylesheet" href="/docker-swe3-2024-14-java/static/style.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">💉</span>
+        <h2>Impfterminregistrierung</h2>
+      </div>
+      <nav class="nav">
+        <a class="nav-link" href="/hero" id="nav-home">Home</a>
+        <a class="nav-link" href="/register" id="nav-register">Registrieren</a>
+        <a class="nav-link" href="/login" id="nav-login">Anmelden</a>
+        <a
+          class="nav-link my-bookings"
+          id="my-bookings-link"
+          href="/my-bookings"
+          style="display: none"
+          >Meine Buchungen</a
+        >
+        <a class="nav-link" href="/appointments" id="nav-appointments"
+          >Termine</a
+        >
+        <a
+          class="nav-link logout"
+          id="logout"
+          href="/logout"
+          style="display: none"
+          >Abmelden</a
+        >
+      </nav>
+    </header>
+    <section id="hero" class="hero view">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Impfterminregistrierung</h1>
+        <h2 class="hero-subtitle">Schnell und einfach Impftermine buchen</h2>
+        <p class="hero-text">
+          Unsere Plattform bietet Ihnen eine einfache Möglichkeit, Impftermine
+          zu buchen und zu verwalten.
+        </p>
+      </div>
+    </section>
+    <section id="hero-main-content" class="main-content view">
+      <div class="content-container">
+        <div class="features-section">
+          <h2>Unsere Funktionen</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">📅</div>
+              <h3>Einfache Terminbuchung</h3>
+              <p>
+                Buchen Sie mit wenigen Klicks einen Termin in einem Impfzentrum
+                Ihrer Wahl.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🏥</div>
+              <h3>Verschiedene Impfzentren</h3>
+              <p>
+                Wählen Sie aus verschiedenen Impfzentren in Ihrer Nähe mit
+                flexiblen Öffnungszeiten.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">💉</div>
+              <h3>Mehrere Impfstoffe</h3>
+              <p>
+                Je nach Verfügbarkeit können Sie zwischen verschiedenen
+                Impfstoffen wählen.
+              </p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">👨‍👩‍👧‍👦</div>
+              <h3>Buchungen für Familie</h3>
+              <p>
+                Sie können auch Termine für Familienangehörige buchen (bis zu 5
+                Personen insgesamt).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="process-section">
+          <h2>So funktioniert's</h2>
+          <div class="process-steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>Registrieren</h3>
+                <p>Erstellen Sie ein Konto mit Ihrer E-Mail-Adresse.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>Impfzentrum wählen</h3>
+                <p>Wählen Sie ein Impfzentrum in Ihrer Nähe.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3>Termin buchen</h3>
+                <p>
+                  Wählen Sie einen passenden Zeitslot und buchen Sie Ihren
+                  Termin.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3>QR-Code speichern</h3>
+                <p>
+                  Ihr QR-Code wird generiert - zeigen Sie diesen beim Impftermin
+                  vor.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-section">
+          <h2>Wichtige Informationen</h2>
+          <div class="info-cards">
+            <div class="info-card">
+              <h3>Hinweise zur Impfung</h3>
+              <ul>
+                <li>Bringen Sie einen gültigen Ausweis zum Termin mit</li>
+                <li>Erscheinen Sie pünktlich zu Ihrem Termin</li>
+                <li>Sie können bis zu 5 Termine buchen</li>
+                <li>
+                  Bei Verhinderung stornieren Sie Ihren Termin bitte rechtzeitig
+                </li>
+              </ul>
+            </div>
+            <div class="info-card">
+              <h3>Hilfe & Kontakt</h3>
+              <p>
+                Sollten Sie Fragen haben oder Hilfe benötigen, kontaktieren Sie
+                bitte unseren Support:
+              </p>
+              <p class="contact-info">
+                <strong>E-Mail:</strong> support@impftermin-nemerb.de<br />
+                <strong>Telefon:</strong> 0123-456789<br />
+                <strong>Servicezeiten:</strong> Mo-Fr, 8:00-18:00 Uhr
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <h2>Jetzt loslegen</h2>
+          <p>Registrieren Sie sich jetzt und buchen Sie Ihren Impftermin.</p>
+          <div class="action-buttons">
+            <a href="/register" class="action-button register-button"
+              >Registrieren</a
+            >
+            <a href="/login" class="action-button login-button">Anmelden</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="admin" class="view admin-section">
+      <div class="admin-header">
+        <h2 class="section-title">
+          Admin-Bereich: <span id="admin-center-name">Impfzentrum</span>
+        </h2>
+        <div class="admin-stats">
+          <div class="stat-box">
+            <span class="stat-label">Alle Termine</span>
+            <span class="stat-value" id="total-appointments">0</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Offene Termine</span>
+            <span class="stat-value" id="open-appointments">0</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Stornierte Termine</span>
+            <span class="stat-value" id="cancelled-appointments">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-section-tabs">
+        <button class="admin-tab-button active" data-tab="appointments">
+          Termine
+        </button>
+        <button class="admin-tab-button" data-tab="vaccines">Impfstoffe</button>
+        <button class="admin-tab-button" data-tab="timeslots">Zeitslots</button>
+      </div>
+
+      <div id="admin-appointments" class="admin-tab-content active">
+        <div class="admin-filters">
+          <div class="filter-group">
+            <label for="status-filter">Status:</label>
+            <select id="status-filter" class="filter-select">
+              <option value="all">Alle</option>
+              <option value="BOOKED">Gebucht</option>
+              <option value="CANCELLED">Storniert</option>
+              <option value="COMPLETED">Abgeschlossen</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="date-filter">Datum:</label>
+            <input type="date" id="date-filter" class="filter-input" />
+          </div>
+          <button id="clear-filters" class="admin-button secondary">
+            Filter zurücksetzen
+          </button>
+        </div>
+
+        <div class="admin-table-container">
+          <table class="admin-appointments-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Datum</th>
+                <th>Uhrzeit</th>
+                <th>Impfstoff</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="admin-appointments-list">
+              <tr class="loading-row">
+                <td colspan="7">Termine werden geladen...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="admin-vaccines" class="admin-tab-content" style="display: none">
+        <div class="admin-section-header">
+          <h3 class="admin-section-subtitle">Impfstoff-Management</h3>
+          <button id="refresh-vaccines-btn" class="admin-button secondary">
+            <span class="button-icon">🔄</span> Aktualisieren
+          </button>
+        </div>
+
+        <div class="admin-vaccines-container">
+          <div class="loader" id="vaccines-loader">
+            Impfstoffe werden geladen...
+          </div>
+
+          <table class="admin-vaccines-table admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Details</th>
+                <th>Bestand</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="admin-vaccines-list"></tbody>
+          </table>
+
+          <div
+            class="admin-no-data"
+            id="no-vaccines-message"
+            style="display: none"
+          >
+            Keine Impfstoffe gefunden. Fügen Sie unten einen neuen Impfstoff
+            hinzu.
+          </div>
+        </div>
+
+        <div class="add-admin-item">
+          <h4>Neuen Impfstoff hinzufügen</h4>
+          <form id="add-vaccine-form">
+            <div class="form-group">
+              <label for="new-vaccine-name">Name:</label>
+              <input type="text" id="new-vaccine-name" required />
+            </div>
+            <div class="form-group">
+              <label for="new-vaccine-details">Details/Beschreibung:</label>
+              <textarea id="new-vaccine-details" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="new-vaccine-quantity">Anfangsbestand:</label>
+              <input
+                type="number"
+                id="new-vaccine-quantity"
+                min="0"
+                value="0"
+                required
+              />
+            </div>
+            <button type="submit" class="admin-button primary">
+              Impfstoff hinzufügen
+            </button>
+          </form>
+        </div>
+
+        <div class="admin-help-text">
+          <p>
+            <strong>Hinweis:</strong> Neue Impfstoffe werden sofort für
+            Buchungen verfügbar sein.
+          </p>
+          <p>
+            Um einen Impfstoff zu aktualisieren, ändern Sie einfach die Menge
+            und klicken Sie auf "Aktualisieren".
+          </p>
+        </div>
+      </div>
+
+      <div id="admin-timeslots" class="admin-tab-content" style="display: none">
+        <h3 class="admin-section-subtitle">Zeitslot-Management</h3>
+        <div class="admin-timeslots-container">
+          <div class="date-picker-container">
+            <label for="admin-date-picker">Datum wählen:</label>
+            <input
+              type="date"
+              id="admin-date-picker"
+              class="admin-date-picker"
+            />
+            <button id="load-timeslots" class="admin-button primary">
+              Laden
+            </button>
+          </div>
+          <div class="loader" id="timeslots-loader">
+            Zeitslots werden geladen...
+          </div>
+          <table class="admin-timeslots-table">
+            <thead>
+              <tr>
+                <th>Start</th>
+                <th>Ende</th>
+                <th>Kapazität</th>
+                <th>Gebucht</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="admin-timeslots-list"></tbody>
+          </table>
+          <div class="add-timeslot-container">
+            <h4>Neuen Zeitslot hinzufügen</h4>
+            <form id="add-timeslot-form">
+              <div class="form-group">
+                <label for="new-timeslot-start">Startzeit:</label>
+                <input type="datetime-local" id="new-timeslot-start" required />
+              </div>
+              <div class="form-group">
+                <label for="new-timeslot-end">Endzeit:</label>
+                <input type="datetime-local" id="new-timeslot-end" required />
+              </div>
+              <div class="form-group">
+                <label for="new-timeslot-capacity">Kapazität:</label>
+                <input
+                  type="number"
+                  id="new-timeslot-capacity"
+                  min="1"
+                  value="10"
+                  required
+                />
+              </div>
+              <button type="submit" class="admin-button primary">
+                Zeitslot erstellen
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-appointment-details" class="admin-modal">
+        <div class="admin-modal-content">
+          <span class="admin-modal-close">&times;</span>
+          <h3>Termindetails</h3>
+          <div class="appointment-detail-content">
+            <div class="detail-row">
+              <span class="detail-label">Termin-ID:</span>
+              <span class="detail-value" id="detail-id"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Patient:</span>
+              <span class="detail-value" id="detail-patient"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Datum & Zeit:</span>
+              <span class="detail-value" id="detail-datetime"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Impfstoff:</span>
+              <span class="detail-value" id="detail-vaccine"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Status:</span>
+              <span class="detail-value" id="detail-status"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Erstellt am:</span>
+              <span class="detail-value" id="detail-created"></span>
+            </div>
+            <div class="detail-row cancelled-info" style="display: none">
+              <span class="detail-label">Storniert am:</span>
+              <span class="detail-value" id="detail-cancelled"></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">QR-Code:</span>
+              <div id="detail-qr-code" class="detail-qr-container"></div>
+            </div>
+          </div>
+          <div class="admin-modal-actions">
+            <button id="detail-cancel-btn" class="admin-button danger">
+              Termin stornieren
+            </button>
+            <button class="admin-button secondary admin-modal-close-btn">
+              Schließen
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="confirm-cancel-modal" class="admin-modal">
+        <div class="admin-modal-content confirm-modal">
+          <h3>Termin stornieren</h3>
+          <p>Sind Sie sicher, dass Sie diesen Termin stornieren möchten?</p>
+          <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+          <div class="admin-modal-actions">
+            <button id="confirm-cancel-btn" class="admin-button danger">
+              Ja, stornieren
+            </button>
+            <button class="admin-button secondary cancel-modal-close">
+              Abbrechen
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mainWrapper">
+      <section id="register" class="form-section view registerSection">
+        <h2 class="section-title registerTitle">Registrierung</h2>
+        <form id="registerForm" class="form">
+          <label for="regEmail" class="form-label">E-Mail Adresse:</label>
+          <input
+            type="email"
+            id="regEmail"
+            name="regEmail"
+            class="form-input"
+            required
+          />
+
+          <label for="regPassword" class="form-label">Passwort:</label>
+          <input
+            type="password"
+            id="regPassword"
+            name="regPassword"
+            class="form-input"
+            required
+          />
+
+          <label for="regConfirmPassword" class="form-label"
+            >Passwort bestätigen:</label
+          >
+          <input
+            type="password"
+            id="regConfirmPassword"
+            name="regConfirmPassword"
+            class="form-input"
+            required
+          />
+          <button type="submit" class="form-button">Registrieren</button>
+        </form>
+      </section>
+      <div class="main view" id="login">
+        <section id="login" class="form-section">
+          <h2 class="section-title">Anmeldung</h2>
+          <form id="loginForm" class="form">
+            <label for="loginEmail" class="form-label">E-Mail Adresse:</label>
+            <input
+              type="email"
+              id="loginEmail"
+              name="loginEmail"
+              class="form-input"
+              required
+            />
+            <label for="loginPassword" class="form-label">Passwort:</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="loginPassword"
+              class="form-input"
+              required
+            />
+            <button type="submit" class="form-button">Anmelden</button>
+          </form>
+        </section>
+        <p>
+          Noch nicht registriert?
+          <a href="/register" style="text-decoration: none">
+            Konto erstellen
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <section id="my-bookings" class="view bookings-section">
+      <h2 class="section-title">Meine Buchungen</h2>
+      <div id="bookings-container">
+        <div class="loader" id="bookings-loader">Lade Buchungen...</div>
+        <div id="no-bookings-message" style="display: none">
+          Sie haben noch keine Buchungen.
+        </div>
+        <div id="bookings-list"></div>
+      </div>
+    </section>
+
+    <section id="appointments" class="view appointmentSection">
+      <h2 class="appointment-section-title">Terminbuchung</h2>
+      <div class="booking-info-banner">
+        <p>Sie können maximal 5 Impftermine buchen.</p>
+        <p id="current-bookings-count">
+          Aktuelle Anzahl Ihrer Buchungen: <span>0</span>
+        </p>
+      </div>
+      <form id="appointmentForm>
+        <div class="appointment-form-group">
+          <label for="centerSelect" class="appointment-form-label"
+            >Impfzentrum wählen:</label
+          >
+          <select id="centerSelect" class="appointment-form-input" required>
+            <option value="">Bitte wählen</option>
+          </select>
+        </div>
+        <div class="appointment-form-group">
+          <label for="appointmentDate" class="appointment-form-label"
+            >Datum wählen:</label
+          >
+          <input
+         type="date"
+            id="appointmentDate"
+            class="appointment-form-input"
+            required
+          />
+        </div>
+
+        <div class="appointment-form-group">
+          <label for="vaccineSelect" class="appointment-form-label"
+            >Impfstoff wählen:</label
+          >
+          <select id="vaccineSelect" class="appointment-form-input" required>
+            <option value="">Bitte wählen</option>
+          </select>
+        </div>
+
+        <div class="appointment-form-oup">
+          <label for="slotSelect" class="appointment-form-label"
+            >Zeitslot wählen:</label
+          >
+          <select id="slotSelect" class="appointment-form-input" required>
+            <option value="">Bitte wählen</option>
+          </select>
+        </div>
+
+        <div class="appointment-form-group">
+          <label for="bookingFor" class="appointment-form-label"
+            >Buchen für:</label
+          >
+          <select id="bookingFor" class="appointment-form-input">
+         <option value="self">Mich</option>
+            <option value="other">Andere Personen</option>
+          </select>
+        </div>
+
+        <div
+          id="otherBookingOptions"
+          class="appointment-form-group"
+          style="display: none"
+        >
+          <label for="numPersons" class="appointment-form-label"
+            >Anzahl der Personen (max. 5):</label
+          >
+          <select id="numPersons" class="appointment-form-input">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <div class="appointment-form-group">
+          <button
+            id="bookAppointment"
+            type="submit"
+            class="appointment-form-button"
+          >
+            Termin buchen
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section id="qr-code-display" class="view qr-section" style="display: none">
+      <div class="qr-container">
+        <h2>Ihr QR-Code für den Impftermin</h2>
+        <div id="qr-code"></div>
+        <div class="qr-code-info">
+          <p>Bitte zeigen Sie diesen QR-Code im Impfzentrum vor.</p>
+          <p>Der QR-Code enthält alle Informationen zu Ihrem Termin.</p>
+        </div>
+        <button id="close-qr" class="form-button">Schließen</button>
+      </div>
+    </section>
+
+    <div
+      id="cancellation-confirmation"
+      class="confirmation-dialog"
+   style="display: none"
+    >
+      <div class="confirmation-dialog-content">
+        <h3>Termin stornieren</h3>
+        <p>Sind Sie sicher, dass Sie diesen Termin stornieren möchten?</p>
+        <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+        <div class="confirmation-dialog-actions">
+          <button
+            id="confirm-cancellation-btn"
+            class="confirmation-dialog-button confirm"
+          >
+            Ja, stornieren
+          </button>
+          <button
+            idancel-cancellation-btn"
+            class="confirmation-dialog-button cancel"
+          >
+            Abbrechen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Über uns</h3>
+          <p>
+            Das Impfterminregistrierungssystem bietet eine einfache und sichere
+            Möglichkeit, Impftermine zu buchen.
+          </p>
+        </div>
+
+        <div class="footer-section"          <h3>Schnellzugriff</h3>
+          <ul class="footer-links">
+            <li><a href="/hero">Startseite</a></li>
+            <li><a href="/register">Registrierung</a></li>
+            <li><a href="/appointments">Termine buchen</a></li>
+            <li><a href="/my-bookings">Meine Buchungen</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Kontakt</h3>
+          <p>
+            <strong>E-Mail:</strong> support@impftermin-nemerb.de<br />
+            <strong>Telefon:</strong> 0123-456789<br />
+            <strong>Servicezeiten:</strong> Mo-Fr, 8:00-18:00 Uhr
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          &copy; 2024-2025 Impfterminregistrierung. Alle Rechte vorbehalten.
+        </p>
+        <p>
+          <a href="/datenschutz" class="footer-link">Datenschutz</a> |
+          <a href="/impressum" class="footer-link">Impressum</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.js"></script>
+    <script
+      type="module"
+      src="/docker-swe3-2024-14-java/static/main.js"
+    ></script>
+  </body>
+</html>
+
+main.js
+
+import {
+  loginUser,
+  registerUser,
+  updateNavbarBasedOnSession,
+  showViewAsync,
+  showView,
+  updateBookingsCountDisplay,
+  checkSessionStatus,
+  checkAdminStatus,
+} from "./fetch.js";
+import {
+  bookingPage,
+  initBookingsPage,
+  populateCenters,
+  updateSlotsForSelectedDate,
+} from "./bookingPage.js";
+import { initAdminPage } from "./adminPage.js";
+
+const CONTEXTPATH = "/docker-swe3-2024-14-java/";
+
+function getRouteFromPath(path) {
+  return path.replace(CONTEXTPATH, "").replace(/^\//, "") || "hero";
+}
+
+function getFullPath(route) {
+  return CONTEXTPATH + (route.startsWith("/") ? route.substring(1) : route);
+}
+
+function getApiUrl(endpoint) {
+  const [path, queryString] = endpoint.split("?");
+
+  const apiPath = path.startsWith("api/") ? path.substring(4) : path;
+
+  const baseUrl = CONTEXTPATH + "api/" + apiPath;
+
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
+}
+
+window.routingUtils = {
+  CONTEXTPATH,
+  getRouteFromPath,
+  getFullPath,
+  getApiUrl,
+};
+
+let isUserAdmin = false;
+let adminCenterId = null;
+
+document.addEventListener("DOMContentLoaded", async function () {
+  console.log("Page loaded with path:", window.location.pathname);
+
+  const isLoggedIn = await checkSessionStatus();
+  console.log("User logged in:", isLoggedIn);
+
+  let adminStatus = { isAdmin: false, centerId: null };
+
+  if (isLoggedIn) {
+    adminStatus = await checkAdminStatus();
+    isUserAdmin = adminStatus.isAdmin;
+    adminCenterId = adminStatus.centerId;
+    console.log("Admin status:", isUserAdmin, "Center ID:", adminCenterId);
+  }
+
+  const fullPath = window.location.pathname;
+  console.log("Full path:", fullPath);
+  let initialView = getRouteFromPath(fullPath);
+  console.log("Initial view derived from path:", initialView);
+
+  if (initialView === "admin") {
+    if (!isUserAdmin) {
+      initialView = "login";
+      history.replaceState({ view: "login" }, "", getFullPath("login"));
+      console.log("Not admin, redirecting to login");
+    }
+  } else if (isUserAdmin && (initialView === "hero" || initialView === "")) {
+    initialView = "admin";
+    history.replaceState({ view: "admin" }, "", getFullPath("admin"));
+    console.log("Admin logged in at home, redirecting to admin");
+  }
+
+  console.log("Showing initial view:", initialView);
+  await showViewAsync(initialView);
+
+  await updateNavbarBasedOnSession();
+
+  if (initialView === "admin" && isUserAdmin && adminCenterId) {
+    console.log("Initializing admin page with center ID:", adminCenterId);
+    initAdminPage(adminCenterId);
+
+    setTimeout(() => {
+      if (fullPath.includes("timeslots")) {
+        const timeslotsTabBtn = document.querySelector(
+          '.admin-tab-button[data-tab="timeslots"]'
+        );
+        if (timeslotsTabBtn) {
+          timeslotsTabBtn.click();
+
+          const datePicker = document.getElementById("admin-date-picker");
+          if (datePicker) {
+            datePicker.valueAsDate = new Date();
+            const loadBtn = document.getElementById("load-timeslots");
+            if (loadBtn) loadBtn.click();
+          }
+        }
+      } else if (fullPath.includes("vaccines")) {
+        const vaccinesTabBtn = document.querySelector(
+          '.admin-tab-button[data-tab="vaccines"]'
+        );
+        if (vaccinesTabBtn) vaccinesTabBtn.click();
+      }
+    }, 100);
+  } else if (initialView === "appointments") {
+    console.log("Initializing appointments page");
+    bookingPage();
+    await populateCenters();
+    updateBookingsCountDisplay();
+  } else if (initialView === "my-bookings") {
+    console.log("Initializing bookings page");
+    initBookingsPage();
+  } else {
+    bookingPage();
+    populateCenters();
+  }
+
+  function showHeroContent() {
+    const currentView = getRouteFromPath(window.location.pathname);
+    console.log("Current view for hero content:", currentView);
+
+    const mainContent = document.getElementById("hero-main-content");
+    if (mainContent) {
+      if (currentView === "hero" || currentView === "") {
+        mainContent.classList.add("active");
+      } else {
+        mainContent.classList.remove("active");
+      }
+    }
+  }
+
+  showHeroContent();
+
+  function updateNavbarForAdmin() {
+    const navbar = document.querySelector(".nav");
+
+    const existingAdminLink = document.querySelector(".nav-link.admin-link");
+    if (existingAdminLink) {
+      existingAdminLink.remove();
+    }
+
+    if (isUserAdmin) {
+      const adminLink = document.createElement("a");
+      adminLink.href = getFullPath("admin");
+      adminLink.className = "nav-link admin-link";
+      adminLink.textContent = "Admin-Bereich";
+      adminLink.style.color = "#ffeb3b";
+
+      const logoutLink = document.getElementById("logout");
+      if (navbar && logoutLink) {
+        navbar.insertBefore(adminLink, logoutLink);
+
+        adminLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          history.pushState({ view: "admin" }, "", getFullPath("admin"));
+          showView("admin");
+
+          if (adminCenterId) {
+            initAdminPage(adminCenterId);
+          }
+        });
+      }
+    }
+  }
+
+  const centerSelect = document.getElementById("centerSelect");
+  if (centerSelect) {
+    centerSelect.addEventListener("change", updateSlotsForSelectedDate);
+  }
+
+  const dateInput = document.getElementById("appointmentDate");
+  if (dateInput) {
+    dateInput.addEventListener("change", updateSlotsForSelectedDate);
+
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.min = today;
+  }
+
+  const appointmentForm = document.getElementById("appointmentForm");
+  if (appointmentForm) {
+    appointmentForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const centerId = document.getElementById("centerSelect").value;
+      const appointmentDate = document.getElementById("appointmentDate").value;
+      const slotId = document.getElementById("slotSelect").value;
+      const bookingFor = document.getElementById("bookingFor").value;
+      const vaccineId = document.getElementById("vaccineSelect").value;
+
+      if (!centerId || !appointmentDate || !slotId || !vaccineId) {
+        alert("Bitte wählen Sie alle erforderlichen Felder aus.");
+        return;
+      }
+
+      let bookingData = {
+        centerId: parseInt(centerId),
+        appointmentDate,
+        slotId: parseInt(slotId),
+        bookingFor,
+        vaccineId: parseInt(vaccineId),
+      };
+
+      if (bookingFor === "other") {
+        const numPersonsSelect = document.getElementById("numPersons);
+        const patientCount = parseInt(numPersonsSelect.value);
+
+        if (isNaN(patientCount) || patientCount < 1 || patientCount > 5) {
+          alert("Bitte Anzahl der Personen wählen (1-5).");
+          return;
+        }
+
+        bookingData.patientCount = patientCount;
+      }
+
+      try {
+        const response = await fetch(getApiUrl("bookAppointment"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bookingData),
+        });
+        const result = await response.json();
+        if (result.success) {
+          alert("Termin erfolgreich gebucht!");
+          updateBookingsCountDisplay();
+          history.pushState(
+            { view: "my-bookings" },
+            "",
+            getFullPath("my-bookings")
+          );
+          await showViewAsync("my-bookings");
+        } else {
+          alert("Buchung fehlgeschlagen: " + result.message);
+        }
+      } catch (error) {
+        alert("Fehler beim Buchen des Termins: " + error.message);
+      }
+    });
+  }
+
+  const registerForm = document.getElementById("registerForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("regEmail").value;
+      const password = document.getElementById("regPassword").value;
+      const confirmPassword =
+        document.getElementById("regConfirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwörter stimmen icht überein");
+        return;
+      }
+
+      const registerData = { email, password };
+
+      try {
+        const result = await registerUser(registerData);
+        if (result.success) {
+          alert(result.message);
+          history.pushState({ view: "login" }, "", getFullPath("login"));
+          showView("login");
+        } else {
+          alert("Registration failed: " + result.message);
+        }
+      } catch (error) {
+        alert("Registration error: " + error.message);
+      }
+    });
+  }
+
+ document.querySelectorAll(".nav-link").forEach(function (link) {
+    link.addEventListener("click", async function (e) {
+      e.preventDefault();
+      const href = this.getAttribute("href");
+      console.log("Link clicked with href:", href);
+
+      let route;
+      if (href.includes(CONTEXTPATH)) {
+        route = href.replace(CONTEXTPATH, "").replace(/^\//, "");
+      } else if (href.startsWith("/")) {
+        route = href.substring(1);
+      } else {
+        route = href;
+      }
+
+      console.log(
+        "Navigating to route:",
+        route,
+        "with full path:",
+        getFullPath(route)
+      );
+
+      history.pushState({ view: route }, "", getFullPath(route));
+      await showViewAsync(route);
+      setTimeout(showHeroContent, 10);
+    });
+  });
+
+  window.addEventListener("popstate", async function (e) {
+    console.log("Popstate event triggered", e.state);
+    const state = e.state;
+
+    if (state && state.view) {
+      console.log("Showing view from state:", state.view);
+      await showViewAsync(state.view);
+
+      if (state.view === "admin" && isUserAdmin && adminCenterId) {
+        initAdminPage(adminCenterId);
+      }
+    } else {
+      const currentView = getRouteFromPath(window.location.pathname);
+      console.log("No state, derived view from path:", currentView);
+      await showViewAsync(currentView);
+    }
+
+    const currentView =
+      state?.view || getRouteFromPath(window.location.pathname);
+
+    if (currentView === "appointments") {
+      populateCenters();
+      updateBookingsCountDisplay();
+    } else if (currentView === "my-bookings") {
+      initBookingsPage();
+    }
+
+    setTimeout(showHeroContent, 10);
+  });
+
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+      try {
+        const result = await loginUser(email, password);
+        if (result.success) {
+          isUserAdmin = result.isAdmin === true;
+          if (isUserAdmin && result.centerId) {
+            adminCenterId = result.centerId;
+          }
+
+          updateNavbarForAdmin();
+
+          alert("Anmeldung erfolgreich!");
+          updateNavbarBasedOnSession();
+
+          if (isUserAdmin) {
+            history.pushState({ view: "admin" }, "", getFullPath("admin"));
+            showView("admin");
+            initAdminPage(adminCenterId);
+          } else {
+            history.pushState(
+              { view: "appointments" },
+              "",
+              getFullPath("appointments")
+            );
+            showView("appointments");
+            populateCenters();
+          }
+
+          updateBookingsCountDisplay();
+        } else {
+          alert("Login failed: " + result.message);
+        }
+      } catch (error) {
+        alert("Anmeldung fehlgeschlagen: " + error.message);
+      }
+    });
+  }
+
+  document.getElementById("logout")?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(getApiUrl("logout"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      if (result.success) {
+        isUserAdmin = false;
+        adminCenterId = null;
+
+        alert(result.message);
+        updateNavbarBasedOnSession();
+
+        const adminLink = document.querySelector(".nav-link.admin-link");
+        if (adminLink) adminLink.remove();
+
+        history.pushState({ view: "login" }, "", getFullPath("login"));
+        showView("login");
+      } else {
+        alert("Logout failed: " + result.message);
+      }
+    } catch (error) {
+      alert("Logout error: " + error.message);
+    }
+  });
+
+  const qrCodeDisplay = document.getElementById("qr-code-display");
+  if (qrCodeDisplay) {
+    qrCodeDisplay.addEventListener("click", function (e) {
+      if (e.target === this) {
+        this.style.display = "none";
+      }
+    });
+  }
+});
+
+
+fetch.js
+
+import { initBookingsPage } from "./bookingPage.js";
+import { initAdminPage } from "./adminPage.js";
+
+let isUserAdmin = false;
+let adminCenterId = null;
+
+function getRoutingUtils() {
+  if (!window.routingUtils) {
+    console.error(
+      "Routing utilities not available yet. Make sure main.js is loaded first."
+    );
+    return {
+      CONTEXTPATH: "/docker-swe3-2024-14-java/",
+      getRouteFromPath: (path) =>
+        path.replace("/docker-swe3-2024-14-java/", "").replace(/^\//, "") ||
+        "hero",
+      getFullPath: (route) =>
+        "/docker-swe3-2024-14-java/" +
+        (route.startsWith("/") ? route.substring(1) : route),
+      getApiUrl: (endpoint) =>
+        "/docker-swe3-2024-14-java/api/" +
+        (endpoint.startsWith("api/") ? endpoint.substring(4) : endpoint),
+    };
+  }
+  return window.routingUtils;
+}
+
+export async function checkAdminStatus() {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("session/admin"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      return { isAdmin: false, centerId: null };
+    }
+    const data = await response.json();
+    return {
+      isAdmin: data.isAdmin === true,
+      centerId: data.centerId,
+    };
+  } catch (error) {
+    console.error("Error checking admin status:", error);
+    return { isAdmin: false, centerId: null };
+  }
+}
+
+export async function loginUser(email, password) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("login"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!response.ok) {
+      throw new Error("Login failed: " + response.statusText);
+    }
+    const result = await response.json();
+
+    if (result.isAdmin === true) {
+      isUserAdmin = true;
+      if (result.centerId) {
+        adminCenterId = result.centerId;
+      }
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw error;
+  }
+}
+
+export function getAdminStatus() {
+  return { isAdmin: isUserAdmin, centerId: adminCenterId };
+}
+
+export async function registerUser(registerData) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("register"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registerData),
+    });
+    if (!response.ok) {
+      throw new Error("Registration failed: " + response.statusText);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error during registration:", error);
+    throw error;
+  }
+}
+
+export async function checkSessionStatus() {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("session"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await response.json();
+    return data.loggedIn;
+  } catch (error) {
+    console.error("Error checking session status:", error);
+    return false;
+  }
+}
+
+export async function getUserBookingsCount() {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("my-bookings/count"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      return 0;
+    }
+    const data = await response.json();
+    return data.count;
+  } catch (error) {
+    console.error("Error fetching bookings count:", error);
+    return 0;
+  }
+}
+
+export async function updateNavbarBasedOnSession() {
+  const isLoggedIn = await checkSessionStatus();
+
+  let adminStatus = { isAdmin: false, centerId: null };
+  if (isLoggedIn) {
+    adminStatus = await checkAdminStatus();
+
+    isUserAdmin = adminStatus.isAdmin;
+    adminCenterId = adminStatus.centerId;
+  }
+
+  const loginLink = document.querySelector('.nav-link[href="/login"]');
+  const registerLink = document.querySelector('.nav-link[href="/register"]');
+  const appointmentsLink = document.querySelector(
+    '.nav-link[href="/appointments"]'
+  );
+  const logoutLink = document.querySelector("#logout");
+  const myBookingsLink = document.querySelector("#my-bookings-link");
+  const adminLink = document.querySelector(".nav-link.admin-link");
+
+  if (isLoggedIn) {
+    if (loginLink) loginLink.style.display = "none";
+    if (registerLink) registerLink.style.display = "none";
+    if (logoutLink) logoutLink.style.display = "block";
+    if (appointmentsLink)
+      appointmentsLink.style.display = adminStatus.isAdmin ? "none" : "block";
+    if (myBookingsLink)
+      myBookingsLink.style.display = adminStatus.isAdmin ? "none" : "block";
+
+    if (adminStatus.isAdmin) {
+      if (!adminLink) {
+        const navbar = document.querySelector(".nav");
+        const newAdminLink = document.createElement("a");
+        newAdminLink.href = "/admin";
+        newAdminLink.className = "nav-link admin-link";
+        newAdminLink.textContent = "Admin-Bereich";
+        newAdminLink.style.color = "#ffeb3b";
+
+        navbar.insertBefore(newAdminLink, logoutLink);
+
+        newAdminLink.addEventListener("click", function (e) {
+          e.preventDefault();
+          window.history.pushState({ view: "admin" }, "", "/admin");
+          showView("admin");
+        });
+      } else {
+        adminLink.style.display = "block";
+      }
+    } else {
+      if (adminLink) {
+        adminLink.style.display = "none";
+      }
+    }
+
+    updateBookingsCountDisplay();
+  } else {
+    if (loginLink) loginLink.style.display = "block";
+    if (registerLink) registerLink.style.display = "block";
+    if (logoutLink) logoutLink.style.display = "none";
+    if (appointmentsLink) appointmentsLink.style.display = "none";
+    if (myBookingsLink) myBookingsLink.style.display = "none";
+    if (adminLink) adminLink.style.display = "none";
+
+    isUserAdmin = false;
+    adminCenterId = null;
+  }
+
+  return adminStatus;
+}
+
+export async function updateBookingsCountDisplay() {
+  const countElement = document.querySelector("#current-bookings-count span");
+  if (countElement) {
+    const count = await getUserBookingsCount();
+    countElement.textContent = count;
+  }
+}
+
+export async function fetchCenters() {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("centers"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      throw new Error(
+        "Fehler beim Laden der Impfzentren: " + response.statusText
+      );
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching centers:", error);
+    return [];
+  }
+}
+
+export async function fetchSlots(centerId, date) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    let url = getApiUrl(`slots?centerId=${centerId}`);
+    if (date) {
+      url += `&date=${date}`;
+    }
+    console.log("url", url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      console.log("err", err);
+      throw new Error("Fehler beim Laden der Zeitslots: " + err);
+    }
+    const ans = await response.json();
+    if (ans.length > 0) {
+      return ans;
+    } else {
+      alert("Keine Zeitslots für dieses Datum verfügbar");
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching slots:", error);
+    return [];
+  }
+}
+
+export async function fetchVaccines(centerId) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const respse = await fetch(getApiUrl(`centers/${centerId}/vaccines`), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      throw new Error(
+        "Fehler beim Laden der Impfstoffe: " + response.statusText
+      );
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching vaccines:", error);
+    return [];
+  }
+}
+
+export async function populateVaccines(centerId) {
+  const vaccines = await fetchVaccines(centerId);
+  const vaccineSelect = document.getElementById("vaccineSelect");
+  vaccineSelect.innerHTML = "<option value=''>Bitte wählen</option>";
+  vaccines.forEach((vaccine) => {
+    const option = document.createElement("option");
+    option.value = vaccine.id;
+    option.textContent = vaccine.name;
+    vaccineSelect.appendChild(option);
+  });
+}
+
+async function checkViewAuthorization(viewId) {
+  const { getFullPath } = getRoutingUtils();
+  const allowedViews = ["hero", "login", "register"];
+  const protectedViews = ["apointments", "my-bookings"];
+  const adminViews = ["admin"];
+
+  if (protectedViews.includes(viewId)) {
+    const loggedIn = await checkSessionStatus();
+    if (!loggedIn) {
+      history.replaceState({ view: "login" }, "", getFullPath("login"));
+      return "login";
+    }
+  }
+
+  if (adminViews.includes(viewId)) {
+    const loggedIn = await checkSessionStatus();
+
+    if (!loggedIn) {
+      history.replaceState({ view: "login" }, "", getFullPath("login"));
+      return "login";
+    }
+
+    const adminStatus = await checkAdminStatus();
+    if (!adminStatus.isAdmin) {
+      history.replaceState(
+        { view: "appointments" },
+        "",
+        getFullPath("appointments")
+      );
+      return "appointments";
+    }
+
+    isUserAdmin = true;
+    adminCenterId = adminStatus.centerId;
+  }
+
+  return viewId;
+}
+
+export async function showViewAsync(viewId) {
+  const authorizedView = await checkViewAuthorization(viewId);
+  showView(authorizedView);
+
+  if (authorizedView === "my-bookings") {
+    initBookingsPage();
+  }
+
+  if (authorizedView === "appointments") {
+    updateBookingsCountDisplay();
+  }
+
+  if (authorizedView === "admin" && isUserAdmin && adminCenterId) {
+    initAdminPage(adminCenterId);
+  }
+}
+
+export function showView(viewId) {
+  const views = document.querySelectorAll(".view");
+  views.forEach((view) => view.classList.remove("active"));
+  const activeView = document.getElementById(viewId);
+  console.log("Showing view:", viewId, activeView);
+  if (activeView) {
+    activeView.classList.add("active");
+  }
+}
+
+
+bookingPage.js
+
+import {
+  fetchSlots,
+  fetchCenters,
+  populateVaccines,
+  checkSessionStatus,
+  updateBookingsCountDisplay,
+} from "./fetch.js";
+
+function getRoutingUtils() {
+  if (!window.routingUtils) {
+    console.error(
+      "Routing utilities not available yet. Make sure main.js is loaded first."
+    );
+    return {
+      CONTEXTPATH: "/docker-swe3-2024-14-java/",
+      getRouteFromPath: (path) =>
+        path.replace("/docker-swe3-2024-14-java/", "").replace(/^\//, "") ||
+        "hero",
+      getFullPath: (route) =>
+        "/docker-swe3-2024-14-java/" +
+        (route.startsWith("/") ? route.substring(1) : route),
+      getApiUrl: (endpoint) =>
+        "/docker-swe3-2024-14-java/api/" +
+        (endpoint.startsWith("api/") ? endpoint.substring(4) : endpoint),
+    };
+  }
+  return window.routingUtils;
+}
+
+export function bookingPage() {
+  const bookingForSelect = document.getElementById("bookingFor");
+  const otherBookingOptions = document.getElementById("otherBookingOptions");
+
+  bookingForSelect.addEventListener("change", () => {
+    if (bookingForSelect.value === "other") {
+      otherBookingOptions.style.display = "block";
+    } else {
+      otherBookingOptions.style.display = "none";
+    }
+  });
+}
+
+export function populateSlotSelect(slots) {
+  const slotSelect = document.getElementById("slotSelect");
+  slotSelect.innerHTML = "<option value=''>Bitte wählen</option>";
+
+  if (slots.length === 0) {
+    const option = document.createElement("option");
+    option.disabled = true;
+    option.textConten = "Keine freien Termine verfügbar";
+    slotSelect.appendChild(option);
+    return;
+  }
+
+  slots.forEach((slot) => {
+    const option = document.createElement("option");
+    option.value = slot.id;
+
+    const startTime = new Date(slot.startTime).toLocaleTimeString("de-DE", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const endTime = new Date(slot.endTime).toLocaleTimeString("de-DE", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const availabilityPercent =
+      ((slot.capcity - slot.bookedCount) / slot.capacity) * 100;
+    const remainingSlots = slot.capacity - slot.bookedCount;
+
+    let availabilityClass = "";
+    let availabilityText = "";
+
+    if (remainingSlots === 0) {
+      availabilityClass = "slot-full";
+      availabilityText = "Ausgebucht";
+      option.disabled = true;
+    } else if (availabilityPercent <= 25) {
+      availabilityClass = "slot-almost-full";
+      availabilityText = `Nur noch ${remainingSlots} frei`;
+    } else if (availabilityPercent <= 50) {
+      availabilityClass = "slot-filling";
+      availabilityText = `${remainingSlots} von ${slot.capacity} frei`;
+    } else {
+      availabilityClass = "slot-available";
+      availabilityText = `${remainingSlots} von ${slot.capacity} frei`;
+    }
+
+    option.textContent = `${startTime} - ${endTime} (${availabilityText})`;
+    option.classList.add(availabilityClass);
+    slotSelect.appendChild(option);
+  });
+
+  if (!document.getElementById("slot-availability-styles")) {
+    const style = document.createElement("style");
+    style.id = "slot-availability-styles";
+    style.innerHTML = `
+      .slot-full { color: #d32f2f; }
+      .slot-almost-full { color: #f57c00; font-weight: bold; }
+      .slot-filling { color: #388e3c; }
+      .slot-available { color: #1976d2; }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+export async function populateCenters() {
+  const centers = await fetchCenters();
+  const centerSelect = document.getElementById("centerSelect");
+  centerSelect.innerHTML = "<option value=''>Bitte wÃlen</option>";
+  centers.forEach((center) => {
+    const option = document.createElement("option");
+    option.value = center.id;
+    option.textContent = center.name;
+    centerSelect.appendChild(option);
+  });
+}
+
+export async function updateSlotsForSelectedDate() {
+  const centerSelect = document.getElementById("centerSelect");
+  const dateInput = document.getElementById("appointmentDate");
+  const vaccineSelect = document.getElementById("vaccineSelect");
+  const slotSelect = document.getElementById("slotSelect");
+
+  if (!centerSelect.value) {
+    return;
+  }
+
+  const centerId = centerSelect.value;
+  const date = dateInput.value;
+
+  slotSelect.innerHTML = "<option value=''>Bitte wählen</option>";
+
+  if (centerId && vaccineSelect.children.length <= 1) {
+    await populateVaccines(centerId);
+  }
+
+  if (centerId && date) {
+    try {
+      const slots = await fetchSlots(centerId, date);
+      if (slots && slots.length > 0) {
+        populateSlotSelect(slots);
+      } else {
+        const option = document.creteElement("option");
+        option.disabled = true;
+        option.textContent = "Keine Zeitslots für dieses Datum verfügbar";
+        slotSelect.appendChild(option);
+      }
+    } catch (error) {
+      console.error("Error fetching slots:", error);
+      const option = document.createElement("option");
+      option.disabled = true;
+      option.textContent = "Fehler beim Laden der Zeitslots";
+      slotSelect.appendChild(option);
+    }
+  }
+}
+
+export async function fetchBookings() {
+  const { getApiUrl } getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("my-bookings"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to fetch bookings");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching bookings:", error);
+    return [];
+  }
+}
+
+export async function cancelBooking(appointmentId) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(
+      getApiUrl(`my-bookings/cancel/${appointmentId}`),
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to cancel booking");
+    }
+
+    updateBookingsCountDisplay();
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    throw error;
+  }
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return (
+    date.toLocaleDateString("de-DE") +
+    " " +
+    date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })
+  );
+}
+
+export function displayQRCode(qrCodeData) {
+  const qrSection = document.getElementById("qr-code-display");
+  const qrCodeDiv = document.getElementById("qr-code");
+  const qrInfoDiv = document.querySelector(".qr-code-preview");
+
+  qrCodeDiv.innerHTML = "";
+
+  if (qrInfoDiv) {
+    qrInfoDiv.innerHTML = "";
+  }
+
+  new QRCode(qrCodeDiv, {
+    text: qrCodeData,
+    width: 200,
+    height: 200,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+
+  const previewDiv = document.querySelector(".qr-code-preview");
+  if (previewDiv) {
+    previewDiv.textContent = qrCodeData;
+  } else {
+    const newPreviewDiv = document.createElement("pre");
+    newPreviewDiv.className = "qr-code-preview";
+    newPreviewDiv.textContent = qrCodeData;
+
+    newPreviewDiv.style.backgroundColor = "#f5f5f5";
+    newPreviewDiv.style.border = "1px solid #ddd";
+    newPreviewDiv.style.borderRadius = "5px";
+    newPreviewDiv.style.padding = "10px";
+    newPreviewDiv.style.margin = "15px 0";
+    newPreviewDiv.style.fontSize = "0.9rem";
+    newPreviewDiv.style.whiteSpace = "pre-wrap";
+    newPreviewDiv.style.maxHeight = "200px";
+    newPreviewDiv.style.overflowY = "auto";
+
+    qrCodeDiv.parentNode.insertBefore(newPreviewDiv, qrCodeDiv.nextSibling);
+  }
+
+  qrSection.style.display = "flex";
+
+  document.getElementById("close-qr").addEventListener("click", () => {
+    qrSection.style.display = "none";
+  });
+
+  const instructionsDiv = document.querySelector(".qr-code-instructions");
+  if (!instructionsDiv) {
+    const newInstructionsDiv = document.createElement("div");
+    newInstructionsDiv.className = "qr-code-instructions";
+    newInstructionsDiv.innerHTML = `
+      <p><strong>So verwenden Sie diesen QR-Code:</strong></p>
+      <ol>
+        <li>ÖffnenSie die Kamera-App auf Ihrem Smartphone</li>
+        <li>Scannen Sie den QR-Code</li>
+        <li>Die Informationen werden direkt auf Ihrem Telefon angezeigt</li>
+        <li>Zeigen Sie diesen Code beim Impftermin vor</li>
+      </ol>
+      <p>Alternativ können Sie einen Screenshot dieses QR-Codes machen.</p>
+    `;
+
+    newInstructionsDiv.style.marginTop = "20px";
+    newInstructionsDiv.style.padding = "10px";
+    newInstructionsDiv.style.backgroundColor = "#e3f2fd";
+    newInstructionsDiv.style.borderRadus = "5px";
+
+    const infoDiv = document.querySelector(".qr-code-info");
+    if (infoDiv) {
+      infoDiv.appendChild(newInstructionsDiv);
+    }
+  }
+}
+
+function createBookingCard(booking) {
+  const bookingDate = formatDate(booking.startTime);
+  const endTime = new Date(booking.endTime).toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const now = new Date();
+  const appointmentTime = new Date(booking.startTime);
+  const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+  const isCancellable = appointmentTime > oneHourFromNow;
+
+  let statusClass = "";
+  let statusText = "";
+
+  switch (booking.status) {
+    case "BOOKED":
+      statusClass = "status-booked";
+      statusText = "Gebucht";
+      break;
+    case "CANCELLED":
+      statusClass = "status-cancelled";
+      statusText = "Storniert";
+      break;
+    case "COMPLETED":
+      statusClass = "status-completed";
+      statusText = "Abgeschlossen";
+      break;
+    default:
+      statusClass = "";
+      statusText = booking.status;
+  }
+
+  const card = document.createElement("div");
+  card.className = `booking-card ${statusClass}`;
+  card.dataset.id = booking.id;
+
+  const timeUntilAppointment = getTimeUntilAppointment(appointmentTime);
+
+  card.innerHTML = `
+    <div class="booking-header">
+      <h3>${booking.centerName}</h3>
+      <span class="booking-status ${statusClass}">${statusText}</span>
+    </div>
+    <div class="booking-details">
+      <p><strong>Datum:</strong> ${bookingDate} - ${endTime}</p>
+      <p><strong>Impfstoff:</strong> ${booking.vaccineName}</p>
+      ${
+        booking.status === "BOOKED"
+          ? `<p class="time-until-appointment ${timeUntilAppointment.cssClass}">
+               <strong>Zeit bis zum Termin:</strong> ${
+                 timeUntilAppointment.text
+               }
+             </p>
+             <div class="booking-actions">
+               ${
+                 isCancellable
+                   ? `<button class="cancel-booking-btn" data-id="${booking.id}">Termin stornieren</button>`
+                   : `<p class="cancellation-disabled">Stornierung nicht mehr möglich (< 1 Stunde vor Termin)</p>`
+               }
+               <button class="show-qr-btn" data-qr="${
+                 booking.qrCode
+               }">QR-Code anzeigen</button>
+             </div>`
+          : booking.status === "CANCELLED"
+          ? `<p class="cancelled-info">Storniert am ${
+              booking.cancelledAt
+                ? formatDate(booking.cancelledAt)
+                : "Unbekannt"
+            }</p>
+          : ""
+      }
+    </div>
+  `;
+
+  return card;
+}
+
+function getTimeUntilAppointment(appointmentTime) {
+  const now = new Date();
+  const diffMs = appointmentTime - now;
+
+  if (diffMs < 0) {
+    return { text: "Termin bereits vorbei", cssClass: "time-past" };
+  }
+
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor(
+    (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  let text = "";
+  let cssClass = "";
+
+  if (diffDays > 0) {
+    text = `${diffDays} Tage, ${diffHours} Stunden`;
+    cssClass = "time-days";
+  } else if (diffHours > 3) {
+    text = `${diffHours} Stunden, ${diffMinutes} Minuten`;
+    cssClass = "time-hours";
+  } else if (diffHours > 1) {
+    text = `${diffHours} Stunden, ${diffMinutes} Minuten`;
+    cssClass = "time-few-hours";
+  } else {
+    text = `${diffHours} Stunden, ${diffMinutes} Minuten`;
+    cssClass = "time-critical";
+  }
+
+  return { text, cssClass };
+}
+
+export function displayBookings(bookings) {
+  const bookingsContainer = document.getElementById("bookings-list");
+  const loader = document.getElementById("bookings-loader");
+  const noBookingsMessage = document.getElementById("no-bookings-message");
+
+  if (loader) {
+    loader.style.display = "none";
+  }
+
+  if (bookingsContainer) {
+    bookingsContainer.innerHTML = "";
+
+    if (bookings.length === 0) {
+      noBookingsMessage.style.display = "block";
+    } else {
+      noBookingsMessage.style.display = "none";
+
+      bookings.sort((a, b) => {
+        if (a.status === "BOOKED" && b.status !== "BOOKED") return -1;
+        if (a.status !== "BOOKED" && b.status === "BOOKED") return 1;
+
+        return new Date(b.startTime) - new Date(a.startTime);
+      });
+
+      bookings.forEach((booking) => {
+        const card = createBookingCard(booking);
+        bookingsContainer.appendChild(card);
+      });
+
+      document.querySelectorAll(".cancel-booking-btn").forEach((button) => {
+        button.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const appointmentId = button.getAttribute("data-id");
+
+          const dialog = document.getElementById("cancellation-confirmation");
+          const confirmBtn = document.getElementById(
+            "confirm-cancellation-btn"
+          );
+          const cancelBtn = document.getElementById("cancel-cancellation-btn");
+
+          dialog.style.display = "flex";
+
+          confirmBtn.dataset.appointmentId = appointmentId;
+
+          const newConfirmBtn = confirmBtn.cloneNode(true);
+          confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+          const newCancelBtn = cancelBtn.cloneNode(true);
+          cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+          newConfirmBtn.addEventListener("click", async () => {
+            try {
+              const id = newConfirmBtn.dataset.appointmentId;
+              dialog.style.display = "none";
+
+              const card = document.querySelector(
+                `.booking-card[data-id="${id}"]`
+              );
+              if (card) {
+                const actionsDiv = card.querySelector(".booking-actions");
+                if (actionsDiv) {
+                  actionsDiv.innerHTML =
+                    '<div class="loader">Storniere Termin...</div>';
+                }
+              }
+
+              await cancelBooking(id);
+              alert("Termin wurde erfolgreich storniert.");
+              initBookingsPage();
+            } catch (error) {
+              alert("Fehler beim Stornieren des Termins: " + error.message);
+              initBookingsPage();
+            }
+          });
+
+          newCancelBtn.addEventListener("click", () => {
+            dialog.style.display = "none";
+          });
+
+          dialog.addEventListener("click", (e) => {
+            if (e.target === dialog) {
+              dialog.style.display = "none";
+            }
+          });
+        });
+      });
+
+      document.querySelectorAll(".show-qr-btn").forEach((button) => {
+        button.addEventListener("click", (e) => {
+          e.preventDefault();
+          const qrCode = button.getAttribute("data-qr");
+
+          displayQRCode(qrCode);
+        });
+      });
+    }
+  }
+}
+
+export async function initBookingsPage() {
+  const isLoggedIn = await checkSessionStatus();
+
+  if (!isLoggedIn) {
+    window.location.href = "/login";
+    return;
+  }
+
+  const bookings = await fetchBookings();
+  displayBookings(bookings);
+}
+
+adminPage.js
+
+let currentAppointments = [];
+let selectedAppointmentId = null;
+let adminCenterId = null;
+let adminCenterName = "";
+
+function getRoutingUtils() {
+  if (!window.routingUtils) {
+    console.error(
+      "Routing utilities not available yet. Make sure main.js is loaded first."
+    );
+    return {
+      CONTEXTPATH: "/docker-swe3-2024-14-java/",
+      getRouteFromPath: (path) =>
+        path.replace("/docker-swe3-2024-14-java/", "").replace(/^\//, "") ||
+        "hero",
+      getFullPath: (route) =>
+        "/docker-swe3-2024-14-java/" +
+        (route.startsWith("/") ? route.substring(1) : route),
+      getApiUrl: (endpoint) =>
+        "/docker-swe3-2024-14-java/api/" +
+        (endpoint.startsWith("api/") ? endpoint.substring(4) : endpoint),
+    };
+  }
+  return window.routingUtils;
+}
+
+export function initAdminPage(centerId) {
+  console.log("Initializing admin page with center ID:", centerId);
+  adminCenterId = centerId;
+
+  fetchCenterName(centerId);
+
+  fetchAppointments();
+
+  setupEventListeners();
+
+  setupTabFunctionality();
+
+  setupVaccineManagement();
+}
+
+async function fetchCenterName(centerId) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(getApiUrl("centers"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch centers");
+    }
+
+    const centers = await response.json();
+    const center = centers.find((c) => c.id === centerId);
+
+    if (center) {
+      adminCenterName = center.name;
+      document.getElementById("admin-center-name").textContent =
+        adminCenterName;
+    }
+  } catch (error) {
+    console.error("Error fetching center name:", error);
+  }
+}
+
+async function fetchAppointments() {
+  const { getApiUrl } = getRoutingUtils();
+  showLoading(true);
+
+  try {
+    const response = await fetch(getApiUrl("admin/appointments"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch appointments");
+    }
+
+    currentAppointments = await response.json();
+    console.log("Fetched appointments:", currentAppointments);
+    updateAppointmentsTable(currentAppointments);
+    updateStatistics(currentAppointments);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    showError("Fehler beim Laden der Termine");
+  } finally {
+    showLoading(false);
+  }
+}
+
+function updateAppointmentsTable(appointments) {
+  const tableBody = document.getElementById("admin-appointments-list");
+  if (!tableBody) {
+    console.error("Could not find admin-appointments-list element");
+    return;
+  }
+
+  tableBody.innerHTML = "";
+
+  if (!appointments || appointments.length === 0) {
+    const noResultsRow = document.createElement("tr");
+    noResultsRow.className = "no-results-row";
+    noResultsRow.innerHTML = '<td colspan="7">Keine Termine gefunden</td>';
+    tableBody.appendChild(noResultsRow);
+    return;
+  }
+
+  appointments.forEach((appointment) => {
+    console.log("Processing appointment:", appointment);
+
+    const row = document.createElement("tr");
+
+    let formattedDate = "N/A";
+    let formattedTime = "N/A";
+
+    if (appointment.startTime) {
+      try {
+        const startDate = new Date(appointment.startTime);
+        formattedDate = startDate.toLocaleDateString("de-DE");
+        formattedTime = startDate.toLocaleTimeString("de-DE", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      } catch (e) {
+        console.error("Error formatting date:", e);
+      }
+    }
+
+    let statusClass = "";
+    let statusText = "";
+
+    switch (appointment.status) {
+      case "BOOKED":
+        statusClass = "booked";
+        statusText = "Gebucht";
+        break;
+      case "CANCELLED":
+        statusClass = "cancelled";
+        statusText = "Storniert";
+        break;
+      case "COMPLETED":
+        statusClass = "completed";
+        statusText = "Abgeschlossen";
+        break;
+      default:
+        statusText = appointment.status || "Unbekannt";
+    }
+
+    let patientEmail = "Unknown";
+    try {
+      if (
+        appointment.additionalInfo &&
+        appointment.additionalInfo.patientEmail
+      ) {
+        patientEmail = appointment.additionalInfo.patientEmail;
+      } else if (
+        appointment.getAllAdditionalInfo &&
+        typeof appointment.getAllAdditionalInfo === "function"
+      ) {
+        const allInfo = appointment.getAllAdditionalInfo();
+        if (allInfo && allInfo.patientEmail) {
+          patientEmail = allInfo.patientEmail;
+        }
+      } else if (appointment.patientEmail) {
+        patientEmail = appointment.patientEmail;
+      }
+    } catch (e) {
+      console.error("Error getting patient email:", e);
+    }
+
+    row.innerHTML = `
+      <td>${appointment.id || "N/A"}</td>
+      <td>${patientEmail}</td>
+      <td>${formattedDate}</td>
+      <td>${formattedTime}</td>
+      <td>${appointment.vaccineName || "N/A"}</td>
+      <td><span class="appointment-status ${statusClass}">${statusText}</span></td>
+      <td class="appointment-actions">
+        <button class="action-button view" data-id="${
+          appointment.id
+        }">Details</button>
+        ${
+          appointment.status === "BOOKED"
+            ? `<button class="action-button cancel" data-id="${appointment.id}">Stornieren</button>`
+            : ""
+        }
+      </td>
+    `;
+
+    tableBody.appendChild(row);
+  });
+
+  attachButtonEventListeners();
+}
+
+function updateStatistics(appointments) {
+  if (!appointments) {
+    return;
+  }
+
+  const totalCount = appointments.length;
+  const openCount = appointments.filter(
+    (a) => a && a.status === "BOOKED"
+  ).length;
+  const cancelledCount = appointments.filter(
+    (a) => a && a.status === "CANCELLED"
+  ).length;
+
+  const totalElement = document.getElementById("total-appointments");
+  const openElement = document.getElementById("open-appointments");
+  const cancelledElement = document.getElementById("cancelled-appointments");
+
+  if (totalElement) totalElement.textContent = totalCount;
+  if (openElement) openElement.textContent = openCount;
+  if (cancelledElement) cancelledElement.textContent = cancelledCount;
+}
+
+function setupEventListeners() {
+  const statusFilter = document.getElementById("status-filter");
+  if (statusFilter) {
+    statusFilter.addEventListener("change", applyFilters);
+  }
+
+  const dateFilter = document.getElementById("date-filter");
+  if (dateFilter) {
+    dateFilter.addEventListener("change", applyFilters);
+  }
+
+  const clearFiltersBtn = document.getElementById("clear-filters");
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener("click", clearFilters);
+  }
+
+  document
+    .querySelectorAll(".admin-modal-close, .admin-modal-close-btn")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const detailsModal = document.getElementById(
+          "admin-appointment-details"
+        );
+        if (detailsModal) {
+          detailsModal.style.display = "none";
+        }
+      });
+    });
+
+  const detailCancelBtn = document.getElementById("detail-cancel-btn");
+  if (detailCancelBtn) {
+    detailCancelBtn.addEventListener("click", () => {
+      const detailsModal = document.getElementById("admin-appointment-details");
+      const confirmModal = document.getElementById("confirm-cancel-modal");
+
+      if (detailsModal) detailsModal.style.display = "none";
+      if (confirmModal) confirmModal.style.display = "flex";
+    });
+  }
+
+  const confirmCancelBtn = document.getElementById("confirm-cancel-btn");
+  if (confirmCancelBtn) {
+    confirmCancelBtn.addEventListener("click", () => {
+      cancelAppointment(selectedAppointmentId);
+    });
+  }
+
+  const cancelModalCloseBtn = document.querySelector(".cancel-modal-close");
+  if (cancelModalCloseBtn) {
+    cancelModalCloseBtn.addEventListener("click", () => {
+      const confirmModal = document.getElementById("confirm-cancel-modal");
+      if (confirmModal) confirmModal.style.display = "none";
+    });
+  }
+
+  document.querySelectorAll(".admin-modal").forEach((modal) => {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+}
+
+function attachButtonEventListeners() {
+  document.querySelectorAll(".action-button.view").forEach((button) => {
+    button.addEventListener("click", () => {
+      const appointmentId = parseInt(button.getAttribute("data-id"), 10);
+      showAppointmentDetails(appointmentId);
+    });
+  });
+
+  document.querySelectorAll(".action-button.cancel").forEach((button) => {
+    button.addEventListener("click", () => {
+      const appointmentId = parseInt(button.getAttribute("data-id"), 10);
+      selectedAppointmentId = appointmentId;
+      const confirmModal = document.getElementById("confirm-cancel-modal");
+      if (confirmModal) confirmModal.style.display = "flex";
+    });
+  });
+}
+
+function showAppointmentDetails(appointmentId) {
+  selectedAppointmentId = appointmentId;
+  const appointment = currentAppointments.find((a) => a.id === appointmentId);
+
+  if (!appointment) {
+    console.error("Appointment not found:", appointmentId);
+    return;
+  }
+
+  const detailsModal = document.getElementById("admin-appointment-details");
+  if (!detailsModal) {
+    console.error("Details modal not found");
+    return;
+  }
+
+  let formattedDateTime = "N/A";
+  let formattedCreatedDate = "N/A";
+
+  if (appointment.startTime) {
+    try {
+      const startDate = new Date(appointment.startTime);
+      formattedDateTime = `${startDate.toLocaleDateString(
+        "de-DE"
+      )} ${startDate.toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
+    } catch (e) {
+      console.error("Error formatting start date:", e);
+    }
+  }
+
+  if (appointment.createdAt) {
+    try {
+      const createdDate = new Date(appointment.createdAt);
+      formattedCreatedDate = `${createdDate.toLocaleDateString(
+        "de-DE"
+      )} ${createdDate.toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
+    } catch (e) {
+      console.error("Error formatting created date:", e);
+    }
+  }
+
+  let patientEmail = "Unknown";
+  try {
+    if (appointment.additionalInfo && appointment.additionalInfo.patientEmail) {
+      patientEmail = appointment.additionalInfo.patientEmail;
+    } else if (
+      appointment.getAllAdditionalInfo &&
+      typeof appointment.getAllAdditionalInfo === "function"
+    ) {
+      const allInfo = appointment.getAllAdditionalInfo();
+      if (allInfo && allInfo.patientEmail) {
+        patientEmail = allInfo.patientEmail;
+      }
+    } else if (appointment.patientEmail) {
+      patientEmail = appointment.patientEmail;
+    }
+  } catch (e) {
+    console.error("Error getting patient email:", e);
+  }
+
+  const detailIdElement = document.getElementById("detail-id");
+  const detailPatientElement = document.getElementById("detail-patient");
+  const detailDatetimeElement = document.getElementById("detail-datetime");
+  const detailVaccineElement = document.getElementById("detail-vaccine");
+  const detailStatusElement = document.getElementById("detail-status");
+  const detailCreatedElement = document.getElementById("detail-created");
+
+  if (detailIdElement) detailIdElement.textContent = appointment.id;
+  if (detailPatientElement) detailPatientElement.textContent = patientEmail;
+  if (detailDatetimeElement)
+    detailDatetimeElement.textContent = formattedDateTime;
+  if (detailVaccineElement)
+    detailVaccineElement.textContent = appointment.vaccineName || "N/A";
+
+  if (detailStatusElement) {
+    detailStatusElement.textContent = getStatusText(appointment.status);
+    detailStatusElement.className =
+      "detail-value " + getStatusClass(appointment.status);
+  }
+
+  if (detailCreatedElement)
+    detailCreatedElement.textContent = formattedCreatedDate;
+
+  const cancelledInfo = document.querySelector(".detail-row.cancelled-info");
+  if (cancelledInfo) {
+    if (appointment.status === "CANCELLED" && appointment.cancelledAt) {
+      try {
+        const cancelledDate = new Date(appointment.cancelledAt);
+        const formattedCancelledDate = `${cancelledDate.toLocaleDateString(
+          "de-DE"
+        )} ${cancelledDate.toLocaleTimeString("de-DE", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`;
+        const detailCancelledElement =
+          document.getElementById("detail-cancelled");
+        if (detailCancelledElement)
+          detailCancelledElement.textContent = formattedCancelledDate;
+        cancelledInfo.style.display = "flex";
+      } catch (e) {
+        console.error("Error formatting cancelled date:", e);
+        cancelledInfo.style.display = "none";
+      }
+    } else {
+      cancelledInfo.style.display = "none";
+    }
+  }
+
+  const cancelBtn = document.getElementById("detail-cancel-btn");
+  if (cancelBtn) {
+    if (appointment.status === "BOOKED") {
+      cancelBtn.style.display = "block";
+    } else {
+      cancelBtn.style.display = "none";
+    }
+  }
+
+  const qrContainer = document.getElementById("detail-qr-code");
+  if (qrContainer) {
+    qrContainer.innerHTML = "";
+
+    if (appointment.qrCode) {
+      try {
+        if (typeof QRCode === "function") {
+          new QRCode(qrContainer, {
+            text: appointment.qrCode,
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H,
+          });
+        } else {
+          qrContainer.textContent = "QR Code library not available";
+          console.error("QRCode library not loaded");
+        }
+      } catch (e) {
+        console.error("Error generating QR code:", e);
+        qrContainer.textContent = "Error generating QR code";
+      }
+    } else {
+      qrContainer.textContent = "Kein QR-Code verfügbar";
+    }
+  }
+
+  detailsModal.style.display = "flex";
+
+
+async function cancelAppointment(appointmentId) {
+  const { getApiUrl } = getRoutingUtils();
+  try {
+    const response = await fetch(
+      getApiUrl(`admin/appointments/cancel/${appointmentId}`),
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to cancel appointment");
+    }
+
+    const confirmModal = document.getElementById("confirm-cancel-modal");
+    if (confirmModal) confirmModal.style.display = "none";
+
+    fetchAppointments();
+
+    alert("Termin wurde erfolgreich storniert");
+  } catch (error) {
+    console.error("Error cancelling appointment:", error);
+    alert("Fehler beim Stornieren des Termins: " + error.message);
+    const confirmModal = document.getElementById("confirm-cancel-modal");
+    if (confirmModal) confirmModal.style.display = "none";
+  }
+}
+
+function applyFilters() {
+  const statusFilter = document.getElementById("status-filter");
+  const dateFilter = document.getElementById("date-filter");
+
+  if (!statusFilter || !dateFilter) {
+    console.error("Filter elements not found");
+    return;
+  }
+
+  let filteredAppointments = [...currentAppointments];
+
+  if (statusFilter.value !== "all") {
+    filteredAppointments = filteredAppointments.filter(
+      (a) => a && a.status === statusFilter.value
+    );
+  }
+
+  if (dateFilter.value) {
+    const filterDate = new Date(dateFilter.value);
+    filterDate.setHours(0, 0, 0, 0);
+
+    filteredAppointments = filteredAppointments.filter((a) => {
+      if (!a || !a.startTime) return false;
+
+      try {
+        const appointmentDate = new Date(a.startTime);
+        appointmentDate.setHours(0, 0, 0, 0);
+        return appointmentDate.getTime() === filterDate.getTime();
+      } catch (e) {
+        console.error("Error comparing dates:", e);
+        return false;
+      }
+    });
+  }
+
+  updateAppointmentsTable(filteredAppointments);
+}
+
+function clearFilters() {
+  const statusFilter = document.getElementById("status-filter");
+  const dateFilter = document.getElementById("date-filter");
+
+  if (statusFilter) statusFilter.value = "all";
+  if (dateFilter) dateFilter.value = "";
+
+  updateAppointmentsTable(currentAppointments);
+}
+
+function showLoading(isLoading) {
+  const tableBody = document.getElementById("admin-appointments-list");
+
+  if (isLoading && tableBody) {
+    tableBody.innerHTML =
+      '<tr class="loading-row"><td colspan="7">Termine werden geladen...</td></tr>';
+  }
+}
+
+function showError(message) {
+  const tableBody = document.getElementById("admin-appointments-list");
+  if (tableBody) {
+    tableBody.innerHTML = `<tr class="error-row"><td colspan="7">${message}</td></tr>`;
+  }
+}
+
+function getStatusText(status) {
+  switch (status) {
+    case "BOOKED":
+      return "Gebucht";
+    case "CANCELLED":
+      return "Storniert";
+    case "COMPLETED":
+      return "Abgeschlossen";
+    default:
+      return status || "Unbekannt";
+  }
+}
+
+function getStatusClass(status) {
+  switch (status) {
+    case "BOOKED":
+      return "status-booked";
+    case "CANCELLED":
+      return "status-cancelled";
+    case "COMPLETED":
+      return "status-completed";
+    default:
+      return "";
+  }
+}
+
+function setupTabFunctionality() {
+  const tabButtons = document.querySelectorAll(".admin-tab-button");
+  const tabContents = document.querySelectorAll(".admin-tab-content");
+
+  if (
+    document.querySelector(".admin-tab-content.active") === null &&
+    tabContents.length > 0
+  ) {
+    tabContents[0].classList.add("active");
+  }
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      tabButtons.forEach((btn) => btn.classList.remove("active"));
+      tabContents.forEach((content) => (content.style.display = "none"));
+
+      button.classList.add("active");
+      const tabName = button.getAttribute("data-tab");
+      const targetTab = document.getElementById(`admin-${tabName}`);
+
+      if (targetTab) {
+        targetTab.style.display = "block";
+
+        if (
+          tabName === "vaccines" &&
+          !document.querySelector("#admin-vaccines-list tr")
+        ) {
+          loadVaccinesData();
+        } else if (
+          tabName === "timeslots" &&
+          !document.querySelector("#admin-timeslots-list tr")
+        ) {
+          const datePicker = document.getElementById("admin-date-picker");
+          if (datePicker) {
+            datePicker.valueAsDate = new Date();
+          }
+        }
+      }
+    });
+  });
+
+  setupTimeslotManagement();
+}
+
+async function loadVaccinesData() {
+  const { getApiUrl } = getRoutingUtils();
+  if (!adminCenterId) {
+    console.error("Admin center ID is not set");
+    return;
+  }
+
+  const vaccinesContainer = document.getElementById("admin-vaccines-list");
+  const loader = document.getElementById("vaccines-loader");
+  const noVaccinesMessage = document.getElementById("no-vaccines-message");
+
+  if (loader) loader.style.display = "block";
+  if (vaccinesContainer) vaccinesContainer.innerHTML = "";
+  if (noVaccinesMessage) noVaccinesMessage.style.display = "none";
+
+  try {
+    console.log(`Fetching vaccines for center ID: ${adminCenterId}`);
+    const response = await fetch(
+      getApiUrl(`centers/${adminCenterId}/vaccines`),
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch vaccines: ${response.status} ${response.statusText}`
+      );
+    }
+
+    const vaccines = await response.json();
+    console.log(`Fetched ${vaccines.length} vaccines:`, vaccines);
+
+    if (vaccines.length === 0) {
+      vaccinesContainer.innerHTML =
+        '<tr><td colspan="5">Keine Impfstoffe gefunden</td></tr>';
+      if (noVaccinesMessage) noVaccinesMessage.style.display = "block";
+    } else {
+      vaccines.forEach((vaccine) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${vaccine.id}</td>
+          <td>${vaccine.name}</td>
+          <td>${vaccine.details || "-"}</td>
+          <td>
+            <input type="number" class="vaccine-quantity" data-id="${
+              vaccine.id
+            }" value="${vaccine.stock}" min="0">
+          </td>
+          <td>
+            <button class="admin-button primary update-vaccine-btn" data-id="${
+              vaccine.id
+            }">Aktualisieren</button>
+          </td>
+        `;
+        vaccinesContainer.appendChild(row);
+      });
+
+      setupVaccineUpdateButtons();
+    }
+  } catch (error) {
+    console.error("Error loading vaccines:", error);
+    vaccinesContainer.innerHTML = `<tr><td colspan="5">Fehler beim Laden der Impfstoffe: ${error.message}</td></tr>`;
+  } finally {
+    if (loader) loader.style.display = "none";
+  }
+}
+
+function setupVaccineUpdateButtons() {
+  const { getApiUrl } = getRoutingUtils();
+  console.log("Setting up vaccine update buttons");
+  document.querySelectorAll(".update-vaccine-btn").forEach((button) => {
+    button.addEventListener("click", async function () {
+      const vaccineId = this.getAttribute("data-id");
+      const quantityInput = document.querySelector(
+        `.vaccine-quantity[data-id="${vaccineId}"]`
+      );
+
+      if (!quantityInput || !quantityInput.value) {
+        alert("Bitte geben Sie eine gültige Menge ein");
+        return;
+      }
+
+      const newQuantity = parseInt(quantityInput.value);
+
+      if (isNaN(newQuantity) || newQuantity < 0) {
+        alert("Bitte geben Sie eine gültige Menge ein (≥ 0)");
+        return;
+      }
+
+      this.disabled = true;
+      const originalText = this.textContent;
+      this.textContent = "Wird aktualisiert...";
+
+      try {
+        console.log(
+          `Updating vaccID ${vaccineId} to quantity ${newQuantity}`
+        );
+        const response = await fetch(getApiUrl("admin/vaccines"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            vaccineId: parseInt(vaccineId),
+            quantity: newQuantity,
+          }),
+        });
+
+        console.log("Update response status:", response.status);
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to update vaccine quantity: ${response.status} ${response.statusText}`
+          );
+        }
+
+        const result = await response.json();
+        console.log("Update result:", result);
+
+        if (result.success) {
+          this.classList.remove("primary");
+          this.classList.add("success");
+          this.textContent = "Aktualisiert ✓";
+
+          setTimeout(() => {
+            this.classList.remove("success");
+            this.classList.add("primary");
+            this.textContent = originalText;
+            this.dibled = false;
+          }, 2000);
+        } else {
+          alert(
+            "Fehler beim Aktualisieren der Impfstoffmenge: " +
+              (result.message || "Unbekannter Fehler")
+          );
+          this.textContent = originalText;
+          this.disabled = false;
+        }
+      } catch (error) {
+        console.error("Error updating vaccine quantity:", error);
+        alert("Fehler beim Aktualisieren der Impfstoffmenge: " + error.message);
+        this.textContent = originalText;
+        this.disabled = false;
+      }
+    });
+  });
+}
+
+function setupAddVaccineForm() {
+  const { getApiUrl } = getRoutingUtils();
+
+  const addVaccineForm = document.getElementById("add-vaccine-form");
+  const refreshButton = document.getElementById("refresh-vaccines-btn");
+
+  if (refreshButton) {
+    console.log("Setting up refresh vaccines button");
+    refreshButton.addEventListener("click", () => {
+      console.log("Refreshing vaccines data");
+      loadVaccinesData();
+    });
+  }
+
+  if (addVaccineForm) {
+    console.log("Setting up add vaccine form submission");
+
+    const newForm = addVaccineForm.cloneNode(true);
+    addVaccineForm.parentNode.replaceChild(newForm, addVaccineForm);
+
+    newForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      console.log("Add vaccine form submitted");
+
+      const name = document.getElementById("new-vaccine-name").value;
+      const details = document.getElementById("new-vaccine-details").value;
+      const quantity = parseInt(
+        document.getElementById("new-vaccine-quantity").value
+      );
+
+      if (!name || name.trim() === "") {
+        alert("Bitte geben Sie einen Namen für den Impfstoff ein");
+        return;
+      }
+
+      if (isNaN(quantity) || quantity < 0) {
+        alert("Bitte geben Sie eine gültige Menge ein (≥ 0)");
+        return;
+      }
+
+      const submitButton = newForm.querySelector("button[type='submit']");
+      submitButton.disabled = true;
+      const originalText = submitButton.textContent;
+      submitButton.textent = "Wird hinzugefügt...";
+
+      try {
+        console.log(`Adding new vaccine: ${name}, quantity: ${quantity}`);
+
+        const requestData = {
+          name: name,
+          details: details || "",
+          quantity: quantity,
+        };
+
+        console.log("Request payload:", requestData);
+
+        const response = await fetch(getApiUrl("admin/vaccines?action=new"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestData),
+       });
+
+        console.log("Response status:", response.status);
+
+        const responseText = await response.text();
+        console.log("Response text:", responseText);
+
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (e) {
+          console.error("Error parsing response:", e);
+          throw new Error(`Failed to add new vaccine: ${responseText}`);
+        }
+
+        if (result.success) {
+          alert("Impfstoff erfolgreich hinzugefügt");
+          ewForm.reset();
+          loadVaccinesData();
+        } else {
+          alert(
+            "Fehler beim Hinzufügen des Impfstoffs: " +
+              (result.message || "Unbekannter Fehler")
+          );
+        }
+      } catch (error) {
+        console.error("Error adding vaccine:", error);
+        alert("Fehler beim Hinzufügen des Impfstoffs: " + error.message);
+      } finally {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+      }
+    });
+  } else {
+    consolerror("Add vaccine form not found");
+  }
+}
+
+function setupVaccineManagement() {
+  console.log("Setting up vaccine management");
+  loadVaccinesData();
+  setupAddVaccineForm();
+}
+
+function setupTimeslotManagement() {
+  const { getApiUrl } = getRoutingUtils();
+  const loadTimeslotsBtn = document.getElementById("load-timeslots");
+  if (loadTimeslotsBtn) {
+    loadTimeslotsBtn.addEventListener("click", loadTimeslots);
+  }
+
+  const addTimeslotForm = document.getElementById("add-timeslot-form");
+  if (addTimeslotForm) {
+    addTimeslotForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      const startTime = document.getElementById("new-timeslot-start").value;
+      const endTime = document.getElementById("new-timeslot-end").value;
+      const capacity = document.getElementById("new-timeslot-capacity").value;
+
+      if (!startTime || !endTime || !capacity) {
+        alert("Bitte füllen Sie alle Felder aus");
+        return;
+      }
+
+      if (new Date(startTime) >= new Date(endTme)) {
+        alert("Die Startzeit muss vor der Endzeit liegen");
+        return;
+      }
+
+      if (parseInt(capacity) <= 0) {
+        alert("Die Kapazität muss größer als 0 sein");
+        return;
+      }
+
+      try {
+        const response = await fetch(getApiUrl("admin/timeslots"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            startTime: new Date(startTime).toISOString(),
+            endTime: new Date(endTime).toISring(),
+            capacity: parseInt(capacity),
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create timeslot");
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert("Zeitslot erfolgreich erstellt");
+          addTimeslotForm.reset();
+          loadTimeslots();
+        } else {
+          alert(
+            "Fehler beim Erstellen des Zeitslots: " +
+              (result.message || "Unbekannter Fehler")
+          );
+        }
+      } catch (error) {
+        console.error("Error creating timeslot:", error);
+        alert("Fehler beim Erstellen des Zeitslots: " + error.message);
+      }
+    });
+  }
+}
+
+async function loadTimeslots() {
+  const { getApiUrl } = getRoutingUtils();
+  if (!adminCenterId) return;
+
+  const datePicker = document.getElementById("admin-date-picker");
+  if (!datePicker || !datePicker.value) {
+    alert("Bitte wählen Sie ein Datum");
+    return;
+  }
+
+  const date = datePicker.value;
+  const timelotsContainer = document.getElementById("admin-timeslots-list");
+  const loader = document.getElementById("timeslots-loader");
+
+  if (loader) loader.style.display = "block";
+  if (timeslotsContainer) timeslotsContainer.innerHTML = "";
+
+  try {
+    const response = await fetch(
+      getApiUrl(`slots?centerId=${adminCenterId}&date=${date}`),
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch timeslots");
+    }
+
+    const timeslots = await response.json();
+
+    if (timeslots.length === 0) {
+      timeslotsContainer.innerHTML =
+        '<tr><td colspan="5">Keine Zeitslots für dieses Datum gefunden</td></tr>';
+    } else {
+      timeslots.forEach((slot) => {
+        const startTime = new Date(slot.startTime);
+        const endTime = new Date(slot.endTime);
+
+        const formattedStart = startTime.toLocaleTimeString("de-DE", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+       const formattedEnd = endTime.toLocaleTimeString("de-DE", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${formattedStart}</td>
+          <td>${formattedEnd}</td>
+          <td>${slot.capacity}</td>
+          <td>${slot.bookedCount} / ${slot.capacity}</td>
+          <td>
+            <button class="admin-button secondary edit-capacity-btn" data-id="${
+              slot.id
+            }">Kapazität ändern</button>
+            ${
+              slot.bookedCount === 0
+                ? `<button class="admin-button danger delete-slot-btn" data-id="${slot.id}">Löschen</button>`
+                : ""
+            }
+          </td>
+        `;
+        timeslotsContainer.appendChild(row);
+      });
+
+      setupTimeslotButtons();
+    }
+  } catch (error) {
+    console.error("Error loading timeslots:", error);
+    timeslotsContainer.innerHTML = `<tr><td colspan="5">Fehler beim Laden der Zeitslots: ${error.mage}</td></tr>`;
+  } finally {
+    if (loader) loader.style.display = "none";
+  }
+}
+
+function setupTimeslotButtons() {
+  const { getApiUrl } = getRoutingUtils();
+  document.querySelectorAll(".edit-capacity-btn").forEach((button) => {
+    button.addEventListener("click", async function () {
+      const slotId = this.getAttribute("data-id");
+      const newCapacity = prompt("Neue Kapazität eingeben:");
+
+      if (newCapacity === null) return;
+
+      const capacity = parseInt(newCapacity);
+
+      if (isNaN(caacity) || capacity <= 0) {
+        alert("Bitte geben Sie eine gültige Kapazität ein (> 0)");
+        return;
+      }
+
+      try {
+        const response = await fetch(getApiUrl(`admin/timeslots/${slotId}`), {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ capacity }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update timeslot");
+        }
+
+        const result = await response.json();
+
+        if (rest.success) {
+          alert("Kapazität erfolgreich aktualisiert");
+          loadTimeslots();
+        } else {
+          alert(
+            "Fehler beim Aktualisieren der Kapazität: " +
+              (result.message || "Unbekannter Fehler")
+          );
+        }
+      } catch (error) {
+        console.error("Error updating timeslot:", error);
+        alert("Fehler beim Aktualisieren der Kapazität: " + error.message);
+      }
+    });
+  });
+
+  document.querySelectorAll(".delete-slot-btn").forEach((button> {
+    button.addEventListener("click", async function () {
+      const slotId = this.getAttribute("data-id");
+
+      if (
+        !confirm("Sind Sie sicher, dass Sie diesen Zeitslot löschen möchten?")
+      ) {
+        return;
+      }
+
+      try {
+        const response = await fetch(getApiUrl(`admin/timeslots/${slotId}`), {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to delete timeslot"
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert("Zeitslot erfolgreich gelöscht");
+          loadTimeslots();
+        } else {
+          alert(
+            "Fehler beim Löschen des Zeitslots: " +
+              (result.message || "Unbekannter Fehler")
+          );
+        }
+      } catch (error) {
+        console.error("Error deleting timeslot:", error);
+        alert("Fehler beim Löschen des Zeitslots: " + error.message);
+      }
+    });
+  });
+}
+
+ext { fetchAppointments, updateAppointmentsTable, updateStatistics };
+
+Es sollte nur erstmal der Frontend geschrieben werden, also das Single Page Application gebaut werden.
+
