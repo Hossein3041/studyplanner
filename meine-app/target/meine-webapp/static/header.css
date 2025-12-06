@@ -42,6 +42,7 @@
     transition: background-color 0.2s ease, color 0.2s ease,
         transform 0.08s ease;
     position: relative;
+    cursor: pointer;
 }
 
 .nav-link:hover {
