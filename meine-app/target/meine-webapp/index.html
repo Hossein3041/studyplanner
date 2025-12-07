@@ -10,37 +10,51 @@
   <body>
     <header class="header">
       <div class="logo">
-        🎓 <span>StudyPlanner</span>
+        🎓 <span>StudyPlanner 01</span>
       </div>
       <nav class="nav">
-        <a class="nav-link" href="/meine-webapp/" id="nav-home">Home</a>
-        <a class="nav-link" href="/meine-webapp/dashboard" id="nav-dashboard">
-          Dashboard
-        </a>
-        <a class="nav-link" href="/meine-webapp/modules" id="nav-modules">
-          Module
-        </a>
-        <a class="nav-link" href="/meine-webapp/tasks" id="nav-tasks">
-          Aufgaben
-        </a>
-        <a class="nav-link" href="/meine-webapp/sessions" id="nav-sessions">
-          Lernsessions
-        </a>
-        <a class="nav-link" href="/meine-webapp/login" id="nav-login">
-          Login
-        </a>
-        <a class="nav-link" href="/meine-webapp/register" id="nav-register">
-          Registrieren
-        </a>
-        <a
-          class="nav-link logout"
-          href="/meine-webapp/logout"
-          id="nav-logout"
-          style="display: none"
-        >
-          Logout
-        </a>
-      </nav>
+  <a class="nav-link" href="#" data-route="home" id="nav-home">Home</a>
+  <a class="nav-link" href="#" data-route="dashboard" id="nav-dashboard">
+    Dashboard
+  </a>
+  <a class="nav-link" href="#" data-route="modules" id="nav-modules">
+    Module
+  </a>
+  <a class="nav-link" href="#" data-route="tasks" id="nav-tasks">
+    Aufgaben
+  </a>
+  <a class="nav-link" href="#" data-route="sessions" id="nav-sessions">
+    Lernsessions
+  </a>
+  <a class="nav-link" href="#" data-route="login" id="nav-login">
+    Login
+  </a>
+  <a class="nav-link" href="#" data-route="register" id="nav-register">
+    Registrieren
+  </a>
+  <a
+    class="nav-link logout"
+    href="#"
+    data-route="logout"
+    id="nav-logout"
+    style="display: none"
+  >
+    Logout
+  </a>
+  <button
+  id="darkmode-toggle"
+  class="darkmode-toggle"
+  aria-label="Designmodus umschalten"
+>
+  <span class="toggle-icon sun">☀️</span>
+  <span class="toggle-thumb"></span>
+  <span class="toggle-icon moon">🌙</span>
+</button>
+
+
+</nav>
+
+
     </header>
 
     <!-- Home / Landing -->
@@ -52,45 +66,190 @@
           – einfache Übersicht für dein Studium.
         </p>
         <div class="hero-actions">
-          <a href="/meine-webapp/register" class="btn primary">Jetzt starten</a>
-          <a href="/meine-webapp/login" class="btn secondary">Login</a>
+          <div class="hero-actions">
+  <a href="#" class="btn primary" data-route="register">Jetzt starten</a>
+  <a href="#" class="btn secondary" data-route="login">Login</a>
+</div>
+
         </div>
       </div>
     </section>
 
-    <!-- Login -->
+        <!-- Login -->
     <section id="login" class="view">
-      <h2>Anmelden</h2>
-      <form id="login-form" class="form">
-        <label for="login-email">E-Mail</label>
-        <input type="email" id="login-email" required />
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <h2>Login</h2>
+            <p>Melde dich mit deinen Zugangsdaten an</p>
+          </div>
 
-        <label for="login-password">Passwort</label>
-        <input type="password" id="login-password" required />
+          <form class="login-form" id="login-form" novalidate>
+            <!-- E-Mail -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <input
+                  type="email"
+                  id="login-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                />
+                <label for="login-email">E-Mail-Adresse</label>
+              </div>
+              <span class="error-message" id="login-email-error"></span>
+            </div>
 
-        <button type="submit" class="btn primary">Login</button>
-      </form>
-      <p>
-        Noch kein Konto?
-        <a href="/meine-webapp/register">Jetzt registrieren</a>
-      </p>
+            <!-- Passwort -->
+            <div class="form-group">
+              <div class="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  required
+                  autocomplete="current-password"
+                />
+                <label for="login-password">Passwort</label>
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="login-password-toggle"
+                  aria-label="Passwort ein-/ausblenden"
+                >
+                  <span class="eye-icon"></span>
+                </button>
+              </div>
+              <span class="error-message" id="login-password-error"></span>
+            </div>
+
+            <!-- optional: Remember me -->
+            <div class="form-options">
+              <label class="remember-wrapper">
+                <input type="checkbox" id="login-remember" name="remember" />
+                <span class="checkbox-label">
+                  <span class="checkmark"></span>
+                  Eingeloggt bleiben
+                </span>
+              </label>
+              <!-- optional: Passwort vergessen -->
+              <a href="#" class="forgot-password">Passwort vergessen?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+              <span class="btn-text">Einloggen</span>
+              <span class="btn-loader"></span>
+            </button>
+          </form>
+
+          <div class="signup-link">
+            <p>
+              Noch kein Konto?
+              <a href="#" data-route="register">Konto erstellen</a>
+            </p>
+          </div>
+
+          <div class="success-message" id="login-success-message">
+            <div class="success-icon">✓</div>
+            <h3>Willkommen zurück!</h3>
+            <p>Du wirst zum Dashboard weitergeleitet...</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Registrierung -->
+
+        <!-- Registrierung -->
     <section id="register" class="view">
-      <h2>Registrierung</h2>
-      <form id="register-form" class="form">
-        <label for="reg-email">E-Mail</label>
-        <input type="email" id="reg-email" required />
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <h2>Registrierung</h2>
+            <p>Erstelle ein neues Konto für deinen StudyPlanner</p>
+          </div>
 
-        <label for="reg-password">Passwort</label>
-        <input type="password" id="reg-password" required />
+          <form id="register-form" class="login-form" novalidate>
+            <!-- E-Mail -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <input
+                  type="email"
+                  id="reg-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                />
+                <label for="reg-email">E-Mail-Adresse</label>
+              </div>
+              <span class="error-message" id="reg-email-error"></span>
+            </div>
 
-        <label for="reg-password-confirm">Passwort bestätigen</label>
-        <input type="password" id="reg-password-confirm" required />
+            <!-- Passwort -->
+            <div class="form-group">
+              <div class="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  id="reg-password"
+                  name="password"
+                  required
+                  autocomplete="new-password"
+                />
+                <label for="reg-password">Passwort</label>
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="reg-password-toggle"
+                  aria-label="Passwort ein-/ausblenden"
+                >
+                  <span class="eye-icon"></span>
+                </button>
+              </div>
+              <span class="error-message" id="reg-password-error"></span>
+            </div>
 
-        <button type="submit" class="btn primary">Registrieren</button>
-      </form>
+            <!-- Passwort bestätigen -->
+            <div class="form-group">
+              <div class="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  id="reg-password-confirm"
+                  name="password-confirm"
+                  required
+                  autocomplete="new-password"
+                />
+                <label for="reg-password-confirm">Passwort bestätigen</label>
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="reg-password-confirm-toggle"
+                  aria-label="Passwort ein-/ausblenden"
+                >
+                  <span class="eye-icon"></span>
+                </button>
+              </div>
+              <span class="error-message" id="reg-password-confirm-error"></span>
+            </div>
+
+            <button type="submit" class="login-btn">
+              <span class="btn-text">Registrieren</span>
+              <span class="btn-loader"></span>
+            </button>
+          </form>
+
+          <div class="signup-link">
+            <p>
+              Schon ein Konto?
+              <a href="#" data-route="login">Zum Login</a>
+            </p>
+          </div>
+
+          <div class="success-message" id="register-success-message">
+            <div class="success-icon">✓</div>
+            <h3>Registrierung erfolgreich!</h3>
+            <p>Du kannst dich jetzt einloggen.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Dashboard -->
@@ -187,9 +346,53 @@
       </div>
     </section>
 
-    <footer class="footer">
-      <p>&copy; 2025 StudyPlanner – gebaut von Hossein 🙂</p>
-    </footer>
+     <!-- Impressum -->
+    <section id="impressum" class="view">
+      <h2>Impressum</h2>
+      <p>Dies ist ein Beispiel-Impressum …</p>
+    </section>
+
+    <!-- Datenschutz -->
+    <section id="datenschutz" class="view">
+      <h2>Datenschutz</h2>
+      <p>Dies ist eine Beispiel-Datenschutzrichtlinie …</p>
+    </section>
+
+   <footer class="footer">
+  <div class="footer-inner">
+    <!-- Spalte 1: Über die App -->
+    <div class="footer-section">
+      <h4>StudyPlanner</h4>
+      <ul>
+        <li>Plane Module, Aufgaben und Lernsessions an einem Ort.</li>
+        <li>Kleinprojekt im Rahmen deines Studiums.</li>
+      </ul>
+    </div>
+
+    <!-- Spalte 2: Rechtliches -->
+    <div class="footer-section">
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="#" data-route="impressum">Impressum</a></li>
+        <li><a href="#" data-route="datenschutz">Datenschutz</a></li>
+      </ul>
+    </div>
+
+    <!-- Spalte 3: Kontakt & Designmodus -->
+    <div class="footer-section">
+      <h4>Kontakt & Status</h4>
+      <ul>
+        <li>Theme: <span id="current-theme-label">Light</span></li>
+        <li>Version: <span id="app-version">–</span></li>
+        <li>Build: <span id="build-timestamp">–</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    &copy; 2025 StudyPlanner – gebaut von Hossein 🙂
+  </div>
+</footer>
 
     <script type="module" src="/meine-webapp/static/main.js"></script>
   </body>

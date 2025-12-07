@@ -1,70 +1,147 @@
 // src/main/webapp/static/views/loginView.js
 import { loginUser, fetchSession } from "../api.js";
 
-/**
- * Login-View:
- * - Formular submitten
- * - AJAX-Login
- * - danach Session abfragen
- *   - wenn ADMIN => admin-View
- *   - sonst => dashboard
- */
 export function initLoginView() {
   const form = document.getElementById("login-form");
   if (!form) {
-    console.warn("LoginView: #login-form nicht gefunden.");
+    console.warn("LoginView: #login-form nicht gefunden");
     return;
   }
 
   const emailInput = document.getElementById("login-email");
   const passwordInput = document.getElementById("login-password");
+  const emailError = document.getElementById("login-email-error");
+  const passwordError = document.getElementById("login-password-error");
+  const passwordToggle = document.getElementById("login-password-toggle");
+  const successMessage = document.getElementById("login-success-message");
 
-  let errorBox = document.getElementById("login-error");
-  if (!errorBox) {
-    errorBox = document.createElement("p");
-    errorBox.id = "login-error";
-    errorBox.style.color = "darkred";
-    errorBox.style.marginTop = "0.5rem";
-    form.appendChild(errorBox);
+  if (!emailInput || !passwordInput) {
+    console.warn("LoginView: Eingabefelder nicht gefunden");
+    return;
   }
 
   let isSubmitting = false;
 
+  // ---------------------------------------------------
+  // 1) Floating Label: hat das Feld Inhalt?
+  // ---------------------------------------------------
+  [emailInput, passwordInput].forEach((input) => {
+    const updateHasValue = () => {
+      if (input.value.trim() !== "") {
+        input.classList.add("has-value");
+      } else {
+        input.classList.remove("has-value");
+      }
+    };
+    input.addEventListener("input", updateHasValue);
+    updateHasValue();
+  });
+
+  // ---------------------------------------------------
+  // 2) Passwort ein-/ausblenden
+  // ---------------------------------------------------
+  if (passwordToggle) {
+    const eye = passwordToggle.querySelector(".eye-icon");
+
+    passwordToggle.addEventListener("click", () => {
+      const showing = passwordInput.type === "text";
+      passwordInput.type = showing ? "password" : "text";
+
+      if (eye) {
+        eye.classList.toggle("show-password", !showing);
+      }
+    });
+  }
+
+  // ---------------------------------------------------
+  // Fehler anzeigen / löschen
+  // ---------------------------------------------------
+  function showFieldError(input, errorElement, message) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.add("error");
+
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.classList.add("show");
+    }
+  }
+
+  function clearFieldError(input, errorElement) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.remove("error");
+
+    if (errorElement) {
+      errorElement.classList.remove("show");
+      errorElement.textContent = "";
+    }
+  }
+
+  // ---------------------------------------------------
+  // 3) Submit – Login durchführen
+  // ---------------------------------------------------
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    errorBox.textContent = "";
+    // Fehler zurücksetzen
+    clearFieldError(emailInput, emailError);
+    clearFieldError(passwordInput, passwordError);
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
+    let hasError = false;
 
-    if (!email || !password) {
-      errorBox.textContent = "Bitte E-Mail und Passwort eingeben.";
-      return;
+    if (!email) {
+      showFieldError(emailInput, emailError, "Bitte E-Mail eingeben.");
+      hasError = true;
+    }
+    if (!password) {
+      showFieldError(
+        passwordInput,
+        passwordError,
+        "Bitte Passwort eingeben."
+      );
+      hasError = true;
     }
 
+    if (hasError) return;
+
     isSubmitting = true;
+    const submitBtn = form.querySelector(".login-btn");
+    submitBtn?.classList.add("loading");
 
     try {
-      await loginUser(email, password); // Backend setzt Session/Cookie
+      // 1) Login durchführen
+      await loginUser(email, password);
 
-      const session = await fetchSession();
+      // 2) Session laden
+      await fetchSession();
 
-      if (session && session.loggedIn) {
-        if (session.role === "ADMIN") {
-          window.navigateTo("admin");
-        } else {
+      // 3) Erfolg anzeigen
+      if (successMessage) {
+        form.style.display = "none";
+        successMessage.classList.add("show");
+      }
+
+      // 4) Weiterleiten
+      setTimeout(() => {
+        if (window.navigateTo) {
           window.navigateTo("dashboard");
         }
-      } else {
-        errorBox.textContent = "Login fehlgeschlagen. Bitte Daten prüfen.";
-      }
+      }, 1200);
+
     } catch (err) {
-      console.error("Fehler beim Login:", err);
-      errorBox.textContent = err.message || "Fehler beim Login.";
+      console.error("Login-Fehler:", err);
+
+      showFieldError(
+        passwordInput,
+        passwordError,
+        err?.message || "Login fehlgeschlagen."
+      );
+
     } finally {
       isSubmitting = false;
+      submitBtn?.classList.remove("loading");
     }
   });
 }

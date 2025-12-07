@@ -1,12 +1,6 @@
 // src/main/webapp/static/views/registerView.js
 import { registerUser } from "../api.js";
 
-/**
- * Registrierung:
- * - Passwort / Bestätigung prüfen
- * - AJAX-Registrierung
- * - danach auf Login-View navigieren
- */
 export function initRegisterView() {
   const form = document.getElementById("register-form");
   if (!form) {
@@ -18,63 +12,139 @@ export function initRegisterView() {
   const passwordInput = document.getElementById("reg-password");
   const passwordConfirmInput = document.getElementById("reg-password-confirm");
 
-  let errorBox = document.getElementById("register-error");
-  if (!errorBox) {
-    errorBox = document.createElement("p");
-    errorBox.id = "register-error";
-    errorBox.style.color = "darkred";
-    errorBox.style.marginTop = "0.5rem";
-    form.appendChild(errorBox);
-  }
+  const emailError = document.getElementById("reg-email-error");
+  const passwordError = document.getElementById("reg-password-error");
+  const passwordConfirmError = document.getElementById("reg-password-confirm-error");
 
-  let infoBox = document.getElementById("register-info");
-  if (!infoBox) {
-    infoBox = document.createElement("p");
-    infoBox.id = "register-info";
-    infoBox.style.color = "green";
-    infoBox.style.marginTop = "0.5rem";
-    form.appendChild(infoBox);
+  const passwordToggle = document.getElementById("reg-password-toggle");
+  const passwordConfirmToggle = document.getElementById("reg-password-confirm-toggle");
+
+  const successMessage = document.getElementById("register-success-message");
+
+  if (!emailInput || !passwordInput || !passwordConfirmInput) {
+    console.warn("RegisterView: Eingabefelder fehlen!");
+    return;
   }
 
   let isSubmitting = false;
 
+  /* ---------------------------------------------------
+     FLOATING LABELS (E-Mail, Passwort, Passwort best.)
+  --------------------------------------------------- */
+  [emailInput, passwordInput, passwordConfirmInput].forEach((input) => {
+    const updateHasValue = () => {
+      input.classList.toggle("has-value", input.value.trim() !== "");
+    };
+    input.addEventListener("input", updateHasValue);
+    updateHasValue();
+  });
+
+  /* ---------------------------------------------------
+     PASSWORT-AUGEN (beide Felder)
+  --------------------------------------------------- */
+  setupPasswordToggle(passwordInput, passwordToggle);
+  setupPasswordToggle(passwordConfirmInput, passwordConfirmToggle);
+
+  /* ---------------------------------------------------
+     FEHLERHILFSFUNKTIONEN
+  --------------------------------------------------- */
+  function showFieldError(input, errorElement, message) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.add("error");
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.classList.add("show");
+    }
+  }
+
+  function clearFieldError(input, errorElement) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.remove("error");
+    if (errorElement) {
+      errorElement.classList.remove("show");
+      errorElement.textContent = "";
+    }
+  }
+
+  /* ---------------------------------------------------
+     SUBMIT HANDLING
+  --------------------------------------------------- */
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
 
-    errorBox.textContent = "";
-    infoBox.textContent = "";
+    clearFieldError(emailInput, emailError);
+    clearFieldError(passwordInput, passwordError);
+    clearFieldError(passwordConfirmInput, passwordConfirmError);
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
     const passwordConfirm = passwordConfirmInput.value.trim();
 
-    if (!email || !password || !passwordConfirm) {
-      errorBox.textContent = "Bitte alle Felder ausfüllen.";
-      return;
+    let hasError = false;
+
+    // Validierung
+    if (!email) {
+      showFieldError(emailInput, emailError, "Bitte E-Mail angeben.");
+      hasError = true;
+    }
+    if (!password) {
+      showFieldError(passwordInput, passwordError, "Bitte Passwort angeben.");
+      hasError = true;
+    }
+    if (!passwordConfirm) {
+      showFieldError(passwordConfirmInput, passwordConfirmError, "Bitte Passwort bestätigen.");
+      hasError = true;
+    }
+    if (password && passwordConfirm && password !== passwordConfirm) {
+      showFieldError(passwordConfirmInput, passwordConfirmError, "Passwörter stimmen nicht überein.");
+      hasError = true;
     }
 
-    if (password !== passwordConfirm) {
-      errorBox.textContent = "Passwörter stimmen nicht überein.";
-      return;
-    }
+    if (hasError) return;
 
     isSubmitting = true;
+    const submitBtn = form.querySelector(".login-btn");
+    submitBtn?.classList.add("loading");
 
     try {
       await registerUser(email, password);
-      infoBox.textContent = "Registrierung erfolgreich. Du kannst dich jetzt anmelden.";
-      // Nach kurzer Zeit auf Login-Seite gehen
+
+      // Form ausblenden → Erfolg anzeigen
+      if (successMessage) {
+        form.style.display = "none";
+        successMessage.classList.add("show");
+      }
+
+      // Nach kurzer Zeit auf Login wechseln
       setTimeout(() => {
-        if (window.navigateTo) {
-          window.navigateTo("login");
-        }
-      }, 800);
+        if (window.navigateTo) window.navigateTo("login");
+      }, 1200);
+
     } catch (err) {
       console.error("Fehler bei der Registrierung:", err);
-      errorBox.textContent = err.message || "Fehler bei der Registrierung.";
+      showFieldError(emailInput, emailError, err?.message || "Fehler bei der Registrierung.");
     } finally {
       isSubmitting = false;
+      submitBtn?.classList.remove("loading");
+    }
+  });
+}
+
+/* ---------------------------------------------------
+   Passwort-Auge-Helfer
+--------------------------------------------------- */
+function setupPasswordToggle(input, toggleBtn) {
+  if (!input || !toggleBtn) return;
+
+  const icon = toggleBtn.querySelector(".eye-icon");
+
+  toggleBtn.addEventListener("click", () => {
+    const isText = input.type === "text";
+    input.type = isText ? "password" : "text";
+
+    if (icon) {
+      icon.classList.toggle("show-password", !isText);
     }
   });
 }

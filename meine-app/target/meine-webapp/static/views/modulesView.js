@@ -2,11 +2,6 @@
 import { createModule } from "../api.js";
 import { renderModuleList } from "../components/ModuleList.js";
 
-/**
- * Module-View:
- * - Formular zum Anlegen von Modulen
- * - Liste der Module anzeigen
- */
 export function initModulesView() {
   const form = document.getElementById("module-form");
   if (!form) {
@@ -50,10 +45,10 @@ export function initModulesView() {
       await renderModuleList();
     } catch (err) {
       console.error("Fehler beim Erstellen eines Moduls:", err);
-      errorBox.textContent = err.message || "Fehler beim Anlegen des Moduls.";
+      errorBox.textContent =
+        err.message || "Fehler beim Anlegen des Moduls.";
     }
   });
 
-  // Erste Liste laden
   renderModuleList();
 }

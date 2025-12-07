@@ -1,0 +1,1188 @@
+der login-formular, sowie registrierungs-formular soll nicht hevorgehoben gezeigt werden. Aktuell ist das Formular hevorgehoben, und der Hintergrund ist irgendwie verdunkelt und man kann nicht auf irgendetwas raufklicken, zum Beispiel home, login, registrierung.
+also der formular soll auf der seite sein, und nicht hevorgehoben oder so.
+dann brauchen wir auch dieses x bei login-formular oder so nicht:
+
+<button class="modal-close" data-route="home" aria-label="Schließen">×</button>
+.
+
+falls ich aktuell http://localhost:8080/meine-webapp/login refreshe, dann bleibe ich bei http://localhost:8080/meine-webapp/login und das ist auch richtig so. falls ich refreshe, dann will ich nicht nach http://localhost:8080/meine-webapp/. also das ist schonmal richtig. aber das problem ist:
+- falls ich in http://localhost:8080/meine-webapp/login bin und ich refreshe und dann lande ich wieder bei http://localhost:8080/meine-webapp/login, dann habe ich das problem, dass die view weg ist. ich bekomme dann gezeigt bekommen:
+
+HTTP Status 404 – nicht gefunden
+Type Status Report
+
+Message The requested resource [/meine-webapp/login] is not available
+
+Beschreibung The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+
+Apache Tomcat/10.1.40
+
+aber ich will ja die view wieder haben.
+
+____________________
+
+
+Jetzt funktioniert gar nichts mehr:
+
+http://localhost:8080/meine-webapp/
+
+HTTP Status 404 – nicht gefunden
+Type Status Report
+
+Message The requested resource [/meine-webapp/] is not available
+
+Beschreibung The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.
+
+Apache Tomcat/10.1.40
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>StudyPlanner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Variante B: relativ (empfohlen) -->
+    <link rel="stylesheet" href="/meine-webapp/static/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">
+        🎓 <span>StudyPlanner 01</span>
+      </div>
+      <nav class="nav">
+  <a class="nav-link" href="#" data-route="home" id="nav-home">Home</a>
+  <a class="nav-link" href="#" data-route="dashboard" id="nav-dashboard">
+    Dashboard
+  </a>
+  <a class="nav-link" href="#" data-route="modules" id="nav-modules">
+    Module
+  </a>
+  <a class="nav-link" href="#" data-route="tasks" id="nav-tasks">
+    Aufgaben
+  </a>
+  <a class="nav-link" href="#" data-route="sessions" id="nav-sessions">
+    Lernsessions
+  </a>
+  <a class="nav-link" href="#" data-route="login" id="nav-login">
+    Login
+  </a>
+  <a class="nav-link" href="#" data-route="register" id="nav-register">
+    Registrieren
+  </a>
+  <a
+    class="nav-link logout"
+    href="#"
+    data-route="logout"
+    id="nav-logout"
+    style="display: none"
+  >
+    Logout
+  </a>
+</nav>
+
+
+    </header>
+
+    <!-- Home / Landing -->
+    <section id="home" class="view active">
+      <div class="hero">
+        <h1>Willkommen beim StudyPlanner</h1>
+        <p>
+          Plane deine Module, Aufgaben und Lernsessions an einem Ort
+          – einfache Übersicht für dein Studium.
+        </p>
+        <div class="hero-actions">
+          <div class="hero-actions">
+  <a href="#" class="btn primary" data-route="register">Jetzt starten</a>
+  <a href="#" class="btn secondary" data-route="login">Login</a>
+</div>
+
+        </div>
+      </div>
+    </section>
+
+        <!-- Login -->
+    <section id="login" class="view">
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <h2>Login</h2>
+            <p>Melde dich mit deinen Zugangsdaten an</p>
+          </div>
+
+          <form class="login-form" id="login-form" novalidate>
+            <!-- E-Mail -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <input
+                  type="email"
+                  id="login-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                />
+                <label for="login-email">E-Mail-Adresse</label>
+              </div>
+              <span class="error-message" id="login-email-error"></span>
+            </div>
+
+            <!-- Passwort -->
+            <div class="form-group">
+              <div class="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  required
+                  autocomplete="current-password"
+                />
+                <label for="login-password">Passwort</label>
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="login-password-toggle"
+                  aria-label="Passwort ein-/ausblenden"
+                >
+                  <span class="eye-icon"></span>
+                </button>
+              </div>
+              <span class="error-message" id="login-password-error"></span>
+            </div>
+
+            <!-- optional: Remember me -->
+            <div class="form-options">
+              <label class="remember-wrapper">
+                <input type="checkbox" id="login-remember" name="remember" />
+                <span class="checkbox-label">
+                  <span class="checkmark"></span>
+                  Eingeloggt bleiben
+                </span>
+              </label>
+              <!-- optional: Passwort vergessen -->
+              <a href="#" class="forgot-password">Passwort vergessen?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+              <span class="btn-text">Einloggen</span>
+              <span class="btn-loader"></span>
+            </button>
+          </form>
+
+          <div class="signup-link">
+            <p>
+              Noch kein Konto?
+              <a href="#" data-route="register">Konto erstellen</a>
+            </p>
+          </div>
+
+          <div class="success-message" id="login-success-message">
+            <div class="success-icon">✓</div>
+            <h3>Willkommen zurück!</h3>
+            <p>Du wirst zum Dashboard weitergeleitet...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+        <!-- Registrierung -->
+    <section id="register" class="view">
+      <div class="login-container">
+        <div class="login-card">
+          <div class="login-header">
+            <h2>Registrierung</h2>
+            <p>Erstelle ein neues Konto für deinen StudyPlanner</p>
+          </div>
+
+          <form id="register-form" class="login-form" novalidate>
+            <!-- E-Mail -->
+            <div class="form-group">
+              <div class="input-wrapper">
+                <input
+                  type="email"
+                  id="reg-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                />
+                <label for="reg-email">E-Mail-Adresse</label>
+              </div>
+              <span class="error-message" id="reg-email-error"></span>
+            </div>
+
+            <!-- Passwort -->
+            <div class="form-group">
+              <div class="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  id="reg-password"
+                  name="password"
+                  required
+                  autocomplete="new-password"
+                />
+                <label for="reg-password">Passwort</label>
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="reg-password-toggle"
+                  aria-label="Passwort ein-/ausblenden"
+                >
+                  <span class="eye-icon"></span>
+                </button>
+              </div>
+              <span class="error-message" id="reg-password-error"></span>
+            </div>
+
+            <!-- Passwort bestätigen -->
+            <div class="form-group">
+              <div class="input-wrapper password-wrapper">
+                <input
+                  type="password"
+                  id="reg-password-confirm"
+                  name="password-confirm"
+                  required
+                  autocomplete="new-password"
+                />
+                <label for="reg-password-confirm">Passwort bestätigen</label>
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="reg-password-confirm-toggle"
+                  aria-label="Passwort ein-/ausblenden"
+                >
+                  <span class="eye-icon"></span>
+                </button>
+              </div>
+              <span class="error-message" id="reg-password-confirm-error"></span>
+            </div>
+
+            <button type="submit" class="login-btn">
+              <span class="btn-text">Registrieren</span>
+              <span class="btn-loader"></span>
+            </button>
+          </form>
+
+          <div class="signup-link">
+            <p>
+              Schon ein Konto?
+              <a href="#" data-route="login">Zum Login</a>
+            </p>
+          </div>
+
+          <div class="success-message" id="register-success-message">
+            <div class="success-icon">✓</div>
+            <h3>Registrierung erfolgreich!</h3>
+            <p>Du kannst dich jetzt einloggen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="view">
+      <h2>Dashboard</h2>
+      <div id="dashboard-stats" class="dashboard-grid">
+        <div class="card">
+          <h3>Offene Aufgaben</h3>
+          <p id="stat-open-tasks">–</p>
+        </div>
+        <div class="card">
+          <h3>Nächste Prüfung</h3>
+          <p id="stat-next-exam">–</p>
+        </div>
+        <div class="card">
+          <h3>Lernzeit (diese Woche)</h3>
+          <p id="stat-study-time">–</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module -->
+    <section id="modules" class="view">
+      <h2>Module</h2>
+      <form id="module-form" class="form inline-form">
+        <input
+          type="text"
+          id="module-name"
+          placeholder="Modulname (z.B. Datenbanken 2)"
+          required
+        />
+        <input
+          type="text"
+          id="module-semester"
+          placeholder="Semester (z.B. 3)"
+        />
+        <button type="submit" class="btn primary">Modul hinzufügen</button>
+      </form>
+
+      <div id="module-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <!-- Aufgaben -->
+    <section id="tasks" class="view">
+      <h2>Aufgaben</h2>
+      <form id="task-form" class="form">
+        <label for="task-title">Titel</label>
+        <input type="text" id="task-title" required />
+
+        <label for="task-module">Modul</label>
+        <select id="task-module"></select>
+
+        <label for="task-deadline">Deadline</label>
+        <input type="date" id="task-deadline" />
+
+        <label for="task-priority">Priorität</label>
+        <select id="task-priority">
+          <option value="LOW">Niedrig</option>
+          <option value="MEDIUM" selected>Mittel</option>
+          <option value="HIGH">Hoch</option>
+        </select>
+
+        <button type="submit" class="btn primary">Aufgabe anlegen</button>
+      </form>
+
+      <div id="task-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <!-- Lernsessions -->
+    <section id="sessions" class="view">
+      <h2>Lernsessions</h2>
+      <form id="session-form" class="form">
+        <label for="session-module">Modul</label>
+        <select id="session-module"></select>
+
+        <label for="session-date">Datum</label>
+        <input type="date" id="session-date" />
+
+        <label for="session-duration">Dauer (Minuten)</label>
+        <input type="number" id="session-duration" min="5" step="5" />
+
+        <label for="session-note">Notiz</label>
+        <textarea id="session-note" rows="2"></textarea>
+
+        <button type="submit" class="btn primary">Session speichern</button>
+      </form>
+
+      <div id="session-list" class="list-container">
+        <!-- wird per JS gefüllt -->
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>&copy; 2025 StudyPlanner – gebaut von Hossein 🙂</p>
+    </footer>
+
+    <script type="module" src="/meine-webapp/static/main.js"></script>
+  </body>
+</html>
+
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/java/com/beispiel$ cat SPAFilter.java 
+package com.beispiel;
+
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+@WebFilter("/*")
+public class SPAFilter implements Filter {
+    
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
+        
+        HttpServletRequest req = (HttpServletRequest) request;
+
+        String path = req.getRequestURI();
+
+        boolean isApi = path.startsWith("/meine-webapp/api");
+        boolean isStatic = path.startsWith("/meine-webapp/static");
+        boolean hasExtension = path.matches(".*\\.[a-zA-Z0-9]+$");
+
+        if (!isApi && !isStatic && !hasExtension) {
+            request.getRequestDispatcher("/index.html").forward(request, response);
+            return;
+        }
+
+        chain.doFilter(request, response);
+    }
+}
+
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/WEB-INF$ cat web.xml 
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+    
+    <!-- SPA: Alle 404-Fehler sollen index.html zurückgeben -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/index.html</location>
+    </error-page>
+
+    <!-- Optional: Charset-Filter -->
+    <filter>
+        <filter-name>CharsetFilter</filter-name>
+        <filter-class>com.beispiel.CharsetFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/WEB-INF$ 
+
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/static$ cat style.css 
+/* src/main/webapp/static/style.css */
+
+/* Header / Navigation */
+@import url("./header.css");
+
+/* ===== Globales Layout ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+    background: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #334155;
+}
+
+/* SPA-Views: nur .active ist sichtbar */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* ===== Auth / Login & Register Form (Basic Login Form) ===== */
+
+.login-container {
+  max-width: 450px;
+  margin: 40px auto;
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-header h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-wrapper input {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 16px 8px 16px;
+  color: #1e293b;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  width: 100%;
+  outline: none;
+}
+
+.input-wrapper input::placeholder {
+  color: transparent;
+}
+
+.input-wrapper label {
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  color: #64748b;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  transform-origin: left top;
+}
+
+/* Floating Label wenn Input fokussiert ist oder Inhalt hat */
+.input-wrapper input:focus + label,
+.input-wrapper input.has-value + label {
+  top: -6px;
+  left: 12px;
+  background: #f8fafc;
+  padding: 0 4px;
+
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  color: #6366f1;
+
+  transform: translateY(-8px) scale(0.875);
+}
+
+/* Password Toggle */
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #1e293b;
+}
+
+.eye-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='1.5'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z'/%3e%3cpath stroke-linecap='round' stroke-linejoin='round' d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'/%3e%3c/svg%3e");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: background-image 0.2s ease;
+}
+
+.eye-icon.show-password {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='1.5'%3e%3cpath stroke-linecap='round' stroke-linejoin='round' d='M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 11-4.243-4.243m4.242 4.242L9.88 9.88'/%3e%3c/svg%3e");
+}
+
+/* Error Messages */
+.error-message {
+  display: block;
+  color: #ef4444;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 4px;
+  margin-left: 4px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all 0.2s ease;
+}
+
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-group.error .input-wrapper input {
+  border-color: #ef4444;
+}
+
+/* Form Options */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.remember-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.remember-wrapper input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-label {
+  color: #64748b;
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  background: white;
+}
+
+.remember-wrapper input[type="checkbox"]:checked ~ .checkbox-label .checkmark {
+  background: #6366f1;
+  border-color: #6366f1;
+}
+
+.remember-wrapper input[type="checkbox"]:checked ~ .checkbox-label .checkmark::after {
+  content: "✓";
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.forgot-password {
+  color: #6366f1;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: #4f46e5;
+}
+
+/* Button */
+.login-btn {
+  width: 100%;
+  background: #6366f1;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.login-btn:hover {
+  background: #4f46e5;
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+/* Loading State */
+.login-btn.loading {
+  pointer-events: none;
+  background: #a5a6f6;
+}
+
+.btn-text {
+  transition: opacity 0.2s ease;
+}
+
+.btn-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: spin 1s linear infinite;
+  transition: opacity 0.2s ease;
+}
+
+.login-btn.loading .btn-text {
+  opacity: 0;
+}
+
+.login-btn.loading .btn-loader {
+  opacity: 1;
+}
+
+/* Signup Link */
+.signup-link {
+  text-align: center;
+}
+
+.signup-link p {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.signup-link a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.signup-link a:hover {
+  color: #4f46e5;
+}
+
+/* Success Message */
+.success-message {
+  display: none;
+  text-align: center;
+  padding: 32px 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.success-message.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.success-icon {
+  width: 48px;
+  height: 48px;
+  background: #22c55e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+  margin: 0 auto 16px;
+  animation: successPulse 0.5s ease;
+}
+
+.success-message h3 {
+  color: #1e293b;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.success-message p {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 24px;
+    margin: 10px;
+  }
+
+  .login-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+/* Login & Register als Modal-Overlay */
+#login.view,
+#register.view {
+  position: fixed;
+  inset: 0; /* top:0; right:0; bottom:0; left:0 */
+  background: rgba(15, 23, 42, 0.65); /* dunkler Hintergrund */
+  display: none; /* wird durch .active sichtbar gemacht */
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  z-index: 1000; /* über Home/Dashboard etc. */
+}
+
+/* Wenn aktiv, als Flex-Container sichtbar */
+#login.view.active,
+#register.view.active {
+  display: flex;
+}
+
+/* Container im Modal zentrieren und begrenzen */
+#login .login-container,
+#register .login-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #64748b;
+}
+.modal-close:hover {
+  color: #1e293b;
+}
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/static$ 
+
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/static/views$ cat loginView.js 
+// src/main/webapp/static/views/loginView.js
+import { loginUser, fetchSession } from "../api.js";
+
+export function initLoginView() {
+  const form = document.getElementById("login-form");
+  if (!form) {
+    console.warn("LoginView: #login-form nicht gefunden");
+    return;
+  }
+
+  const emailInput = document.getElementById("login-email");
+  const passwordInput = document.getElementById("login-password");
+  const emailError = document.getElementById("login-email-error");
+  const passwordError = document.getElementById("login-password-error");
+  const passwordToggle = document.getElementById("login-password-toggle");
+  const successMessage = document.getElementById("login-success-message");
+
+  if (!emailInput || !passwordInput) {
+    console.warn("LoginView: Eingabefelder nicht gefunden");
+    return;
+  }
+
+  let isSubmitting = false;
+
+  // ---------------------------------------------------
+  // 1) Floating Label: hat das Feld Inhalt?
+  // ---------------------------------------------------
+  [emailInput, passwordInput].forEach((input) => {
+    const updateHasValue = () => {
+      if (input.value.trim() !== "") {
+        input.classList.add("has-value");
+      } else {
+        input.classList.remove("has-value");
+      }
+    };
+    input.addEventListener("input", updateHasValue);
+    updateHasValue();
+  });
+
+  // ---------------------------------------------------
+  // 2) Passwort ein-/ausblenden
+  // ---------------------------------------------------
+  if (passwordToggle) {
+    const eye = passwordToggle.querySelector(".eye-icon");
+
+    passwordToggle.addEventListener("click", () => {
+      const showing = passwordInput.type === "text";
+      passwordInput.type = showing ? "password" : "text";
+
+      if (eye) {
+        eye.classList.toggle("show-password", !showing);
+      }
+    });
+  }
+
+  // ---------------------------------------------------
+  // Fehler anzeigen / löschen
+  // ---------------------------------------------------
+  function showFieldError(input, errorElement, message) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.add("error");
+
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.classList.add("show");
+    }
+  }
+
+  function clearFieldError(input, errorElement) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.remove("error");
+
+    if (errorElement) {
+      errorElement.classList.remove("show");
+      errorElement.textContent = "";
+    }
+  }
+
+  // ---------------------------------------------------
+  // 3) Submit – Login durchführen
+  // ---------------------------------------------------
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    // Fehler zurücksetzen
+    clearFieldError(emailInput, emailError);
+    clearFieldError(passwordInput, passwordError);
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    let hasError = false;
+
+    if (!email) {
+      showFieldError(emailInput, emailError, "Bitte E-Mail eingeben.");
+      hasError = true;
+    }
+    if (!password) {
+      showFieldError(
+        passwordInput,
+        passwordError,
+        "Bitte Passwort eingeben."
+      );
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    isSubmitting = true;
+    const submitBtn = form.querySelector(".login-btn");
+    submitBtn?.classList.add("loading");
+
+    try {
+      // 1) Login durchführen
+      await loginUser(email, password);
+
+      // 2) Session laden
+      await fetchSession();
+
+      // 3) Erfolg anzeigen
+      if (successMessage) {
+        form.style.display = "none";
+        successMessage.classList.add("show");
+      }
+
+      // 4) Weiterleiten
+      setTimeout(() => {
+        if (window.navigateTo) {
+          window.navigateTo("dashboard");
+        }
+      }, 1200);
+
+    } catch (err) {
+      console.error("Login-Fehler:", err);
+
+      showFieldError(
+        passwordInput,
+        passwordError,
+        err?.message || "Login fehlgeschlagen."
+      );
+
+    } finally {
+      isSubmitting = false;
+      submitBtn?.classList.remove("loading");
+    }
+  });
+}
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/static/views$ cat registerView.js 
+// src/main/webapp/static/views/registerView.js
+import { registerUser } from "../api.js";
+
+export function initRegisterView() {
+  const form = document.getElementById("register-form");
+  if (!form) {
+    console.warn("RegisterView: #register-form nicht gefunden.");
+    return;
+  }
+
+  const emailInput = document.getElementById("reg-email");
+  const passwordInput = document.getElementById("reg-password");
+  const passwordConfirmInput = document.getElementById("reg-password-confirm");
+
+  const emailError = document.getElementById("reg-email-error");
+  const passwordError = document.getElementById("reg-password-error");
+  const passwordConfirmError = document.getElementById("reg-password-confirm-error");
+
+  const passwordToggle = document.getElementById("reg-password-toggle");
+  const passwordConfirmToggle = document.getElementById("reg-password-confirm-toggle");
+
+  const successMessage = document.getElementById("register-success-message");
+
+  if (!emailInput || !passwordInput || !passwordConfirmInput) {
+    console.warn("RegisterView: Eingabefelder fehlen!");
+    return;
+  }
+
+  let isSubmitting = false;
+
+  /* ---------------------------------------------------
+     FLOATING LABELS (E-Mail, Passwort, Passwort best.)
+  --------------------------------------------------- */
+  [emailInput, passwordInput, passwordConfirmInput].forEach((input) => {
+    const updateHasValue = () => {
+      input.classList.toggle("has-value", input.value.trim() !== "");
+    };
+    input.addEventListener("input", updateHasValue);
+    updateHasValue();
+  });
+
+  /* ---------------------------------------------------
+     PASSWORT-AUGEN (beide Felder)
+  --------------------------------------------------- */
+  setupPasswordToggle(passwordInput, passwordToggle);
+  setupPasswordToggle(passwordConfirmInput, passwordConfirmToggle);
+
+  /* ---------------------------------------------------
+     FEHLERHILFSFUNKTIONEN
+  --------------------------------------------------- */
+  function showFieldError(input, errorElement, message) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.add("error");
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.classList.add("show");
+    }
+  }
+
+  function clearFieldError(input, errorElement) {
+    const group = input.closest(".form-group");
+    if (group) group.classList.remove("error");
+    if (errorElement) {
+      errorElement.classList.remove("show");
+      errorElement.textContent = "";
+    }
+  }
+
+  /* ---------------------------------------------------
+     SUBMIT HANDLING
+  --------------------------------------------------- */
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    clearFieldError(emailInput, emailError);
+    clearFieldError(passwordInput, passwordError);
+    clearFieldError(passwordConfirmInput, passwordConfirmError);
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const passwordConfirm = passwordConfirmInput.value.trim();
+
+    let hasError = false;
+
+    // Validierung
+    if (!email) {
+      showFieldError(emailInput, emailError, "Bitte E-Mail angeben.");
+      hasError = true;
+    }
+    if (!password) {
+      showFieldError(passwordInput, passwordError, "Bitte Passwort angeben.");
+      hasError = true;
+    }
+    if (!passwordConfirm) {
+      showFieldError(passwordConfirmInput, passwordConfirmError, "Bitte Passwort bestätigen.");
+      hasError = true;
+    }
+    if (password && passwordConfirm && password !== passwordConfirm) {
+      showFieldError(passwordConfirmInput, passwordConfirmError, "Passwörter stimmen nicht überein.");
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    isSubmitting = true;
+    const submitBtn = form.querySelector(".login-btn");
+    submitBtn?.classList.add("loading");
+
+    try {
+      await registerUser(email, password);
+
+      // Form ausblenden → Erfolg anzeigen
+      if (successMessage) {
+        form.style.display = "none";
+        successMessage.classList.add("show");
+      }
+
+      // Nach kurzer Zeit auf Login wechseln
+      setTimeout(() => {
+        if (window.navigateTo) window.navigateTo("login");
+      }, 1200);
+
+    } catch (err) {
+      console.error("Fehler bei der Registrierung:", err);
+      showFieldError(emailInput, emailError, err?.message || "Fehler bei der Registrierung.");
+    } finally {
+      isSubmitting = false;
+      submitBtn?.classList.remove("loading");
+    }
+  });
+}
+
+/* ---------------------------------------------------
+   Passwort-Auge-Helfer
+--------------------------------------------------- */
+function setupPasswordToggle(input, toggleBtn) {
+  if (!input || !toggleBtn) return;
+
+  const icon = toggleBtn.querySelector(".eye-icon");
+
+  toggleBtn.addEventListener("click", () => {
+    const isText = input.type === "text";
+    input.type = isText ? "password" : "text";
+
+    if (icon) {
+      icon.classList.toggle("show-password", !isText);
+    }
+  });
+}
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app/src/main/webapp/static/views$ 
