@@ -6,6 +6,7 @@ import {
     MODULES_ENDPOINT,
     TASKS_ENDPOINT,
     SESSIONS_ENDPOINT,
+    LOGOUT_ENDPOINT,
 } from "./endpoints.js";
 
 function getRoutingUtils() {
@@ -135,13 +136,70 @@ function ajaxJson(endpoint, method = "GET", body) {
     })
 }
 
+function ajaxForm(endpoint, method = "POST", data = {}) {
+    const { getApiUrl } = getRoutingUtils();
+    const url = getApiUrl(endpoint);
+
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+
+        xhr.withCredentials = true;
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader(
+            "Content-Type",
+            "application/x-www-form-urlencoded;charset=UTF-8"
+        );
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
+
+            const status = xhr.status;
+
+            if (status >= 200 && status < 300) {
+                if (!xhr.responseText) {
+                    resolve(null);
+                    return;
+                }
+                try {
+                    const json = JSON.parse(xhr.responseText);
+                    resolve(json);
+                } catch (e) {
+                    reject(new Error("Antwort ist kein gültiges JSON"));
+                }
+                return;
+            }
+
+            let msg = xhr.statusText || "Unbekannter Fehler";
+            try {
+                if (xhr.responseText) {
+                    const errJson = JSON.parse(xhr.responseText);
+                    msg = errJson.error || errJson.message || JSON.stringify(errJson);
+                }
+            } catch(_) {}
+
+            reject(new Error(`HTTP ${status}: ${msg}`));
+        };
+
+        xhr.onerror = () => {
+            reject(new Error("Netzwerkfehler bei AJAX-Request"));
+        };
+
+        const payload = new URLSearchParams(data).toString();
+        xhr.send(payload);
+    })
+}
+
 /* Authentification */
 export async function loginUser(email, password) {
-    return await ajaxJson(LOGIN_ENDPOINT, "POST", { email, password });
+    return await ajaxForm(LOGIN_ENDPOINT, "POST", { email, password });
 }
 
 export async function registerUser(email, password) {
-    return await ajaxJson(REGISTER_ENDPOINT, "POST", { email, password });
+    return await ajaxForm(REGISTER_ENDPOINT, "POST", { email, password });
 }
 
 export async function fetchSession() {
@@ -161,6 +219,10 @@ export async function fetchSession() {
     } catch (_) {
         return { loggedIn: false, role: null, userName: null };
     }
+}
+
+export async function logoutUser() {
+    return await ajaxForm(LOGOUT_ENDPOINT, "POST");
 }
 
 /* Dashboard */

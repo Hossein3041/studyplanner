@@ -1,59 +1,55 @@
 // src/main/webapp/static/views/adminView.js
-import { fetchSession } from "../api.js";
 
-/**
- * Admin-View (Platzhalter):
- * Wird NICHT über Navbar verlinkt.
- * Nur wenn ein ADMIN-User eingeloggt ist und z.B. nach Login
- *   window.navigateTo("admin")
- * aufgerufen wird.
- *
- * Du musst in index.html noch ein <section id="admin" class="view"> ergänzen,
- * damit diese View sichtbar werden kann.
- */
+import { fetchModules, fetchTasks, fetchSessions } from "../api.js";
+
 export function initAdminView() {
-  const section = document.getElementById("admin");
-  if (!section) {
-    console.warn(
-      "AdminView: #admin nicht gefunden. Bitte <section id=\"admin\" class=\"view\"> im HTML ergänzen."
-    );
+  const root = document.getElementById("admin");
+  if (!root) {
+    console.warn("AdminView: #admin nicht gefunden");
     return;
   }
 
-  const containerId = "admin-content";
-  let container = document.getElementById(containerId);
+  root.innerHTML = `
+    <h2>Admin-Bereich</h2>
+    <p>Hier kannst du später z. B. Module, User und Statistiken verwalten.</p>
+    <div class="admin-panels">
+      <section id="admin-modules-panel">
+        <h3>Module-Übersicht</h3>
+        <div class="admin-modules-list">Lade Module...</div>
+      </section>
+      <section id="admin-users-panel">
+        <h3>User / Rollen (TODO)</h3>
+        <p>Später: Liste aller User, Rollen ändern etc.</p>
+      </section>
+    </div>
+  `;
 
-  if (!container) {
-    container = document.createElement("div");
-    container.id = containerId;
-    section.appendChild(container);
-  }
+  // Beispiel: Module laden und anzeigen
+  (async () => {
+    try {
+      const modules = await fetchModules();
+      const listEl = root.querySelector(".admin-modules-list");
+      if (!listEl) return;
 
-  loadAdminOverview(container);
-}
+      if (!modules || modules.length === 0) {
+        listEl.textContent = "Keine Module vorhanden.";
+        return;
+      }
 
-async function loadAdminOverview(container) {
-  container.textContent = "Lade Admin-Informationen...";
-
-  try {
-    const session = await fetchSession();
-    if (!session || session.role !== "ADMIN") {
-      container.textContent = "Keine Berechtigung für den Admin-Bereich.";
-      return;
+      const ul = document.createElement("ul");
+      modules.forEach((m) => {
+        const li = document.createElement("li");
+        li.textContent = `[#${m.id}] ${m.name} (Semester ${m.semester})`;
+        ul.appendChild(li);
+      });
+      listEl.innerHTML = "";
+      listEl.appendChild(ul);
+    } catch (e) {
+      console.error("Fehler beim Laden der Module für Admin:", e);
+      const listEl = root.querySelector(".admin-modules-list");
+      if (listEl) {
+        listEl.textContent = "Fehler beim Laden der Admin-Module.";
+      }
     }
-
-    container.innerHTML = "";
-    const h3 = document.createElement("h3");
-    h3.textContent = "Admin-Bereich";
-
-    const p = document.createElement("p");
-    p.textContent =
-      "Hier könnte später eine Übersicht über alle Studierenden, Module, Aufgaben usw. erscheinen.";
-
-    container.appendChild(h3);
-    container.appendChild(p);
-  } catch (e) {
-    console.error("Fehler beim Laden der Admin-Infos:", e);
-    container.textContent = "Fehler beim Laden des Admin-Bereichs.";
-  }
+  })();
 }

@@ -4,6 +4,7 @@ const BASE_API_PATH = "";
 export const LOGIN_ENDPOINT = BASE_API_PATH + "auth/login";
 export const REGISTER_ENDPOINT = BASE_API_PATH + "auth/register";
 export const SESSION_ENDPOINT = BASE_API_PATH + "auth/session";
+export const LOGOUT_ENDPOINT = BASE_API_PATH + "auth/logout";
 
 // Dashboard
 export const DASHBOARD_STATS_ENDPOINT = BASE_API_PATH + "dashboard/stats";

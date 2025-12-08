@@ -114,8 +114,8 @@ export function initLoginView() {
       // 1) Login durchführen
       await loginUser(email, password);
 
-      // 2) Session laden
-      await fetchSession();
+      // 2) Session laden (inkl. role)
+      const session = await fetchSession();
 
       // 3) Erfolg anzeigen
       if (successMessage) {
@@ -126,7 +126,11 @@ export function initLoginView() {
       // 4) Weiterleiten
       setTimeout(() => {
         if (window.navigateTo) {
-          window.navigateTo("dashboard");
+          if (session && session.role === "ADMIN") {
+            window.navigateTo("admin");
+          } else {
+            window.navigateTo("dashboard");
+          }
         }
       }, 1200);
 

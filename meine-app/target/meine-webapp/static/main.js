@@ -1,6 +1,6 @@
 // src/main/webapp/static/main.js
 
-import { fetchSession } from "./api.js";
+import { fetchSession, logoutUser } from "./api.js";
 
 import { initHomeView } from "./views/homeView.js";
 import { initLoginView } from "./views/loginView.js";
@@ -9,6 +9,7 @@ import { initDashboardView } from "./views/dashboardView.js";
 import { initModulesView } from "./views/modulesView.js";
 import { initTasksView } from "./views/tasksView.js";
 import { initSessionsView } from "./views/sessionsView.js";
+import { initAdminView } from "./views/adminView.js";
 
 const CONTEXTPATH = "/meine-webapp/";
 const THEME_KEY = "theme";
@@ -158,7 +159,7 @@ window.routingUtils = {
    ======================== */
 
 const publicViews = ["home", "login", "register", "impressum", "datenschutz"];
-const protectedViews = ["dashboard", "modules", "tasks", "sessions"];
+const protectedViews = ["dashboard", "modules", "tasks", "sessions", "admin"];
 
 const viewInitializers = {
   home: initHomeView,
@@ -168,7 +169,7 @@ const viewInitializers = {
   modules: initModulesView,
   tasks: initTasksView,
   sessions: initSessionsView,
-  // einfache statische Seiten
+  admin: initAdminView,
   impressum: () => {},
   datenschutz: () => {},
 };
@@ -244,8 +245,7 @@ async function updateNavbar(currentView) {
   const sessionsLink = document.getElementById("nav-sessions");
 
   if (loggedIn) {
-    if (loginLink) loginLink.style.display = "inline-block";
-    // Wenn du Login verstecken willst, setze hier "none"
+    if (loginLink) loginLink.style.display = "none";
     if (registerLink) registerLink.style.display = "none";
     if (logoutLink) logoutLink.style.display = "inline-block";
 
@@ -253,6 +253,17 @@ async function updateNavbar(currentView) {
     if (modulesLink) modulesLink.style.display = "inline-block";
     if (tasksLink) tasksLink.style.display = "inline-block";
     if (sessionsLink) sessionsLink.style.display = "inline-block";
+
+    const adminLink = document.getElementById("nav-admin");
+    
+    if (session.role === "ADMIN") {
+      adminLink?.classList.remove("hidden");
+      adminLink.style.display = "inline-block";
+    } else {
+      adminLink?.classList.add("hidden");
+      adminLink.style.display = "none";
+    }
+
   } else {
     if (loginLink) loginLink.style.display = "inline-block";
     if (registerLink) registerLink.style.display = "inline-block";
@@ -293,12 +304,19 @@ function setupNavigation() {
       return;
     }
 
-    link.addEventListener("click", (e) => {
+    link.addEventListener("click", async (e) => {
       e.preventDefault();
 
       if (route === "logout") {
-        // TODO: Logout-API in api.js integrieren
-        alert("Logout-Endpoint noch nicht implementiert.");
+        try {
+          await logoutUser();
+          await fetchSession();
+        } catch (err) {
+          console.error("Logout fehlgeschlagen:", err);
+        }
+        if (window.navigateTo) {
+          window.navigateTo("login");
+        }
         return;
       }
 

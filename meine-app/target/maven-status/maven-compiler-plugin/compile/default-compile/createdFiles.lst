@@ -1,2 +1,16 @@
+com/beispiel/entities/UserEntity.class
+com/beispiel/util/JsonUtil.class
+com/beispiel/util/PasswordUtil.class
+com/beispiel/servlets/AdminServlet.class
+com/beispiel/servlets/AuthServlet.class
+com/beispiel/mappers/UserMapper.class
+com/beispiel/services/AuthService.class
 com/beispiel/SPAFilter.class
+com/beispiel/repositories/UserRepository.class
+com/beispiel/util/ErrorHandler.class
+com/beispiel/util/DbUtil.class
+com/beispiel/util/JsonRequestUtil.class
 com/beispiel/HelloServlet.class
+com/beispiel/dtos/UserDto.class
+com/beispiel/filter/AuthFilter.class
+com/beispiel/util/JsonResponseUtil.class
