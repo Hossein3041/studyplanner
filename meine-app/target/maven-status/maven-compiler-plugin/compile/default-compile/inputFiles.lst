@@ -10,6 +10,7 @@
 /home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/servlets/AuthServlet.java
 /home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/util/DbUtil.java
 /home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/util/ErrorHandler.java
+/home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/util/GenerateHash.java
 /home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/util/JsonRequestUtil.java
 /home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/util/JsonResponseUtil.java
 /home/hossein3041/project/meine-maven-app/meine-app/src/main/java/com/beispiel/util/JsonUtil.java

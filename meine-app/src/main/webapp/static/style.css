@@ -381,8 +381,14 @@ body {
 }
 
 /* Success Message */
+.success-message[hidden] {
+  display: none !important;
+}
+
 .success-message {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
   padding: 32px 20px;
   opacity: 0;

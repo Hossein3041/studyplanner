@@ -1,3 +1,4 @@
+com/beispiel/util/GenerateHash.class
 com/beispiel/entities/UserEntity.class
 com/beispiel/util/JsonUtil.class
 com/beispiel/util/PasswordUtil.class

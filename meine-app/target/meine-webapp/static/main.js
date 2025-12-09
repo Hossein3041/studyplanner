@@ -211,11 +211,19 @@ function showViewSync(viewId) {
 
   // View-spezifische Initialisierung
   const init = viewInitializers[viewId];
-  if (init && !initializedViews.has(viewId)) {
-    init();
-    initializedViews.add(viewId);
+
+  if (viewId === "login") {
+    // Login-View IMMER neu initialisieren (Reset von Formular & Messages)
+    if (init) init();
+  } else {
+    // Alle anderen Views nur einmal initialisieren
+    if (init && !initializedViews.has(viewId)) {
+      init();
+      initializedViews.add(viewId);
+    }
   }
 
+  // Navbar immer aktualisieren
   updateNavbar(viewId);
 }
 
@@ -310,15 +318,15 @@ function setupNavigation() {
       if (route === "logout") {
         try {
           await logoutUser();
-          await fetchSession();
         } catch (err) {
           console.error("Logout fehlgeschlagen:", err);
         }
-        if (window.navigateTo) {
-          window.navigateTo("login");
-        }
+
+        await navigateTo("login");
         return;
       }
+
+
 
       navigateTo(route);
     });

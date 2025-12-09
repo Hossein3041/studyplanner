@@ -2,10 +2,10 @@
 -- Test-User
 -- ------------------------------------------------------------
 INSERT INTO users (email, password_hash, role)
-VALUES ('admin@example.com', 'admin123', 'ADMIN');
+VALUES ('admin@example.com', 'PBKDF2WithHmacSHA256:65536:o9l53zpUjfFOZbn4LdY1zQ==:3jzH4wu/69fGzeI6FazGdWn96sQ6jUYyYfBJlRhHxU0=', 'ADMIN');
 
 INSERT INTO users (email, password_hash, role)
-VALUES ('student@example.com', 'student123', 'STUDENT');
+VALUES ('student@example.com', 'PBKDF2WithHmacSHA256:65536:25HslJibmtK7uqxAfgzwUg==:E5bnbC6V1oucmZfwaVbA1Up2RXX9OAH/tQQ4BfF7+50=', 'STUDENT');
 
 
 SET @userId = LAST_INSERT_ID();

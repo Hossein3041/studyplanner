@@ -1,0 +1,172 @@
+hossein3041@HosseinAkbari:~/project/meine-maven-app/meine-app$ tree
+.
+├── deploy.sh
+├── pom.xml
+├── shutdown-tomcat.sh
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── beispiel
+│   │   │           ├── HelloServlet.java
+│   │   │           └── SPAFilter.java
+│   │   └── webapp
+│   │       ├── WEB-INF
+│   │       │   └── web.xml
+│   │       ├── index.html
+│   │       └── static
+│   │           ├── api.js
+│   │           ├── components
+│   │           │   ├── ModuleList.js
+│   │           │   ├── SessionList.js
+│   │           │   └── TaskList.js
+│   │           ├── endpoints.js
+│   │           ├── header.css
+│   │           ├── main.js
+│   │           ├── meta.json
+│   │           ├── style.css
+│   │           └── views
+│   │               ├── adminView.js
+│   │               ├── dashboardView.js
+│   │               ├── homeView.js
+│   │               ├── loginView.js
+│   │               ├── modulesView.js
+│   │               ├── registerView.js
+│   │               ├── sessionsView.js
+│   │               └── tasksView.js
+│   └── test
+│       └── java
+│           └── com
+│               └── beispiel
+├── start-tomcat.sh
+└── target
+    ├── classes
+    │   └── com
+    │       └── beispiel
+    │           ├── HelloServlet.class
+    │           └── SPAFilter.class
+    ├── generated-sources
+    │   └── annotations
+    ├── generated-test-sources
+    │   └── test-annotations
+    ├── maven-archiver
+    │   └── pom.properties
+    ├── maven-status
+    │   └── maven-compiler-plugin
+    │       ├── compile
+    │       │   └── default-compile
+    │       │       ├── createdFiles.lst
+    │       │       └── inputFiles.lst
+    │       └── testCompile
+    │           └── default-testCompile
+    │               ├── createdFiles.lst
+    │               └── inputFiles.lst
+    ├── meine-webapp
+    │   ├── META-INF
+    │   ├── WEB-INF
+    │   │   ├── classes
+    │   │   │   └── com
+    │   │   │       └── beispiel
+    │   │   │           ├── HelloServlet.class
+    │   │   │           └── SPAFilter.class
+    │   │   └── web.xml
+    │   ├── index.html
+    │   └── static
+    │       ├── api.js
+    │       ├── components
+    │       │   ├── ModuleList.js
+    │       │   ├── SessionList.js
+    │       │   └── TaskList.js
+    │       ├── endpoints.js
+    │       ├── header.css
+    │       ├── main.js
+    │       ├── meta.json
+    │       ├── style.css
+    │       └── views
+    │           ├── adminView.js
+    │           ├── dashboardView.js
+    │           ├── homeView.js
+    │           ├── loginView.js
+    │           ├── modulesView.js
+    │           ├── registerView.js
+    │           ├── sessionsView.js
+    │           └── tasksView.js
+    ├── meine-webapp.war
+    └── test-classes
+
+39 directories, 54 files
+
+Als nächstes sollte das Backend angestoßen werden.
+
+Im Backend sollte die folgende Schicht umgesetzt werden:
+- Controller-Schicht oder Servlet-Schicht, in der die Endpunkte entgegeben genommen werden:
+-> z.B. ModuleServlet/ModuleController oder so
+-> weiter: SessionServlet/SessionController ...
+
+Weitere Schicht darunter:
+- Service-Schicht
+-> z.B. ModuleService
+- Mapper-Schicht
+-> z.B. ModuleMapper
+- DTO-Klassen
+-> z.B. ModuleDto
+- Repository-Klassen
+-> z.B. ModuleRepository
+
+- Dann vielleicht Entity-Klassen?
+- z.B. ModuleEntity?
+
+- Ganz unten wäre die Datenbank. Ich würde sagen, wir benutzen Mariadb
+
+
+Es sollte überlegt werden, wie wir das mit Datenbank machen:
+- welche db-tabellen sollte es geben?
+-> folgende sql-dateien:
+-> create-tables.sql
+-> insert-testdata.sql
+
+Folgende Module sollten erstellt werden:
+1. Semester
+- Programmieren 1
+- Mathematik 1
+- SWE 1
+- Einführung in die Informatik
+- Graphen und endliche Automaten
+
+2. Semester
+- Programmieren 2
+- Mathematik 2
+- SWE 2
+- Infrastruktur
+- Rechnerarchitektur
+
+3. Semester
+- Programmieren 3
+- Algorithmen und Datenstrukturen
+- Vernetzte Systeme
+- SWE 3
+- Datenbanken 1
+- Theoretische Informatik
+
+4. Semester
+- Praxissemester
+
+5. Semester
+- Eingebettete Systeme
+- IT-Sicherheit
+- Parallelprogrammierung
+- Datenbanken 2
+- Big Data
+
+6. Semester
+- Bachelorprojekt 1
+- Mathematik 3
+- Technikfolgenabschätzung
+- Roboterprogrammierung
+- Parallele Algorithmen
+
+7. Semester
+- Bachelorprojekt 2
+- Studium Generale
+- Bachelorarbeit
+- Künstliche Intelligenz und Maschinelles Lernen

@@ -11,7 +11,7 @@ import java.util.Optional;
 public class UserRepository {
 
     public Optional<UserEntity> findByEmail(String email) {
-        String sql = "SELECT id, email, password_hash, created_at FROM users WHERE email = ?";
+        String sql = "SELECT id, email, password_hash, created_at, role FROM users WHERE email = ?";
         try (Connection con = DbUtil.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
 
