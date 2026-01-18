@@ -39,6 +39,8 @@ public class AuthServlet extends HttpServlet {
             case "/register" -> handleRegister(req, resp);
             case "/login" -> handleLogin(req, resp);
             case "/logout" -> handleLogout(req, resp);
+            case "/password-reset-request" -> handlePasswordResetRequest(req, resp);
+            case "/password-reset" -> handlePasswordReset(req, resp);
             default -> resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
@@ -88,41 +90,31 @@ public class AuthServlet extends HttpServlet {
 
         String email = JsonRequestUtil.getString(json, "email");
         String password = JsonRequestUtil.getString(json, "password");
+        boolean rememberMe = json.has("rememberMe") && json.get("rememberMe").getAsBoolean();
 
         if (email == null || password == null) {
             ErrorHandler.badRequest(resp, "email und password erforderlich");
             return;
         }
 
-        Optional<UserDto> opt = authService.login(email, password);
+        try {
+            UserDto user = authService.login(email, password, rememberMe, req, resp);
 
-        if (opt.isEmpty()) {
+            JsonObject result = new JsonObject();
+            result.addProperty("id", user.getId());
+            result.addProperty("email", user.getEmail());
+            result.addProperty("role", user.getRole());
+
+            JsonResponseUtil.send(resp, HttpServletResponse.SC_OK, result);
+        } catch (IllegalArgumentException e) {
             ErrorHandler.unauthorized(resp, "Ungültige Anmeldedaten");
-            return;
         }
-
-        UserDto user = opt.get();
-
-        var session = req.getSession(true);
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("email", user.getEmail());
-        session.setAttribute("role", user.getRole());
-
-        JsonObject result = new JsonObject();
-        result.addProperty("id", user.getId());
-        result.addProperty("email", user.getEmail());
-        result.addProperty("role", user.getRole());
-
-        JsonResponseUtil.send(resp, HttpServletResponse.SC_OK, result);
     }
 
     private void handleLogout(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        var session = req.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-
+        
+        authService.logout(req, resp);
         JsonResponseUtil.sendMessage(resp, HttpServletResponse.SC_OK, "Logout erfolgreich");
     }
 
@@ -142,6 +134,52 @@ public class AuthServlet extends HttpServlet {
         }
 
         JsonResponseUtil.send(resp, HttpServletResponse.SC_OK, json);
+    }
+
+    private void handlePasswordResetRequest(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        
+        JsonObject json = JsonRequestUtil.readJson(req);
+        String email = JsonRequestUtil.getString(json, "email");
+
+        if (email == null || email.isBlank()) {
+            ErrorHandler.badRequest(resp, "email erforderlich");
+            return;
+        }
+
+        String token = authService.requestPasswordReset(email);
+
+        JsonObject result = new JsonObject();
+        result.addProperty("message", "OK");
+        result.addProperty("token", token);
+    
+        JsonResponseUtil.send(resp, HttpServletResponse.SC_OK, result);
+    }
+
+    private void handlePasswordReset(HttpServletRequest req, HttpServletResponse resp) 
+            throws IOException {
+        
+        JsonObject json = JsonRequestUtil.readJson(req);
+        String token = JsonRequestUtil.getString(json, "token");
+        String newPassword = JsonRequestUtil.getString(json, "password");
+
+        if (token == null || newPassword == null || newPassword.isBlank()) {
+            ErrorHandler.badRequest(resp, "token und password erforderlich");
+            return;
+        }
+
+        try {
+            authService.resetPassword(token, newPassword);
+
+            JsonObject result = new JsonObject();
+            result.addProperty("message", "Passwort wurde erfolgreich zurückgesetzt.");
+
+            JsonResponseUtil.send(resp, HttpServletResponse.SC_OK, result);
+        } catch (IllegalArgumentException e) {
+            ErrorHandler.badRequest(resp, e.getMessage());
+        } catch (Exception e) {
+            ErrorHandler.internalServerError(resp, "Fehler beim Zurücksetzen des Passworts");
+        }
     }
 
 }

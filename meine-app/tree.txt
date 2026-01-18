@@ -1,0 +1,203 @@
+.
+├── deploy.sh
+├── pom.xml
+├── scripts
+│   └── init-db.sh
+├── shutdown-tomcat.sh
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── beispiel
+│   │   │           ├── HelloServlet.java
+│   │   │           ├── SPAFilter.java
+│   │   │           ├── dtos
+│   │   │           │   └── UserDto.java
+│   │   │           ├── entities
+│   │   │           │   ├── PasswordResetTokenEntity.java
+│   │   │           │   ├── RememberMeTokenEntity.java
+│   │   │           │   └── UserEntity.java
+│   │   │           ├── filter
+│   │   │           │   └── AuthFilter.java
+│   │   │           ├── mappers
+│   │   │           │   └── UserMapper.java
+│   │   │           ├── repositories
+│   │   │           │   ├── PasswordResetTokenRepository.java
+│   │   │           │   ├── RememberMeTokenRepository.java
+│   │   │           │   └── UserRepository.java
+│   │   │           ├── services
+│   │   │           │   └── AuthService.java
+│   │   │           ├── servlets
+│   │   │           │   ├── AdminServlet.java
+│   │   │           │   └── AuthServlet.java
+│   │   │           └── util
+│   │   │               ├── DbUtil.java
+│   │   │               ├── ErrorHandler.java
+│   │   │               ├── GenerateHash.java
+│   │   │               ├── JsonRequestUtil.java
+│   │   │               ├── JsonResponseUtil.java
+│   │   │               ├── JsonUtil.java
+│   │   │               └── PasswordUtil.java
+│   │   ├── resources
+│   │   │   └── db
+│   │   │       ├── create-tables.sql
+│   │   │       └── insert-testdata.sql
+│   │   └── webapp
+│   │       ├── WEB-INF
+│   │       │   └── web.xml
+│   │       ├── index.html
+│   │       └── static
+│   │           ├── api.js
+│   │           ├── components
+│   │           │   ├── ModuleList.js
+│   │           │   ├── SessionList.js
+│   │           │   └── TaskList.js
+│   │           ├── endpoints.js
+│   │           ├── header.css
+│   │           ├── main.js
+│   │           ├── meta.json
+│   │           ├── style.css
+│   │           └── views
+│   │               ├── adminView.js
+│   │               ├── dashboardView.js
+│   │               ├── homeView.js
+│   │               ├── loginView.js
+│   │               ├── modulesView.js
+│   │               ├── registerView.js
+│   │               ├── sessionsView.js
+│   │               └── tasksView.js
+│   └── test
+│       └── java
+│           └── com
+│               └── beispiel
+├── start-tomcat.sh
+├── target
+│   ├── classes
+│   │   ├── com
+│   │   │   └── beispiel
+│   │   │       ├── HelloServlet.class
+│   │   │       ├── SPAFilter.class
+│   │   │       ├── dtos
+│   │   │       │   └── UserDto.class
+│   │   │       ├── entities
+│   │   │       │   ├── PasswordResetTokenEntity.class
+│   │   │       │   ├── RememberMeTokenEntity.class
+│   │   │       │   └── UserEntity.class
+│   │   │       ├── filter
+│   │   │       │   └── AuthFilter.class
+│   │   │       ├── mappers
+│   │   │       │   └── UserMapper.class
+│   │   │       ├── repositories
+│   │   │       │   ├── PasswordResetTokenRepository.class
+│   │   │       │   ├── RememberMeTokenRepository.class
+│   │   │       │   └── UserRepository.class
+│   │   │       ├── services
+│   │   │       │   └── AuthService.class
+│   │   │       ├── servlets
+│   │   │       │   ├── AdminServlet.class
+│   │   │       │   └── AuthServlet.class
+│   │   │       └── util
+│   │   │           ├── DbUtil.class
+│   │   │           ├── ErrorHandler.class
+│   │   │           ├── GenerateHash.class
+│   │   │           ├── JsonRequestUtil.class
+│   │   │           ├── JsonResponseUtil.class
+│   │   │           ├── JsonUtil.class
+│   │   │           └── PasswordUtil.class
+│   │   └── db
+│   │       ├── create-tables.sql
+│   │       └── insert-testdata.sql
+│   ├── generated-sources
+│   │   └── annotations
+│   ├── generated-test-sources
+│   │   └── test-annotations
+│   ├── maven-archiver
+│   │   └── pom.properties
+│   ├── maven-status
+│   │   └── maven-compiler-plugin
+│   │       ├── compile
+│   │       │   └── default-compile
+│   │       │       ├── createdFiles.lst
+│   │       │       └── inputFiles.lst
+│   │       └── testCompile
+│   │           └── default-testCompile
+│   │               ├── createdFiles.lst
+│   │               └── inputFiles.lst
+│   ├── meine-webapp
+│   │   ├── META-INF
+│   │   ├── WEB-INF
+│   │   │   ├── classes
+│   │   │   │   ├── com
+│   │   │   │   │   └── beispiel
+│   │   │   │   │       ├── HelloServlet.class
+│   │   │   │   │       ├── SPAFilter.class
+│   │   │   │   │       ├── dtos
+│   │   │   │   │       │   └── UserDto.class
+│   │   │   │   │       ├── entities
+│   │   │   │   │       │   ├── PasswordResetTokenEntity.class
+│   │   │   │   │       │   ├── RememberMeTokenEntity.class
+│   │   │   │   │       │   └── UserEntity.class
+│   │   │   │   │       ├── filter
+│   │   │   │   │       │   └── AuthFilter.class
+│   │   │   │   │       ├── mappers
+│   │   │   │   │       │   └── UserMapper.class
+│   │   │   │   │       ├── repositories
+│   │   │   │   │       │   ├── PasswordResetTokenRepository.class
+│   │   │   │   │       │   ├── RememberMeTokenRepository.class
+│   │   │   │   │       │   └── UserRepository.class
+│   │   │   │   │       ├── services
+│   │   │   │   │       │   └── AuthService.class
+│   │   │   │   │       ├── servlets
+│   │   │   │   │       │   ├── AdminServlet.class
+│   │   │   │   │       │   └── AuthServlet.class
+│   │   │   │   │       └── util
+│   │   │   │   │           ├── DbUtil.class
+│   │   │   │   │           ├── ErrorHandler.class
+│   │   │   │   │           ├── GenerateHash.class
+│   │   │   │   │           ├── JsonRequestUtil.class
+│   │   │   │   │           ├── JsonResponseUtil.class
+│   │   │   │   │           ├── JsonUtil.class
+│   │   │   │   │           └── PasswordUtil.class
+│   │   │   │   └── db
+│   │   │   │       ├── create-tables.sql
+│   │   │   │       └── insert-testdata.sql
+│   │   │   ├── lib
+│   │   │   │   ├── caffeine-2.9.3.jar
+│   │   │   │   ├── checker-qual-3.32.0.jar
+│   │   │   │   ├── error_prone_annotations-2.10.0.jar
+│   │   │   │   ├── gson-2.10.1.jar
+│   │   │   │   ├── jcl-over-slf4j-2.0.7.jar
+│   │   │   │   ├── jna-5.13.0.jar
+│   │   │   │   ├── jna-platform-5.13.0.jar
+│   │   │   │   ├── mariadb-java-client-3.4.1.jar
+│   │   │   │   ├── slf4j-api-2.0.7.jar
+│   │   │   │   └── waffle-jna-3.3.0.jar
+│   │   │   └── web.xml
+│   │   ├── index.html
+│   │   └── static
+│   │       ├── api.js
+│   │       ├── components
+│   │       │   ├── ModuleList.js
+│   │       │   ├── SessionList.js
+│   │       │   └── TaskList.js
+│   │       ├── endpoints.js
+│   │       ├── header.css
+│   │       ├── main.js
+│   │       ├── meta.json
+│   │       ├── style.css
+│   │       └── views
+│   │           ├── adminView.js
+│   │           ├── dashboardView.js
+│   │           ├── homeView.js
+│   │           ├── loginView.js
+│   │           ├── modulesView.js
+│   │           ├── registerView.js
+│   │           ├── sessionsView.js
+│   │           └── tasksView.js
+│   ├── meine-webapp.war
+│   └── test-classes
+│       └── com
+│           └── beispiel
+└── tree.txt
+
+71 directories, 129 files

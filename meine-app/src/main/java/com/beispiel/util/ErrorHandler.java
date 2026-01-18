@@ -26,4 +26,14 @@ public class ErrorHandler {
             throws IOException {
         JsonResponseUtil.send(resp, HttpServletResponse.SC_CONFLICT, error(msg));
     }
+
+    public static void notFound(HttpServletResponse resp, String msg)
+            throws IOException {
+        JsonResponseUtil.send(resp, HttpServletResponse.SC_NOT_FOUND, error(msg));
+    }
+
+    public static void internalServerError(HttpServletResponse resp, String msg)
+            throws IOException {
+        JsonResponseUtil.send(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, error(msg));
+    }
 }

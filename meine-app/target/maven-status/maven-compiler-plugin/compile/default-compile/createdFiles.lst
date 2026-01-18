@@ -1,13 +1,17 @@
 com/beispiel/util/GenerateHash.class
+com/beispiel/entities/RememberMeTokenEntity.class
 com/beispiel/entities/UserEntity.class
 com/beispiel/util/JsonUtil.class
+com/beispiel/repositories/RememberMeTokenRepository.class
 com/beispiel/util/PasswordUtil.class
 com/beispiel/servlets/AdminServlet.class
 com/beispiel/servlets/AuthServlet.class
+com/beispiel/entities/PasswordResetTokenEntity.class
 com/beispiel/mappers/UserMapper.class
 com/beispiel/services/AuthService.class
 com/beispiel/SPAFilter.class
 com/beispiel/repositories/UserRepository.class
+com/beispiel/repositories/PasswordResetTokenRepository.class
 com/beispiel/util/ErrorHandler.class
 com/beispiel/util/DbUtil.class
 com/beispiel/util/JsonRequestUtil.class

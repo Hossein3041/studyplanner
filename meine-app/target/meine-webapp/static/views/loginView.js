@@ -1,5 +1,5 @@
 // src/main/webapp/static/views/loginView.js
-import { loginUser, fetchSession } from "../api.js";
+import { loginUser, fetchSession, requestPasswordReset, resetPassword } from "../api.js";
 
 function removeLoginSuccessMessage() {
   const old = document.getElementById("login-success-message");
@@ -26,6 +26,49 @@ export function initLoginView() {
   const emailError = document.getElementById("login-email-error");
   const passwordError = document.getElementById("login-password-error");
   const passwordToggle = document.getElementById("login-password-toggle");
+  const rememberCheckbox = document.getElementById("login-remember");
+
+  const forgotLink = document.querySelector(".forgot-password");
+  const forgotPanel = document.getElementById("forgot-password-panel");
+  const forgotEmailInput = document.getElementById("forgot-email");
+  const forgotEmailError = document.getElementById("forgot-email-error");
+  const forgotSubmitBtn = document.getElementById("forgot-submit-btn");
+  const forgotInfoText = document.getElementById("forgot-info-text");
+
+  let resetToken = null;
+
+  if (forgotPanel && forgotLink) {
+    forgotPanel.hidden = true;
+
+    forgotLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      forgotPanel.hidden = !forgotPanel.hidden;
+      forgotEmailError.textContent = "";
+      forgotEmailInput.value =  "";
+    });
+  }
+
+  if (forgotSubmitBtn) {
+    forgotSubmitBtn.addEventListener("click", async() => {
+      const email = forgotEmailInput.value.trim();
+      forgotEmailError.textContext = "";
+
+      if (!email) {
+        forgotEmailError.textContent = "Bitte E-Mail eingeben.";
+        return;
+      }
+
+      try {
+        const result = await requestPasswordReset(email);
+        resetToken = result.token;
+        console.log("Password-Reset-Token:", resetToken);
+        showNewPasswordForm();
+      } catch (err) {
+        forgotEmailError.textContent = "Fehler. Bitte später erneut versuchen.";
+        console.error(err);
+      }
+    })
+  }
 
   // Eingabefelder zurücksetzen
   if (emailInput) {
@@ -107,6 +150,60 @@ export function initLoginView() {
     }
   }
 
+  // ---------------------------------------------
+  // UI für neues Passwort dynamisch einfügen
+  // ---------------------------------------------
+  function showNewPasswordForm() {
+      forgotPanel.innerHTML = `
+         <p>Bitte neues Passwort eingeben:</p>
+
+          <div class="form-group">
+              <div class="input-wrapper">
+                 <input type="password" id="new-password" autocomplete="new-password" />
+                 <label for="new-password">Neues Passwort</label>
+             </div>
+             <span class="error-message" id="new-password-error"></span>
+         </div> 
+
+          <button type="button" class="login-btn" id="new-password-submit">
+             Passwort setzen
+         </button>  
+
+          <p class="info-text" id="reset-info-text"></p>
+     `;
+
+      const newPasswordInput = document.getElementById("new-password");
+      const newPasswordError = document.getElementById("new-password-error");
+      const submitNewPwBtn = document.getElementById("new-password-submit");
+      const infoText = document.getElementById("reset-info-text");
+
+      submitNewPwBtn.addEventListener("click", async () => {
+          const pw = newPasswordInput.value.trim();
+          newPasswordError.textContent = "";
+
+          if (!pw) {
+              newPasswordError.textContent = "Bitte Passwort eingeben.";
+              return;
+          }
+
+          try {
+              await resetPassword(resetToken, pw);
+
+              infoText.textContent = "Passwort erfolgreich gesetzt! Weiterleitung...";
+              infoText.style.color = "green";
+
+              setTimeout(() => {
+                  window.navigateTo("login");
+              }, 1200);
+
+          } catch (err) {
+              newPasswordError.textContent = "Fehler beim Setzen des Passworts.";
+              console.error(err);
+          }
+      });
+  }
+
+
   // ---------------------------------------------------
   // Submit-Handler – EIN Handler pro Init
   // ---------------------------------------------------
@@ -119,6 +216,7 @@ export function initLoginView() {
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
+    const rememberMe = rememberCheckbox?.checked ?? false;
 
     let hasError = false;
 
@@ -139,7 +237,7 @@ export function initLoginView() {
 
     try {
       // 1) Login durchführen
-      await loginUser(email, password);
+      await loginUser(email, password, rememberMe);
 
       // 2) Session abrufen
       const session = await fetchSession();
@@ -149,18 +247,27 @@ export function initLoginView() {
 
       removeLoginSuccessMessage();
 
+      // 3) Formular + kompletter Card-Inhalt ausblenden bzw. leeren
       const loginCard = form.closest(".login-card");
+
       if (loginCard) {
-        const msg = document.createElement("div");
-        msg.id = "login-success-message";
-        msg.className = "success-message show";
-        msg.innerHTML = `
-            <div class="success-icon">✓</div>
-            <h3>Willkommen zurück!</h3>
-            <p>Du wirst zum Dashboard weitergeleitet...</>
-        `;
-        loginCard.appendChild(msg);
+        loginCard.innerHTML = ""; // ALLES entfernen
       }
+
+      // 4) Erfolgsmeldung hinzufügen
+      const successDiv = document.createElement("div");
+      successDiv.id = "login-success-message";
+      successDiv.className = "success-message show";
+      successDiv.innerHTML = `
+        <div class="success-icon">✓</div>
+        <h3 style="margin:12px 0 4px; font-weight:600;">Login erfolgreich</h3>
+        <p style="opacity:.8;">Weiterleitung läuft…</p>
+      `;
+
+      if (loginCard) {
+        loginCard.appendChild(successDiv);
+      }
+
 
       // 4) Weiterleiten
       setTimeout(() => {

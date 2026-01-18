@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS sessions;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS modules;
+DROP TABLE IF EXISTS remember_me_tokens;
+DROP TABLE IF EXISTS password_reset_tokens;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -43,3 +45,27 @@ CREATE TABLE sessions (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE remember_me_tokens (
+    id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id      BIGINT       NOT NULL,
+    selector     VARCHAR(64)  NOT NULL,
+    validator    VARCHAR(128) NOT NULL, -- HASH des Validators
+    expires_at   TIMESTAMP    NOT NULL,
+    created_at   TIMESTAMP    NOT NULL DEFAULT NOW(),
+    last_used_at TIMESTAMP    NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT fk_remember_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT uq_selector UNIQUE (selector)
+);
+
+CREATE TABLE password_reset_tokens (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id     BIGINT NOT NULL,
+    token       VARCHAR(128) NOT NULL,
+    expires_at  TIMESTAMP NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    used_at     TIMESTAMP NULL,
+
+    CONSTRAINT fk_pwdreset_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT uq_pwdreset_token UNIQUE (token)
+);

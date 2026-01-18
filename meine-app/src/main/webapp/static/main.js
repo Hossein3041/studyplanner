@@ -322,10 +322,10 @@ function setupNavigation() {
           console.error("Logout fehlgeschlagen:", err);
         }
 
-        await navigateTo("login");
+        // Seite hart neu laden → Login-View ist wieder Original-HTML
+        window.location.href = getFullPath("login");
         return;
       }
-
 
 
       navigateTo(route);

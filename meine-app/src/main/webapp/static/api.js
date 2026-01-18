@@ -7,6 +7,8 @@ import {
     TASKS_ENDPOINT,
     SESSIONS_ENDPOINT,
     LOGOUT_ENDPOINT,
+    PASSWORD_RESET_REQUEST_ENDPOINT,
+    PASSWORD_RESET_ENDPOINT,
 } from "./endpoints.js";
 
 function getRoutingUtils() {
@@ -137,8 +139,8 @@ function ajaxJson(endpoint, method = "GET", body) {
 }
 
 /* Authentification */
-export async function loginUser(email, password) {
-    return await ajaxJson(LOGIN_ENDPOINT, "POST", { email, password });
+export async function loginUser(email, password, rememberMe = false) {
+    return await ajaxJson(LOGIN_ENDPOINT, "POST", { email, password, rememberMe });
 }
 
 export async function registerUser(email, password) {
@@ -166,6 +168,14 @@ export async function fetchSession() {
 
 export async function logoutUser() {
     return await ajaxJson(LOGOUT_ENDPOINT, "POST");
+}
+
+export async function requestPasswordReset(email) {
+    return await ajaxJson(PASSWORD_RESET_REQUEST_ENDPOINT, "POST", { email });
+}
+
+export async function resetPassword(token, password) {
+    return await ajaxJson(PASSWORD_RESET_ENDPOINT, "POST", { token, password });
 }
 
 /* Dashboard */
